@@ -3,7 +3,6 @@ layout: default
 title: Articles
 ---
 
-# All Articles
 
 {% assign sorted_articles = site.articles | sort: 'path' %}
 <ul>
