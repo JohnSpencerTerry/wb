@@ -11,3 +11,7 @@ title: "Home"
     <li><a href="{{ article.url }}">{{ article.title }}</a></li>
   {% endfor %}
 </ul>
+<h2>Debug Dump</h2>
+<pre>
+{{ site.articles | inspect }}
+</pre>
