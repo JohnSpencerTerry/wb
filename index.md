@@ -3,11 +3,5 @@ layout: default
 title: "Home"
 ---
 
-# Articles
+Hi, I'm John — a software engineer living in New York City.
 
-<ul>
-  {% assign sorted_articles = site.articles | sort: 'path' %}
-  {% for article in sorted_articles %}
-    <li><a href="{{ article.url }}">{{ article.title }}</a></li>
-  {% endfor %}
-</ul>
