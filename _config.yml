@@ -1,5 +1,6 @@
 title: "John Spencer Terry"
 google_analytics: G-KCKCJBP62T
+permalink: pretty
 collections:
   articles:
     output: true
