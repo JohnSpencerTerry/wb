@@ -39,6 +39,26 @@ body {
     font-weight: 500;
   }
   
+  .about-photo {
+    margin: 2rem 0;
+  }
+
+  .about-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #e1e4e8;
+  }
+
+  .about-photo figcaption {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+    text-align: center;
+    font-style: italic;
+  }
+
   .post-date {
     margin: -0.5rem 0 1.5rem;
   }
