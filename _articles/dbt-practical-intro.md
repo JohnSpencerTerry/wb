@@ -4,7 +4,7 @@ title: "dbt models, refs, and sources — a practical intro."
 date: 2026-05-07
 ---
 
-In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at Clarafield had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, Devon's care gap model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at Clarafield had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, Devon's engagement model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
 
 This post is about what that looks like in practice. Specifically: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how Clarafield's model hierarchy actually maps onto them.
 
@@ -127,7 +127,7 @@ At Clarafield, the transformation layer is organized in three layers. This isn't
 
 **Intermediate** (`int_*`): Business logic lives here. Joins happen here. `int_payment_reconciliation` is where transaction events meet member eligibility. Intermediate models are not exposed to analysts directly — they're building blocks.
 
-**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_quality_measures` is what Devon uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
+**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what Devon uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
 
 The ownership rule that follows from this: staging models are owned by the data engineering team (they mirror your raw data contracts). Intermediate models are owned by whoever owns the business logic (often a shared responsibility between engineering and analytics). Marts are owned by whoever's accountable for what those numbers mean.
 
