@@ -16,7 +16,7 @@
       <nav>
         <a href="/">Home</a>
         <a href="/articles/">Articles</a>
-        <a href="/photos/">Photos</a>
+        <!-- <a href="/photos/">Photos</a> -->
         <a href="/about/">About</a>
       </nav>
     </div>
@@ -24,6 +24,9 @@
 
   <main class="container">
     <h2>{{ page.title }}</h2>
+    {% if page.date %}
+      <p class="post-date"><span class="badge">Published {{ page.date | date: "%B %-d, %Y" }}</span></p>
+    {% endif %}
     {{ content }}
   </main>
 

@@ -39,6 +39,22 @@ body {
     font-weight: 500;
   }
   
+  .post-date {
+    margin: -0.5rem 0 1.5rem;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: #eef2f7;
+    color: #555;
+    border: 1px solid #d8dee5;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
   .site-footer {
     text-align: center;
     color: #666;
