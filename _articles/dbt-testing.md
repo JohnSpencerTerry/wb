@@ -13,7 +13,7 @@ dbt tests are post-execution data quality assertions — they execute against wh
 
 ## Generic tests
 
-dbt ships with four generic tests: `unique`, `not_null`, `accepted_values`, and `relationships`. They're declared in a `schema.yml` alongside your model.
+dbt ships with four [generic tests](https://docs.getdbt.com/docs/build/data-tests): `unique`, `not_null`, `accepted_values`, and `relationships`. They're declared in a `schema.yml` alongside your model.
 
 ```yaml
 # models/staging/schema.yml
@@ -63,7 +63,7 @@ The `relationships` test is worth highlighting. At Clarafield, it caught a timin
 
 ## Custom tests
 
-When the four generic tests aren't enough, you write a singular test: a `.sql` file in the `tests/` directory that returns rows when the assertion fails, zero rows when it passes.
+When the four generic tests aren't enough, you write a [singular test](https://docs.getdbt.com/docs/build/data-tests#singular-data-tests): a `.sql` file in the `tests/` directory that returns rows when the assertion fails, zero rows when it passes.
 
 ```sql
 -- tests/assert_transaction_dates_are_valid.sql
@@ -91,13 +91,13 @@ Three cases where custom tests are necessary:
 
 ## Severity
 
-Not every failure should stop the pipeline. `severity: warn` runs the test and logs the result without failing `dbt test`.
+Not every failure should stop the pipeline. [`severity: warn`](https://docs.getdbt.com/reference/resource-configs/severity) runs the test and logs the result without failing `dbt test`.
 
 ```yaml
       - name: amount_cents
         tests:
           - not_null
-          - dbt_utils.expression_is_true:
+          - dbt_utils.expression_is_true:  # requires dbt-utils — see https://github.com/dbt-labs/dbt-utils
               expression: ">= 0"
               severity: warn
 ```
@@ -139,4 +139,3 @@ Two things to get right. First, run against a CI environment with representative
 
 ---
 
-Next up: these models need to run on a schedule, in the right order, in production. That's [orchestration](/articles/dbt-airflow-cosmos/) — how Airflow and dbt fit together, what Cosmos buys you, and how to handle the Spark → dbt handoff in the same DAG.
