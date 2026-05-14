@@ -39,11 +39,12 @@ body {
     font-weight: 500;
   }
   
-  .about-photo {
+  .media-figure {
     margin: 2rem 0;
   }
 
-  .about-photo img {
+  .media-figure img,
+  .media-figure video {
     display: block;
     width: 100%;
     height: auto;
@@ -51,7 +52,7 @@ body {
     border: 1px solid #e1e4e8;
   }
 
-  .about-photo figcaption {
+  .media-figure figcaption {
     margin-top: 0.5rem;
     color: #666;
     font-size: 0.9rem;

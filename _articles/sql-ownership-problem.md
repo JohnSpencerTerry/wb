@@ -2,6 +2,7 @@
 layout: default
 title: "You Don't Have a SQL Problem. You Have an Ownership Problem."
 date: 2026-05-01
+category: Software Engineering
 ---
 
 Priya can tell you the history of how Clarafield's transformation layer got the way it is. She helped build part of it during the early Clarafield days when getting customers and continuing to exist was the most pressing matter.

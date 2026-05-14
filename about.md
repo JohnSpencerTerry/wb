@@ -7,7 +7,7 @@ I'm a software engineer living in New York City with my wife. We have a dog and 
 
 Outside of work I'm into cooking, running, reading, cycling, and tennis. 
 
-<figure class="about-photo">
+<figure class="media-figure">
   <img src="/assets/photos/dog-snow.jpg" alt="Our dog, bundled in a winter coat, standing in fresh snow." />
   <figcaption>Getting outdoors, regardless of the weather.</figcaption>
 </figure>

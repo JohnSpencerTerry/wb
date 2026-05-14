@@ -2,6 +2,7 @@
 layout: default
 title: "dbt models, refs, and sources — a practical intro."
 date: 2026-05-07
+category: Software Engineering
 ---
 
 In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at Clarafield had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, Devon's engagement model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
