@@ -9,7 +9,6 @@ In the [last post](/articles/sql-ownership-problem/), we talked about the owners
 
 This post is about what that looks like in practice. Specifically: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy actually maps onto them.
 
----
 
 ## The three things dbt actually gives you
 
@@ -17,7 +16,6 @@ There's a lot of noise around dbt. The pitch can sound like "write SQL, get line
 
 Three primitives carry most of that weight: **models**, **sources**, and **refs**.
 
----
 
 ## Models are just SQL files — and that's the point
 
@@ -45,7 +43,6 @@ A few things to notice here. First, the column renames: the raw Kafka event sche
 
 Second, the `{{ source(...) }}` — that's the next primitive.
 
----
 
 ## Sources tell dbt where your raw data lives
 
@@ -77,7 +74,6 @@ Two things the source declaration buys you beyond just telling dbt where the tab
 
 The second thing is lineage. Because `stg_card_transactions` references `{{ source('payments_raw', 'card_events') }}` instead of hard-coding the table name, dbt knows about the dependency. The lineage graph starts at the raw source and flows through every model that builds on top of it.
 
----
 
 ## Refs are how models depend on each other
 
@@ -118,7 +114,6 @@ Every `{{ ref() }}` call does two things: it resolves to the correct table name 
 
 The practical consequence: when you run `dbt run --select int_payment_reconciliation+`, dbt knows it also needs to build `stg_card_transactions` and `stg_member_eligibility` first. The `+` is "and everything upstream." You can also run `+int_payment_reconciliation` for "and everything downstream" — useful when you've changed a staging model and want to rebuild all the marts that inherit from it.
 
----
 
 ## The three-layer model hierarchy
 
@@ -134,7 +129,6 @@ The ownership rule that follows from this: staging models are owned by the data 
 
 The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. What changed his mind wasn't an argument about dbt; it was realizing that the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter, not longer.
 
----
 
 ## How this solves the actual problem
 
