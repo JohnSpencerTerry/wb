@@ -57,7 +57,7 @@ models:
 
 A null `event_id` means `fct_card_transactions` has null primary keys. A `status` outside the accepted set means mart logic with a `CASE WHEN status = 'APPROVED'` is silently producing wrong numbers for some rows.
 
-The `relationships` test is worth highlighting. At Clarafield, it caught a timing issue: transactions were arriving for `account_id` values that hadn't loaded into `dim_members` yet because two pipelines had no guaranteed ordering in Airflow. The fix was in the DAG, not the dbt model — but the test is what surfaced it.
+The `relationships` test is worth highlighting. At StartupTechCo, it caught a timing issue: transactions were arriving for `account_id` values that hadn't loaded into `dim_members` yet because two pipelines had no guaranteed ordering in Airflow. The fix was in the DAG, not the dbt model — but the test is what surfaced it.
 
 ---
 

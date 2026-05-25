@@ -4,7 +4,8 @@ title: "Articles"
 permalink: /articles/
 ---
 
-{% assign sorted_articles = site.articles | sort: 'date' | reverse %}
+{% assign visible_articles = site.articles | where_exp: "a", "a.draft != true" %}
+{% assign sorted_articles = visible_articles | sort: 'date' | reverse %}
 {% assign categories = sorted_articles | map: 'category' | uniq %}
 
 {% for category in categories %}

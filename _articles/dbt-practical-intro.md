@@ -5,9 +5,9 @@ date: 2026-05-07
 category: Software Engineering
 ---
 
-In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at Clarafield had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, Devon's engagement model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at StartupTechCo had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, the data scientist's engagement model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
 
-This post is about what that looks like in practice. Specifically: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how Clarafield's model hierarchy actually maps onto them.
+This post is about what that looks like in practice. Specifically: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy actually maps onto them.
 
 ---
 
@@ -23,7 +23,7 @@ Three primitives carry most of that weight: **models**, **sources**, and **refs*
 
 A dbt model is a `.sql` file that contains a `SELECT` statement. That's it. dbt wraps it in a `CREATE TABLE AS` or `CREATE VIEW AS` depending on your [materialization](https://docs.getdbt.com/docs/build/materializations) config and handles the execution. You write the logic; dbt handles the plumbing.
 
-Here's what `stg_card_transactions` looks like at Clarafield:
+Here's what `stg_card_transactions` looks like at StartupTechCo:
 
 ```sql
 -- models/staging/stg_card_transactions.sql
@@ -51,7 +51,7 @@ Second, the `{{ source(...) }}` — that's the next primitive.
 
 A source is how dbt refers to data that exists outside the transformation layer — tables your pipelines write directly to S3/Glue, raw Postgres exports, whatever lands in your warehouse before dbt touches it.
 
-At Clarafield, the payments pipeline writes card events into the Glue catalog as `payments_raw.card_events`. dbt doesn't own that table. It just needs to know it exists.
+At StartupTechCo, the payments pipeline writes card events into the Glue catalog as `payments_raw.card_events`. dbt doesn't own that table. It just needs to know it exists.
 
 You declare it in a `sources.yml`:
 
@@ -122,17 +122,17 @@ The practical consequence: when you run `dbt run --select int_payment_reconcilia
 
 ## The three-layer model hierarchy
 
-At Clarafield, the transformation layer is organized in three layers. This isn't a dbt invention — it's a convention — but dbt's model structure makes it natural to enforce.
+At StartupTechCo, the transformation layer is organized in three layers. This isn't a dbt invention — it's a convention — but dbt's model structure makes it natural to enforce.
 
 **Staging** (`stg_*`): One model per source table. Rename columns, cast types, apply minimal filtering. No joins. No business logic. `stg_card_transactions` doesn't know what a reconciliation mismatch is.
 
 **Intermediate** (`int_*`): Business logic lives here. Joins happen here. `int_payment_reconciliation` is where transaction events meet member eligibility. Intermediate models are not exposed to analysts directly — they're building blocks.
 
-**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what Devon uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
+**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what the data scientist uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
 
 The ownership rule that follows from this: staging models are owned by the data engineering team (they mirror your raw data contracts). Intermediate models are owned by whoever owns the business logic (often a shared responsibility between engineering and analytics). Marts are owned by whoever's accountable for what those numbers mean.
 
-Marcus — Clarafield's analytics lead — initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. What changed his mind wasn't an argument about dbt; it was realizing that the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter, not longer.
+The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. What changed his mind wasn't an argument about dbt; it was realizing that the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter, not longer.
 
 ---
 
@@ -144,6 +144,6 @@ Marcus — Clarafield's analytics lead — initially pushed back on the intermed
 
 **Testable.** Because models are declared in one place with explicit inputs, you can write tests against them. That's the next post — but the reason testing is even possible at this level of granularity is because the models are discrete, named things with known schemas. You can't test what you can't point at.
 
-**Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When Devon asks where `is_unmatched` comes from, the answer isn't "ask Priya." It's `dbt docs generate && dbt docs serve` and click through.
+**Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer isn't "ask the data engineer." It's `dbt docs generate && dbt docs serve` and click through.
 
 Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts — making sure `event_id` is actually unique, `account_id` never nulls, `is_unmatched` only has two valid states — is step two, and it's where dbt testing earns its keep.

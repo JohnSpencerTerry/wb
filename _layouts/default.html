@@ -23,7 +23,9 @@
 
   <main class="container">
     <h2>{{ page.title }}</h2>
-    {% if page.date %}
+    {% if page.draft %}
+      <p class="post-date"><span class="badge badge-draft">Draft</span></p>
+    {% elsif page.date %}
       <p class="post-date"><span class="badge">Published {{ page.date | date: "%B %-d, %Y" }}</span></p>
     {% endif %}
     {{ content }}

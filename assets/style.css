@@ -80,6 +80,14 @@ body {
     letter-spacing: 0.01em;
   }
 
+  .badge-draft {
+    background: #fff4e5;
+    color: #8a4b00;
+    border-color: #f0c890;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .site-footer {
     text-align: center;
     color: #666;
