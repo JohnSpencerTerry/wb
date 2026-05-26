@@ -64,7 +64,7 @@ Here's what the doc looks like.
 > 2. What's the default for fields not in the table? Suggested: fall through to Option A (`stg_ops_members` wins).
 > 3. How are conflicts logged? Suggested: a `member_conflicts` audit table written by the same dbt model, surfaced in the existing data quality dashboard.
 
-The whole doc fits on a page. No appendices, no background reading section, no architecture diagrams. The options are bounded at three. The recommendation is named. The asks at the bottom name who needs to weigh in on what.
+The whole doc fits on a page and the asks at the bottom name who needs to weigh in on what.
 
 ## Narrow the ask.
 
