@@ -72,5 +72,5 @@ When the team is stuck on something like the canonical record decision, the temp
 
 Cut the scope instead. Narrow what you're asking the team to commit to until it fits one decision. The smaller the ask, the easier the answer.
 
-A tech lead's job in these moments is getting the right decision in front of the right people in a shape they can engage with. A modular design decision doc is the cheapest way to do that.
+A tech lead's job in these moments is getting the right decision in front of the right people in a shape they can engage with. A modular design decision doc is a cheap way to do that.
 
