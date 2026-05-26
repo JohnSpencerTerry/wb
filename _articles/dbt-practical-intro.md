@@ -5,14 +5,14 @@ date: 2026-05-07
 category: Software Engineering
 ---
 
-In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem. The transformation layer at StartupTechCo had grown into something nobody fully trusted — logic copied between notebooks, SQL duplicated across stored procedures, the data scientist's engagement model quietly trained on data that had diverged from what production was actually computing. The argument was that treating your transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/articles/sql-ownership-problem/), we talked about the ownership problem: StartupTechCo's transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
 
-This post is about what that looks like in practice. Specifically: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy actually maps onto them.
+This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy maps onto them.
 
 
 ## The three things dbt actually gives you
 
-There's a lot of noise around dbt. The pitch can sound like "write SQL, get lineage and docs for free," which is true but undersells the actual value. The real thing dbt gives you is *structure* — a way to build a transformation layer where the dependencies are explicit, the contracts are checkable, and the execution order isn't something you have to track yourself.
+There's a lot of noise around dbt. The pitch can sound like "write SQL, get lineage and docs for free," which is true but understates it. Dbt gives you *structure* — a way to build a transformation layer where the dependencies are explicit, the contracts are checkable, and the execution order isn't something you have to track yourself.
 
 Three primitives carry most of that weight: **models**, **sources**, and **refs**.
 
@@ -140,4 +140,4 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 **Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer isn't "ask the data engineer." It's `dbt docs generate && dbt docs serve` and click through.
 
-Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts — making sure `event_id` is actually unique, `account_id` never nulls, `is_unmatched` only has two valid states — is step two, and it's where dbt testing earns its keep.
+Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts — making sure `event_id` is unique, `account_id` never nulls, `is_unmatched` only has two valid states — is step two, and it's where dbt testing earns its keep.

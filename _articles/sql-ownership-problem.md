@@ -11,13 +11,13 @@ In the early days, the pattern made sense. An analyst needed a number, so they w
 
 Three years later, `member_engagement_metrics` exists in four places. They don't agree.
 
-When the analytics lead says analysts should own the SQL, he's not wrong exactly. The analysts do own it — several of them, independently, with no shared definition of what the output is supposed to promise. That's the problem the data engineer is trying to name and can't quite articulate.
+When the analytics lead says analysts should own the SQL, he's not wrong. The analysts do own it — several of them, independently, with no shared definition of what the output is supposed to promise.
 
 She's not trying to start a turf war either. She's been here when a number gets questioned by a customer and the team has to spend several hectic days tracing it back through three notebooks and a stored procedure to figure out which version of the logic actually produced it.
 
-The question was never who should write the SQL. The question was really: Did anyone own what the SQL promised?
+The question was never who should write the SQL. The question was: Did anyone own what the SQL promised?
 
-## The real problem isn't the technology
+## Nobody decided what the transformation layer was for
 
 StartupTechCo's stack isn't unusual. Most data teams at a certain age have some version of this: ingestion code in one place, transformation logic scattered across notebooks and scripts and stored procedures, results persisted somewhere shared that everyone reads but nobody fully owns. The specific tools change — pandas or PySpark, Postgres or S3 — but the dysfunction is the same.
 
