@@ -3,7 +3,7 @@ layout: default
 title: "Modular design decision docs."
 date: 2026-05-25
 category: Software Engineering
-draft: true
+draft: false
 ---
 
 ## Alignment lives at the facet level.
