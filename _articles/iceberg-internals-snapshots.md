@@ -6,6 +6,8 @@ category: Software Engineering
 draft: true
 ---
 
+Imagine this scenario.
+
 A scheduled merge into `dim_members` overwrote the `member_id` on a few hundred rows. The job had run the same way every day for months. The upstream system added a small batch of records whose source-system email collided with members already in the table, and the merge, keyed on email, picked the new row's id over the existing one. Two distinct people, one identity.
 
 The write itself was well-formed. Every column matched the table schema, every row had the right types, nothing about it tripped a validation. The logic that produced the values was wrong in a way nobody had thought to test for, and the table accepted it.
