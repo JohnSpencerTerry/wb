@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Apache Iceberg internals: snapshots, manifests, and time travel."
-date: 2026-05-25
+date: 2026-05-21
 category: Software Engineering
 draft: true
 ---
@@ -57,7 +57,7 @@ ORDER BY committed_at DESC;
 
 That returns the linked list of snapshots in reverse-chronological order. Each row's `parent_id` is the snapshot that came before it. The bad write that started this post was the most recent row. The previous good state was its parent.
 
-Rolling back is a single procedure call:
+Rolling back is a single [procedure call](https://iceberg.apache.org/docs/nightly/spark-procedures/#rollback_to_snapshot):
 
 ```sql
 CALL lakehouse.system.rollback_to_snapshot('db.dim_members', 7283495732);
@@ -65,7 +65,7 @@ CALL lakehouse.system.rollback_to_snapshot('db.dim_members', 7283495732);
 
 No data files are read, copied, or rewritten. The table metadata file gets a new version where the current snapshot id points at the parent instead of the bad write. Any read of `dim_members` after that walks the metadata tree from the rolled-back snapshot and gets the previous state.
 
-Time travel is the same operation with a different starting snapshot:
+[Time travel](https://iceberg.apache.org/docs/nightly/spark-queries/#time-travel) is the same operation with a different starting snapshot:
 
 ```sql
 SELECT *
@@ -89,7 +89,7 @@ This is why all three operations are cheap. They do the same thing: choose a sna
 
 The `dim_members` bug had a well-formed schema. Snapshots handle that case. A different class of problem reaches the write boundary with a schema that doesn't match the table: a column type that drifted upstream, a nullable field that's suddenly required, a renamed column that breaks every downstream join. For that, you want the write to fail before it commits.
 
-At StartupTechCo, every batch headed for an Iceberg staging table runs through a PyArrow schema check first. Iceberg's own schema for the table is the source of truth, and PyArrow gives you a clean way to compare an incoming batch's schema to it. Using `pyiceberg`:
+At StartupTechCo, every batch headed for an Iceberg staging table runs through a PyArrow schema check first. Iceberg's own schema for the table is the source of truth, and PyArrow gives you a clean way to compare an incoming batch's schema to it. Using [`pyiceberg`](https://py.iceberg.apache.org/):
 
 ```python
 from pyiceberg.catalog import load_catalog
