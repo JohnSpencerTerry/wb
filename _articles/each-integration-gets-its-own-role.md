@@ -1,9 +1,9 @@
 ---
 layout: default
 title: "Each integration gets its own role."
-date: 2026-05-26
+date: 2026-05-29
 category: Software Engineering
-draft: true
+draft: false
 ---
 
 ## The shared `svc-integrations` role worked until the auditor asked a question
