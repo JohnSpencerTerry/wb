@@ -118,11 +118,7 @@ The argument is almost never "tool A vs. tool B." It's "here's the specific prob
 
 ### Length
 
-Stop when the point is made. Length is earned by argument and example, not by adding sections.
-
-- **Tutorial/setup posts:** 1,200–1,500 words.
-- **Concept/argument posts:** 1,400–1,600 words.
-- **War story posts:** up to 1,800–2,000 words.
+As short as possible without losing context. Stop when the point is made. Length is earned by argument and example, not by adding sections. If a sentence, paragraph, or section can be cut without losing the argument, cut it.
 
 ### Tone — things to avoid
 
@@ -153,29 +149,43 @@ A backlog of post ideas, grouped by topic area. Not a fixed schedule — pick wh
 
 - **Orchestrating dbt runs in Airflow — patterns, pitfalls, and production lessons.** Cosmos integration; the Spark → dbt handoff pattern; passing Airflow context to dbt vars; why DAG structure matters for incremental models.
 - **Lineage, documentation, and discoverability: dbt as your data catalog.** `dbt docs generate`; exposures for tracking mart consumers; solving the "where did this feature come from" problem; the limits of dbt docs as a real catalog.
-- **dbt + Spark on EMR: lessons from rebuilding a CCLF ingestion pipeline.** War story: the before-and-after of a CCLF pipeline rebuild; what broke, what the rebuild cost, what it bought.
 - **Why table formats matter: the problem Iceberg, Delta, and Hudi solve.** The 45-minute query; Hive partitioning limits; why CMS audit time travel is a storage-layer problem, not an application-layer problem.
 - **Apache Iceberg internals: snapshots, manifests, and time travel explained.** Metadata hierarchy (table metadata → manifest list → manifest file → data file); snapshot chain; how hidden partitioning works; what `AS OF` actually reads.
 - **Running Iceberg on AWS EMR with Spark — a hands-on setup guide.** SparkSession config; Glue catalog integration; common failure modes (catalog permission errors, snapshot isolation edge cases, EMR Serverless cold start behavior with Iceberg).
 - **Schema evolution and partition evolution: where Iceberg beats Hive.** CCLF v8 migration story; `ALTER TABLE` without rewrite; partition spec changes without data movement; `MERGE INTO` for row-level updates.
 - **FHIR for engineers: what it is, why it matters, and how it maps to real data.** FHIR resource model; ExplanationOfBenefit anatomy; BCDA API flow; written for engineers with fintech background, not healthcare.
-- **Ingesting BCDA claims data at scale: lessons from production pipelines.** War story: bulk export flow; NDJSON deduplication strategy; malformed record handling; what to know before building the first version.
 - **Kafka to Spark Structured Streaming: building your first real-time pipeline.** Output modes and when each is appropriate; watermark configuration; writing micro-batch output to Iceberg.
 - **Terraform for data platform engineers: managing EMR, Glue, and S3 as code.** The undocumented EMR cluster story; module structure for data platform IaC; IAM per workload; CI drift detection.
 - **The data contract pattern in practice: what I learned defining CCLF and FHIR schemas.** All four contract components (schema, semantics, SLAs, lineage); the hidden dependency problem; v1 → v2 migration.
+- **Rebuilding a CCLF ingestion pipeline on EMR Serverless: what changed, what got better, what broke first.** The old pipeline's latency and observability gaps; why EMR Serverless was the right primitive; the resilience patterns (retries, idempotent writes, checkpointing) that mattered; the EMR-Serverless-specific failure modes that didn't exist on classic EMR.
+- **Pre-fetching and enriching payment data with Kafka: a fintech enrichment pattern.** The synchronous-enrichment failure mode that pushed errors into the pipeline; the architectural choice between consumer-side and producer-side enrichment; what observability you only get when enrichment is its own service.
+- **Patient medications as a derived data model.** Designing a clinical truth layer downstream teams can trust. NDC code variability, fill-date semantics, the difference between "active medication" and "currently dispensed," and why this is a data engineering decision before it's a clinical one.
+- **Quality measures are data engineering, not clinical logic.** HEDIS / STAR measures as testable contracts; how to keep clinical SMEs and engineers in sync; the case for treating each measure as its own mart model with explicit numerator / denominator / exclusion stages.
+- **Geospatial data in the warehouse — what to materialize and what to leave to the query engine.** Where Postgis stops being enough; when a search index (ElasticSearch / OpenSearch) is the right answer for read patterns; what a "geospatial mart" actually looks like.
 
 ### AI
 
 - **Designing data pipelines for ML: reproducibility, lineage, and feature freshness.** Point-in-time correctness; training/serving symmetry; what "reproducible training run" actually requires from the data platform.
 - **MLflow for data engineers: tracking experiments without touching model code.** Pipeline metadata logging (not model metrics); MLflow as the data eng / ML handoff layer; minimum viable integration that doesn't require the ML team to change how they work.
+- **The audit trail problem in healthcare AI.** What reproducibility actually requires when a regulator can ask for the inputs to a model decision two years later. Iceberg snapshots as the substrate; model registry pins; deterministic feature snapshots; what a "frozen training input" looks like in practice.
+- **Medication adherence prediction is a pipeline problem before it's a modeling problem.** Selection bias enters at ingestion. The fill-date semantics decision changes the label distribution. The data contract for the training set is the model's first hyperparameter.
+- **An LLM feature on top of claims data — the data layer, not the prompt.** PHI handling and de-identification at the pipeline boundary; what to log when the output is a generated summary; evals when the ground truth is itself a human judgment call.
+- **Feature stores and point-in-time correctness for healthcare workloads.** Why "yesterday's data" can be the right training answer and the wrong inference answer; training/serving skew that comes from clinical event timing, not engineering bugs.
 
 ### Product engineering
 
-- **Writing design docs that actually get read: a staff engineer's template.** A 2-page adoption doc; the five-section template; writing for the 8-minute reader; what gets cut and why.
+- **What "enterprise-ready" actually means in healthcare payments.** Audit, traceability, reversibility, SLAs. The features that don't ship until the audit story does.
+- **Migrating from on-prem Kubernetes to AWS without a freeze.** Anatomy of a cutover that didn't stop the world. Traffic shifting, dual-write windows, the rollback plan you hope to never use, the observability gap that almost killed it.
+- **SOC2 changed how I write integration services.** Identity, secrets, and the "where does this credential live" question. SSO (IdP- and SP-initiated) as the smallest meaningful piece of the picture.
+- **Cutting six figures of cloud spend without breaking anything.** The boring wins (rightsizing, retention policies, dev environment lifecycle) beat the clever ones. How to make the case to leadership when the savings are invisible to users.
+- **Publishing a Python SDK for an internal API: when the SDK is the product decision.** Versioning, auth, error surface design. Why "we have an OpenAPI spec, isn't that enough" usually isn't.
 
 ### Data analysis
 
-*(No planned posts yet beyond the published [SQL ownership](/articles/sql-ownership-problem/) piece. Add as ideas come up.)*
+- **The quality measure that disagreed with itself.** A debug story about a number that was wrong, traced through staging, intermediate, and mart layers. The fix wasn't in SQL — it was in the contract for the upstream claims dataset.
+- **Derived datasets are products, not artifacts.** A clinical truth layer (medications, eligibility, attribution) has consumers, SLAs, and a backlog. Treating it as a product changes how you scope, version, and deprecate it.
+- **Diagnosing a Postgres locking issue in a Python/Flask app.** What `pg_stat_activity` actually tells you when queries start piling up; the query pattern that caused it; the fix that wasn't an index.
+- **What a healthcare mart should expose — and what it shouldn't.** Member-grain vs. claim-grain marts; the temptation to expose intermediate models; why the answer to "can analytics just query the staging layer" is no, even when it would be faster.
 
 ---
 
