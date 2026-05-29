@@ -6,8 +6,6 @@ category: Software Engineering
 draft: false
 ---
 
-## The shared `svc-integrations` role worked until the auditor asked a question
-
 StartupTechCo runs a fleet of vendor integrations: two flat-file vendors it pulls from over SFTP, a third that pushes files into an SFTP endpoint it hosts, a payments vendor it pulls from over SSH, and half a dozen HTTPS API integrations. All of it runs on a couple of Fargate workers. All of those workers assume the same task role, `svc-integrations`. The role's policy covers read/write on every integration's S3 prefix and `secretsmanager:GetSecretValue` on the secrets holding the SFTP keys and API keys.
 
 The setup had two problems.
