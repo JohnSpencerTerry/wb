@@ -6,33 +6,33 @@ category: Software Engineering
 draft: false
 ---
 
-## Alignment lives at the facet level.
+## Alignment lives at the facet level
 
 Tech leads often need a way to align on a specific decision point, like the canonical source for a record. Two source systems disagree about which one wins when fields conflict, and product, engineering, and analytics each have a stake in the answer. The team needs to land on a rule before anyone builds.
 
 This is facet-level alignment — agreement on one specific choice that downstream work depends on. Tech leads run into a lot of these: this resolution rule, this contract boundary, this approach to backfilling. The project moves or stalls on those decisions.
 
-The instinct when stakeholders are clearly misaligned is to write more — a longer doc, more context, more options, more diagrams. That instinct almost always makes the alignment harder.
+The instinct when stakeholders are misaligned is to write more — a longer doc, more context, more options, more diagrams. That instinct makes the alignment harder.
 
-## Big documents create feedback fatigue.
+## Big documents create feedback fatigue
 
-The default move is to put everything in one place: requirements, architecture, options, the decision. That works as a project artifact but it's a poor instrument for alignment on any single point.
+The default move is to put everything in one place: requirements, architecture, options, the decision. That works as a project artifact, but it's a poor instrument for alignment on any single point.
 
 Reviewers open a long doc, skim, leave a comment on the first thing that catches their eye, and move on. Product cares about the requirements section. Engineering cares about the system diagram. Analytics cares about the output schema. They read different parts and miss the decision the team needs to make. The result is a long comment thread that doesn't converge on the question you wrote the doc to answer.
 
-The decision then gets implicit sign-off. Nobody objected to it, so it's treated as settled. But nobody read it carefully either. Two weeks into implementation, when the work goes a direction someone didn't expect, the conversation restarts.
+The decision then gets implicit sign-off. Nobody objected to it, so it's treated as settled. But nobody read it carefully either. Two weeks into implementation, when the work goes in a direction someone didn't expect, the conversation restarts.
 
-## Modular decision docs target one facet.
+## Modular decision docs target one facet
 
 A design decision doc is the alternative. One doc per decision. The whole artifact exists to get the team aligned on one specific choice: the canonical source rule, the contract boundary, the backfill approach.
 
-The small surface area is the point. A reader opens it knowing exactly what's being asked. There's no requirements section to skim, no architecture diagram to comment on instead. Engaging with the doc means engaging with the decision.
+The small surface area is the point. A reader opens it knowing what's being asked. There's no requirements section to skim, no architecture diagram to comment on instead. Engaging with the doc means engaging with the decision.
 
 These coexist with project docs. A larger initiative still has its PRD or high-level design, and the decision docs sit underneath, one per specific question the team needs to settle. When a project has five real decision points, that's five short docs, each with the right reviewers and the right scope.
 
-Not every decision needs a doc. If a slack thread or a five-minute chat with the right person resolves it, do that instead. A decision doc earns its existence when the choice is non-obvious, the stakeholders have different priorities, and reversing it later would be expensive. A signal you're over-producing: the doc gets one "looks good" and is signed off in five minutes. That's a decision that could have been a message.
+Not every decision needs a doc. If a Slack thread or a five-minute chat with the right person resolves it, do that instead. A decision doc earns its existence when the choice is non-obvious, the stakeholders have different priorities, and reversing it later would be expensive. A signal you're over-producing: the doc gets one "looks good" and is signed off in five minutes. That's a decision that could have been a message.
 
-## A worked example: the canonical record decision.
+## A worked example: the canonical record decision
 
 Take a typical StartupTechCo scenario. The team operates two upstream systems that both ingest customer records. Call them the operations platform and the legacy CRM. Both write to the lakehouse, and `dim_members` is supposed to expose a single canonical view to the rest of the org. The two systems agree most of the time, but they disagree on roughly 4% of records, usually on status fields, contact info, or the timestamp of the last update.
 
@@ -64,9 +64,9 @@ Here's what the doc looks like.
 > 2. What's the default for fields not in the table? Suggested: fall through to Option A (`stg_ops_members` wins).
 > 3. How are conflicts logged? Suggested: a `member_conflicts` audit table written by the same dbt model, surfaced in the existing data quality dashboard.
 
-The whole doc fits on a page and the asks at the bottom name who needs to weigh in on what.
+The whole doc fits on a page, and the asks at the bottom name who needs to weigh in on what.
 
-## Narrow the ask.
+## Narrow the ask
 
 When the team is stuck on something like the canonical record decision, the tempting move is to write more. Add the missing context, add another option, draw the diagram more carefully. That gives the reader more to skim past.
 
