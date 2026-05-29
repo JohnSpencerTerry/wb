@@ -5,9 +5,9 @@ date: 2026-05-14
 category: Software Engineering
 ---
 
-In the [last post](/articles/dbt-models-refs-sources/), we built out the model structure: staging, intermediate, marts. This post is about testing it — asserting that what those models produce is what you expect.
+In the [last post](/articles/dbt-models-refs-sources/), we built out the model structure: staging, intermediate, marts. This post is about testing it: asserting that what those models produce is what you expect.
 
-dbt tests are post-execution data quality assertions — they execute against whatever data exists in your target schema (typically a test dataset) and fail if the output violates a condition. You're not aiming for coverage of every column in every model. The goal is to assert the properties that, if violated, would silently corrupt everything downstream.
+dbt tests are post-execution data quality assertions. They execute against whatever data exists in your target schema (typically a test dataset) and fail if the output violates a condition. You're not aiming for coverage of every column in every model. The goal is to assert the properties that, if violated, would silently corrupt everything downstream.
 
 
 ## Generic tests
@@ -99,7 +99,7 @@ Not every failure should stop the pipeline. [`severity: warn`](https://docs.getd
               severity: warn
 ```
 
-Negative amounts can be valid — they represent reversals. Worth surfacing, not worth halting a daily mart refresh over. The calibration matters: if everything is an error, teams start ignoring failures. Null primary keys are always errors. Domain anomalies worth investigating are warnings.
+Negative amounts can be valid. They're reversals. Surface it. Don't halt the mart refresh. The calibration matters: if everything is an error, teams start ignoring failures. Null primary keys are always errors. Domain anomalies worth investigating are warnings.
 
 
 ## CI
@@ -131,4 +131,4 @@ jobs:
         run: dbt test --select staging --profiles-dir ./profiles
 ```
 
-Two things to get right. First, run against a CI environment with representative data — `dbt test` against an empty schema passes every test. Second, `--select staging` scopes tests to the layer where raw data contracts are enforced. If `stg_card_transactions` passes, you've verified ingestion output before any downstream model runs.
+Two things to get right. First, run against a CI environment with representative data. `dbt test` against an empty schema passes every test. Second, `--select staging` scopes tests to the layer where raw data contracts are enforced. If `stg_card_transactions` passes, you've verified ingestion output before any downstream model runs.
