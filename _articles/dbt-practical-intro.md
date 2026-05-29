@@ -10,14 +10,14 @@ In the [last post](/articles/sql-ownership-problem/), we talked about the owners
 This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy maps onto them.
 
 
-## The three things dbt actually gives you
+## The three things dbt gives you
 
-There's a lot of noise around dbt. The pitch can sound like "write SQL, get lineage and docs for free," which is true but understates it. Dbt gives you *structure* — a way to build a transformation layer where the dependencies are explicit, the contracts are checkable, and the execution order isn't something you have to track yourself.
+There's a lot of noise around dbt. The pitch can sound like "write SQL, get lineage and docs for free," which is true but understates it. dbt gives you *structure* — a way to build a transformation layer where the dependencies are explicit, the contracts are checkable, and the execution order isn't something you have to track yourself.
 
 Three primitives carry most of that weight: **models**, **sources**, and **refs**.
 
 
-## Models are just SQL files — and that's the point
+## Models are just SQL files
 
 A dbt model is a `.sql` file that contains a `SELECT` statement. That's it. dbt wraps it in a `CREATE TABLE AS` or `CREATE VIEW AS` depending on your [materialization](https://docs.getdbt.com/docs/build/materializations) config and handles the execution. You write the logic; dbt handles the plumbing.
 
@@ -41,7 +41,7 @@ where status_cd != 'VOID'
 
 A few things to notice here. First, the column renames: the raw Kafka event schema uses abbreviated field names that made sense when the pipeline was first built and are now just noise for anyone reading downstream SQL. The staging model is the one place where those names get translated. Every model that builds on top of `stg_card_transactions` uses `amount_cents` and `transacted_at` and doesn't care what the source called them.
 
-Second, the `{{ source(...) }}` — that's the next primitive.
+Second, the `{{ source(...) }}`. That's the next primitive.
 
 
 ## Sources tell dbt where your raw data lives
@@ -70,7 +70,7 @@ sources:
           error_after: {count: 4, period: hour}
 ```
 
-Two things the source declaration buys you beyond just telling dbt where the table is. One is the `freshness` check — dbt can test whether the source data is actually fresh before running the models that depend on it. That `loaded_at_field: _ingested_at` tells dbt which column to check. If the ingestion pipeline fails silently and the raw table goes stale, dbt will flag it before your marts compute on bad data.
+Two things the source declaration buys you beyond just telling dbt where the table is. One is the `freshness` check — dbt can test whether the source data is fresh before running the models that depend on it. That `loaded_at_field: _ingested_at` tells dbt which column to check. If the ingestion pipeline fails silently and the raw table goes stale, dbt will flag it before your marts compute on bad data.
 
 The second thing is lineage. Because `stg_card_transactions` references `{{ source('payments_raw', 'card_events') }}` instead of hard-coding the table name, dbt knows about the dependency. The lineage graph starts at the raw source and flows through every model that builds on top of it.
 
@@ -112,7 +112,7 @@ left join members m
 
 Every `{{ ref() }}` call does two things: it resolves to the correct table name in your target schema at runtime, and it registers a dependency edge in dbt's DAG. When you run `dbt run`, dbt builds the graph from these dependencies and figures out the execution order. You don't maintain that order manually. You don't write a topological sort. You just write refs.
 
-The practical consequence: when you run `dbt run --select int_payment_reconciliation+`, dbt knows it also needs to build `stg_card_transactions` and `stg_member_eligibility` first. The `+` is "and everything upstream." You can also run `+int_payment_reconciliation` for "and everything downstream" — useful when you've changed a staging model and want to rebuild all the marts that inherit from it.
+The practical consequence: when you run `dbt run --select +int_payment_reconciliation`, dbt knows it also needs to build `stg_card_transactions` and `stg_member_eligibility` first. The `+` prefix means "and everything upstream." You can also run `int_payment_reconciliation+` for "and everything downstream" — useful when you've changed an intermediate model and want to rebuild all the marts that depend on it.
 
 
 ## The three-layer model hierarchy
@@ -130,7 +130,7 @@ The ownership rule that follows from this: staging models are owned by the data 
 The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. He came around when he realized the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter.
 
 
-## How this solves the actual problem
+## How this solves the problem
 
 [Post 1](/articles/sql-ownership-problem/) named three symptoms: logic in multiple places, no way to know which version was right, and no path from a number back to the code that produced it. These three primitives address all three directly.
 
@@ -140,4 +140,4 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 **Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer is `dbt docs generate && dbt docs serve` and click through. He doesn't have to ask the data engineer.
 
-Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts — making sure `event_id` is unique, `account_id` never nulls, `is_unmatched` only has two valid states — is step two, and it's where dbt testing earns its keep.
+Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts, making sure `event_id` is unique, `account_id` never nulls, and `is_unmatched` only has two valid states, is step two, and it's where dbt testing earns its keep.
