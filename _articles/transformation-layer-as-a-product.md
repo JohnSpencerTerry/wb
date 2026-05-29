@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "You don't have a SQL problem. You have an ownership problem."
+title: "Treating the transformation layer as a product."
 date: 2026-05-01
 category: Software Engineering
 ---

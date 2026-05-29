@@ -135,7 +135,7 @@ As short as possible without losing context. Stop when the point is made. Length
 
 These are locked — future posts should be consistent with what's already on the site.
 
-- **[You Don't Have a SQL Problem. You Have an Ownership Problem.](/articles/sql-ownership-problem/)** — Data analysis / Data engineering. Argues that scattered transformation logic is an ownership problem, not a SQL quality problem. Introduces the `member_engagement_metrics` failure (definition existed in four places, didn't agree). The data engineer and analytics lead's disagreement resolves by recognizing the real question is "does anyone own what the SQL promises."
+- **[Treating the transformation layer as a product.](/articles/transformation-layer-as-a-product/)** — Data analysis / Data engineering. Argues that scattered transformation logic is an ownership problem, not a SQL quality problem. Introduces the `member_engagement_metrics` failure (definition existed in four places, didn't agree). The data engineer and analytics lead's disagreement resolves by recognizing the real question is "does anyone own what the SQL promises."
 - **[dbt models, refs, and sources — a practical intro.](/articles/dbt-practical-intro/)** — Data engineering. Walks through the three dbt primitives. Establishes the staging → intermediate → mart hierarchy. Uses `stg_card_transactions` and `int_payment_reconciliation` as the running examples.
 - **[Testing your data contracts with dbt: schema tests, custom tests, and CI.](/articles/dbt-testing/)** — Data engineering. Generic tests on `stg_card_transactions`; `relationships` test catching the pipeline ordering bug; `severity: warn` for `amount_cents >= 0` (negative amounts are valid reversals); GitHub Actions CI scoped to the staging layer.
 
