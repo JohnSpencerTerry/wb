@@ -25,7 +25,7 @@ We sketched a route bullet, a five-stop strip with the middle one replaced by a 
 
 ## The data
 
-NY State Open Data hosts [MTA Subway Stations](https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data). One GET, JSON back:
+NY State Open Data hosts [MTA Subway Stations](https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data). A single GET returns JSON:
 
 ```bash
 curl 'https://data.ny.gov/resource/39hk-dx4f.json?$limit=2000' | jq '.[0]'
