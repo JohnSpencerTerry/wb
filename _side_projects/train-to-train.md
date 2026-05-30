@@ -16,7 +16,7 @@ You ride these lines every day. How many stops do you know? Pick a route bullet,
 
 ## The wireframe
 
-We sketched a route bullet, a five-stop strip with the middle one replaced by a `?`, and four answer tiles. This means the game is multiple-choice with map context, which keeps the implementation simple.
+We sketched the screen: a route bullet (the MTA's colored circle for the line), a strip of five consecutive stops along that line with the middle one masked as `?`, and four answer tiles for the player to pick from. This means the game is multiple-choice with map context, which keeps the implementation simple.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page-1.png" alt="Early grayscale wireframe of the Train to Train home screen." />
@@ -44,7 +44,7 @@ curl 'https://data.ny.gov/resource/39hk-dx4f.json?$limit=2000' | jq '.[0]'
 }
 ```
 
-The dataset is a list of *stations*. The game needs ordered stops per *route*. So we split `daytime_routes` on whitespace, push each station into one bucket per token, and sort each bucket along whichever axis has the bigger range — latitude for the N–S lines (1, 4, A, etc.), longitude for the L and the 7.
+The dataset is a list of *stations*. The game needs ordered stops per *route*. So we wrote `buildRoutes` to reshape one into the other:
 
 ```js
 function buildRoutes(stations) {
@@ -73,7 +73,7 @@ function buildRoutes(stations) {
 
 ## The mockups
 
-Between sketch and ship, the route bullet got the real MTA color, the answer tiles got tightened and rounded, and the prompt became literal: "What is the Missing Stop?" Each change is a readability fix.
+From sketch to mockup we iterated on a few details: the route bullet picked up the real MTA color, the answer tiles got tightened and rounded, and the prompt became "What is the Missing Stop?".
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page.png" alt="Final mockup of the Train to Train home screen on iPhone." />
