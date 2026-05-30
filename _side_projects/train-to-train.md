@@ -12,7 +12,7 @@ A subway trivia game I built with my <a href="https://www.crystalterry.com/proje
 
 ## The concept
 
-You ride these lines every day. How many stops do you know? Pick a route bullet, look at five stops with one missing, and pick the right name from four choices. Easy is same-borough wrong answers. Normal is same-line wrong answers. Difficult is wrong answers from the stops directly next to the answer.
+You ride these lines every day. How many stops do you know? Pick a route bullet, look at five stops with one missing, and pick the right name from four choices.
 
 ## The wireframe
 
