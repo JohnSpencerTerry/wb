@@ -85,9 +85,9 @@ From sketch to mockup we iterated on a few details: the route bullet picked up t
   <figcaption>Final question screen.</figcaption>
 </figure>
 
-## Playable
+## Playable Demo
 
-Live API, no backend. Fetches stations once and caches the cleaned route map in `localStorage` so reloads are free.
+Here's a playable demo that fetches stations once and caches the cleaned route map in `localStorage`.
 
 <div id="t2t" class="t2t-panel" data-stage="loading">
   <div class="t2t-status">Loading subway stations…</div>
