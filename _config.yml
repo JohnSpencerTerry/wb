@@ -5,3 +5,6 @@ collections:
   articles:
     output: true
     permalink: /articles/:path/
+  side_projects:
+    output: true
+    permalink: /side-projects/:path/
