@@ -4,7 +4,7 @@ title: "Side Projects"
 permalink: /side-projects/
 ---
 
-Things I built outside of work — usually with someone else, usually not aimed at being a business. Each post walks through the concept, what got built, and an interactive demo where it makes sense.
+Things I built outside of work,  sometimes with someone else. Each post walks through the concept, what got built, and an interactive demo where it makes sense.
 
 {% assign visible_projects = site.side_projects | where_exp: "p", "p.draft != true" %}
 {% assign sorted_projects = visible_projects | sort: 'date' | reverse %}
