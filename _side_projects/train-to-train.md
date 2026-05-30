@@ -4,7 +4,7 @@ title: "Train to Train"
 date: 2026-05-30
 ---
 
-A subway trivia game I built with my wife. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write up here.
+A subway trivia game I built with my wife. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/185%C2%B0%2040%C2%B0%2035%C2%B0.png" alt="Train to Train home screen on an iPhone, dark MTA-style UI with the Train 2 Train logo and difficulty buttons." />
@@ -16,7 +16,7 @@ You ride these lines every day. How many stops do you know? Pick a route bullet,
 
 ## The wireframe
 
-We sketched a route bullet, a five-stop strip with the middle one replaced by a `?`, and four answer tiles. This means the game is multiple-choice with map context, which simplifies everything downstream.
+We sketched a route bullet, a five-stop strip with the middle one replaced by a `?`, and four answer tiles. This means the game is multiple-choice with map context, which keeps the implementation simple.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page-1.png" alt="Early grayscale wireframe of the Train to Train home screen." />
@@ -25,7 +25,7 @@ We sketched a route bullet, a five-stop strip with the middle one replaced by a 
 
 ## The data
 
-NY State Open Data publishes [MTA Subway Stations](https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data) as a dataset. One GET, JSON back:
+NY State Open Data hosts [MTA Subway Stations](https://data.ny.gov/Transportation/MTA-Subway-Stations/39hk-dx4f/about_data). One GET, JSON back:
 
 ```bash
 curl 'https://data.ny.gov/resource/39hk-dx4f.json?$limit=2000' | jq '.[0]'
@@ -44,7 +44,7 @@ curl 'https://data.ny.gov/resource/39hk-dx4f.json?$limit=2000' | jq '.[0]'
 }
 ```
 
-The dataset is a list of *stations*. The game needs ordered stops per *route*. This required us to split `daytime_routes` on whitespace, push each station into one bucket per token, then sort each bucket along whichever axis has the bigger range — latitude for the N–S lines (1, 4, A, etc.), longitude for the L and the 7.
+The dataset is a list of *stations*. The game needs ordered stops per *route*. So we split `daytime_routes` on whitespace, push each station into one bucket per token, and sort each bucket along whichever axis has the bigger range — latitude for the N–S lines (1, 4, A, etc.), longitude for the L and the 7.
 
 ```js
 function buildRoutes(stations) {
