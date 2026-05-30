@@ -4,7 +4,7 @@ title: "Train to Train"
 date: 2026-05-30
 ---
 
-A subway trivia game I built with my wife. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1, played it on the couch for a few weeks, and shelved it — fun, but not a business. Writing it up here.
+A subway trivia game I built with my wife. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write up here.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/185%C2%B0%2040%C2%B0%2035%C2%B0.png" alt="Train to Train home screen on an iPhone, dark MTA-style UI with the Train 2 Train logo and difficulty buttons." />
@@ -12,11 +12,11 @@ A subway trivia game I built with my wife. She came up with the concept and did 
 
 ## The concept
 
-You ride these lines every day. How many stops do you actually know? Pick a route bullet, look at five stops with one missing, and pick the right name from four choices. Easy is same-borough distractors. Normal is same-line distractors. Difficult is same-line, adjacent.
+You ride these lines every day. How many stops do you know? Pick a route bullet, look at five stops with one missing, and pick the right name from four choices. Easy is same-borough distractors. Normal is same-line distractors. Difficult is same-line, adjacent.
 
 ## The wireframe
 
-The first sketches set the shape: a route bullet, a five-stop strip with the middle one replaced by a `?`, and four answer tiles. That commits the game to multiple-choice with map context, not typed input — which simplifies everything downstream.
+The first sketches set the shape: a route bullet, a five-stop strip with the middle one replaced by a `?`, and four answer tiles. That commits the game to multiple-choice with map context, which simplifies everything downstream.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page-1.png" alt="Early grayscale wireframe of the Train to Train home screen." />
@@ -73,7 +73,7 @@ function buildRoutes(stations) {
 
 ## The mockups
 
-Between sketch and ship, the route bullet got the real MTA color, the answer tiles got tightened and rounded, and the prompt became literal: "What is the Missing Stop?". Each change is a readability fix, not a redesign.
+Between sketch and ship, the route bullet got the real MTA color, the answer tiles got tightened and rounded, and the prompt became literal: "What is the Missing Stop?" Each change is a readability fix.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page.png" alt="Final mockup of the Train to Train home screen on iPhone." />
@@ -353,6 +353,3 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
 })();
 </script>
 
-## Why we shelved it
-
-Fun to play, narrow audience. The interesting engineering was the regroup from stations to routes — a small reshape problem that the rest of the game depends on. Worth finishing for that, worth writing up, not worth turning into a thing.
