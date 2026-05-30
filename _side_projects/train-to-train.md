@@ -4,7 +4,7 @@ title: "Train to Train"
 date: 2026-05-30
 ---
 
-A subway trivia game I built with my wife. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
+A subway trivia game I built with my <a href="https://www.crystalterry.com/projects/train2train"target="_blank" >wife</a>. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/185%C2%B0%2040%C2%B0%2035%C2%B0.png" alt="Train to Train home screen on an iPhone, dark MTA-style UI with the Train 2 Train logo and difficulty buttons." />
@@ -91,13 +91,32 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
 
 <div id="t2t" class="t2t-panel" data-stage="loading">
   <div class="t2t-status">Loading subway stations…</div>
+  <div class="t2t-picker" hidden>
+    <div class="t2t-picker-prompt">Choose Your Route</div>
+    <div class="t2t-picker-choices">
+      <button type="button" data-difficulty="easy">
+        <span class="t2t-pick-bullet t2t-pick-easy">E</span>
+        <span>Easy</span>
+      </button>
+      <button type="button" data-difficulty="normal">
+        <span class="t2t-pick-bullet t2t-pick-normal">N</span>
+        <span>Normal</span>
+      </button>
+      <button type="button" data-difficulty="difficult">
+        <span class="t2t-pick-bullet t2t-pick-difficult">D</span>
+        <span>Difficult</span>
+      </button>
+    </div>
+  </div>
   <div class="t2t-game" hidden>
+    <div class="t2t-difficulty-tag"></div>
     <div class="t2t-bullet" aria-label="Route"></div>
     <div class="t2t-prompt">What is the Missing Stop?</div>
     <div class="t2t-strip" role="list"></div>
     <div class="t2t-choices"></div>
     <div class="t2t-feedback" aria-live="polite"></div>
     <button class="t2t-next" type="button" hidden>Next →</button>
+    <button class="t2t-change" type="button">← Change difficulty</button>
   </div>
   <div class="t2t-error" hidden></div>
 </div>
@@ -173,6 +192,43 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
     border-radius: 999px; padding: 0.6rem 1.5rem;
     font-weight: 600; cursor: pointer; font-family: inherit;
   }
+  .t2t-picker { text-align: center; padding: 1rem 0; }
+  .t2t-picker-prompt {
+    font-size: 1.4rem; font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .t2t-picker-choices {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; max-width: 360px; margin: 0 auto;
+  }
+  .t2t-picker-choices button {
+    background: #1a1a1d; color: #fff;
+    border: 0; border-radius: 12px;
+    padding: 1rem 0.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    cursor: pointer; font-family: inherit; font-size: 0.95rem;
+  }
+  .t2t-picker-choices button:hover { background: #222226; }
+  .t2t-pick-bullet {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem; color: #fff;
+  }
+  .t2t-pick-easy { background: #0039A6; }
+  .t2t-pick-normal { background: #FCCC0A; color: #000; }
+  .t2t-pick-difficult { background: #FF6319; }
+  .t2t-difficulty-tag {
+    text-align: center; margin-bottom: 0.25rem;
+    font-size: 0.7rem; color: #888;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .t2t-change {
+    display: block; margin: 0.75rem auto 0;
+    background: transparent; color: #888; border: 0;
+    cursor: pointer; font-family: inherit; font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+  }
+  .t2t-change:hover { color: #fff; }
 </style>
 
 <script>
@@ -195,16 +251,20 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
 
   const root = document.getElementById('t2t');
   const statusEl = root.querySelector('.t2t-status');
+  const pickerEl = root.querySelector('.t2t-picker');
   const gameEl = root.querySelector('.t2t-game');
   const errEl = root.querySelector('.t2t-error');
+  const diffTagEl = root.querySelector('.t2t-difficulty-tag');
   const bulletEl = root.querySelector('.t2t-bullet');
   const stripEl = root.querySelector('.t2t-strip');
   const choicesEl = root.querySelector('.t2t-choices');
   const feedbackEl = root.querySelector('.t2t-feedback');
   const nextEl = root.querySelector('.t2t-next');
+  const changeEl = root.querySelector('.t2t-change');
 
   let stations = null;
   let routes = null;
+  let currentDifficulty = null;
 
   async function loadStations() {
     try {
@@ -256,7 +316,7 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
     return a;
   }
 
-  function pickQuestion() {
+  function pickQuestion(difficulty) {
     const valid = Object.keys(routes).filter(r => routes[r].length >= 5 && ROUTE_COLORS[r]);
     const route = valid[Math.floor(Math.random() * valid.length)];
     const stops = routes[route];
@@ -264,11 +324,39 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
     const correct = stops[idx];
     const window = stops.slice(idx - 2, idx + 3);
     const winNames = new Set(window.map(s => s.stop_name));
-    const pool = stations.filter(s =>
-      s.borough === correct.borough &&
-      !winNames.has(s.stop_name) &&
-      s.stop_name !== correct.stop_name
-    );
+
+    let pool = [];
+    if (difficulty === 'normal') {
+      pool = stops.filter(s =>
+        !winNames.has(s.stop_name) && s.stop_name !== correct.stop_name
+      );
+    } else if (difficulty === 'difficult') {
+      for (const offset of [-4, -3, 3, 4]) {
+        const i = idx + offset;
+        if (i >= 0 && i < stops.length) {
+          const s = stops[i];
+          if (!winNames.has(s.stop_name) && s.stop_name !== correct.stop_name) {
+            pool.push(s);
+          }
+        }
+      }
+      if (pool.length < 3) {
+        const usedNames = new Set(pool.map(s => s.stop_name));
+        const fallback = stops.filter(s =>
+          !winNames.has(s.stop_name) &&
+          s.stop_name !== correct.stop_name &&
+          !usedNames.has(s.stop_name)
+        );
+        pool = pool.concat(fallback);
+      }
+    } else {
+      pool = stations.filter(s =>
+        s.borough === correct.borough &&
+        !winNames.has(s.stop_name) &&
+        s.stop_name !== correct.stop_name
+      );
+    }
+
     const distractors = [];
     const used = new Set();
     const shuffledPool = shuffle(pool);
@@ -278,7 +366,7 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
       used.add(d.stop_name);
       distractors.push(d);
     }
-    if (distractors.length < 3) return pickQuestion();
+    if (distractors.length < 3) return pickQuestion(difficulty);
     return {
       route,
       stops: window,
@@ -337,14 +425,31 @@ Live API, no backend. Fetches stations once and caches the cleaned route map in 
     nextEl.hidden = false;
   }
 
-  nextEl.addEventListener('click', () => renderQuestion(pickQuestion()));
+  function showPicker() {
+    gameEl.hidden = true;
+    pickerEl.hidden = false;
+  }
+
+  function startGame(difficulty) {
+    currentDifficulty = difficulty;
+    pickerEl.hidden = true;
+    gameEl.hidden = false;
+    diffTagEl.textContent = difficulty;
+    renderQuestion(pickQuestion(difficulty));
+  }
+
+  pickerEl.querySelectorAll('[data-difficulty]').forEach(btn => {
+    btn.addEventListener('click', () => startGame(btn.dataset.difficulty));
+  });
+
+  changeEl.addEventListener('click', showPicker);
+  nextEl.addEventListener('click', () => renderQuestion(pickQuestion(currentDifficulty)));
 
   loadStations().then(data => {
     stations = data;
     routes = buildRoutes(stations);
     statusEl.hidden = true;
-    gameEl.hidden = false;
-    renderQuestion(pickQuestion());
+    showPicker();
   }).catch(err => {
     statusEl.hidden = true;
     errEl.hidden = false;
