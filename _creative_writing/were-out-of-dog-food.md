@@ -2,10 +2,10 @@
 layout: default
 title: "We're out of dog food"
 date: 2026-05-31
-draft: true
+draft: false
 ---
 
-There was almost always something they needed to solve in the morning. Sometimes, they ran out of coffee and it was off to the local roaster a few blocks away. Other times, it was oatmilk that ran dry and they did a shuffle between the deli, which was hit or miss, and the nearest Food Town, a bit further down the road.
+There was almost always something they needed to solve in the morning. Sometimes, they ran out of coffee and it was off to the local roaster a few blocks away. Other times, it was oatmilk that ran dry and they did a shuffle between the deli, which was hit or miss, and the nearest grocery store, a bit further down the road.
 
 This morning, he grabbed his keys and said "We're out of dog food." It wasn't the typical fire drill. The closest pet store was all the way in Manhattan, so they usually ordered the food online. But this week, they got caught up in circumstances.
 
