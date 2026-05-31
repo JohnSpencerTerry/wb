@@ -8,3 +8,6 @@ collections:
   side_projects:
     output: true
     permalink: /side-projects/:path/
+  creative_writing:
+    output: true
+    permalink: /creative-writing/:path/
