@@ -11,3 +11,6 @@ collections:
   creative_writing:
     output: true
     permalink: /creative-writing/:path/
+  food:
+    output: true
+    permalink: /food/:path/
