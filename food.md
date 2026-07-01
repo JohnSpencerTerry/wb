@@ -15,7 +15,7 @@ Recipes my wife and I want to keep, plus stories from cooking, shopping, and eat
 
 {% for post in sorted_posts %}
 {% if post.category == category %}
-- [{{ post.title }}]({{ post.url }}) <span class="badge">Published {{ post.date | date: "%B %-d, %Y" }}</span>
+- [{{ post.title }}]({{ post.url }})
 {% endif %}
 {% endfor %}
 {% endfor %}

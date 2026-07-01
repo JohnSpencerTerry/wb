@@ -10,5 +10,5 @@ Things I built outside of work,  sometimes with someone else. Each post walks th
 {% assign sorted_projects = visible_projects | sort: 'date' | reverse %}
 
 {% for project in sorted_projects %}
-- [{{ project.title }}]({{ project.url }}) <span class="badge">Published {{ project.date | date: "%B %-d, %Y" }}</span>
+- [{{ project.title }}]({{ project.url }})
 {% endfor %}

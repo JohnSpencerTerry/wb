@@ -2,7 +2,7 @@
 layout: default
 title: "Sunny day"
 date: 2026-05-31
-draft: true
+draft: false
 ---
 
 The radio was on low. The kids were at the counter in their pajamas, eating Cheerios. She rinsed her bowl.

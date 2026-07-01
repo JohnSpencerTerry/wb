@@ -13,7 +13,7 @@ permalink: /articles/
 
 {% for article in sorted_articles %}
 {% if article.category == category %}
-- [{{ article.title }}]({{ article.url }}) <span class="badge">Published {{ article.date | date: "%B %-d, %Y" }}</span>
+- [{{ article.title }}]({{ article.url }})
 {% endif %}
 {% endfor %}
 {% endfor %}
