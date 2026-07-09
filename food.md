@@ -6,7 +6,7 @@ nav: food
 ---
 
 {% include page-heading.html title=page.title %}
-<p>Recipes my wife and I want to keep, plus notes from cooking, shopping, and eating around New York.</p>
+<p>Recipes  plus notes from cooking, shopping, and eating.</p>
 {% assign visible_posts = site.food | where_exp: "p", "p.draft != true" %}
 {% assign sorted_posts = visible_posts | sort: 'date' | reverse %}
 {% assign ordered = "Recipes,Kitchen Notes,NYC Eats" | split: "," %}
