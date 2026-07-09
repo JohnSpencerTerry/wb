@@ -1,8 +1,10 @@
 ---
 layout: default
 title: "About"
+nav: about
 ---
 
+{% include page-heading.html title=page.title %}
 I'm a software engineer living in New York City with my wife. We have a dog and two cats.
 
 Outside of work I'm into cooking, running, reading, cycling, and tennis. 

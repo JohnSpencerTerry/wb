@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "dbt models, refs, and sources — a practical intro."
 date: 2026-05-07
 category: Software Engineering

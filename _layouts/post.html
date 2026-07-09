@@ -1,0 +1,32 @@
+---
+layout: default
+---
+{% assign back_url = "/articles/" %}
+{% assign back_label = "Articles" %}
+{% if page.collection == "articles" %}
+  {% if page.category == "Life" %}
+    {% assign back_url = "/life/" %}
+    {% assign back_label = "Life" %}
+  {% elsif page.category == "Book Reviews" %}
+    {% assign back_url = "/book-reviews/" %}
+    {% assign back_label = "Books" %}
+  {% else %}
+    {% assign back_url = "/articles/" %}
+    {% assign back_label = "Articles" %}
+  {% endif %}
+{% elsif page.collection == "side_projects" %}
+  {% assign back_url = "/side-projects/" %}
+  {% assign back_label = "Side Projects" %}
+{% elsif page.collection == "creative_writing" %}
+  {% assign back_url = "/creative-writing/" %}
+  {% assign back_label = "Creative Writing" %}
+{% elsif page.collection == "food" %}
+  {% assign back_url = "/food/" %}
+  {% assign back_label = "Food" %}
+{% endif %}
+<a class="post-back" href="{{ back_url }}">&larr; {{ back_label }}</a>
+<div class="post-date">{{ page.date | date: "%b %Y" }}{% if page.draft %} &middot; <span class="badge badge-draft">Draft</span>{% endif %}</div>
+<h1 class="post-title">{{ page.title }}</h1>
+<div class="post-body">
+{{ content }}
+</div>

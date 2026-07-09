@@ -7,36 +7,56 @@
   {% if jekyll.environment == 'production' and site.google_analytics %}
     {% include analytics.html %}
   {% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
+  {% assign nav_key = page.nav %}
+  {% if page.collection == "articles" %}
+    {% if page.category == "Life" %}
+      {% assign nav_key = "life" %}
+    {% elsif page.category == "Book Reviews" %}
+      {% assign nav_key = "books" %}
+    {% else %}
+      {% assign nav_key = "articles" %}
+    {% endif %}
+  {% elsif page.collection == "side_projects" %}
+    {% assign nav_key = "side-projects" %}
+  {% elsif page.collection == "creative_writing" %}
+    {% assign nav_key = "creative-writing" %}
+  {% elsif page.collection == "food" %}
+    {% assign nav_key = "food" %}
+  {% endif %}
   <header class="site-header">
     <div class="container">
-      <h1><a href="/">{{ site.title }}</a></h1>
+      <div class="header-top">
+        <h1><a href="/">{{ site.title }}</a></h1>
+        <a class="header-linkedin" href="https://www.linkedin.com/in/john-spencer-terry/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+      </div>
       <nav>
-        <a href="/articles/">Articles</a>
-        <a href="/side-projects/">Side Projects</a>
-        <a href="/creative-writing/">Creative Writing</a>
-        <a href="/food/">Food</a>
-        <a href="/book-reviews/">Books</a>
-        <a href="/life/">Life</a>
+        <a href="/articles/" {% if nav_key == "articles" %}class="active"{% endif %}>Articles</a>
+        <a href="/side-projects/" {% if nav_key == "side-projects" %}class="active"{% endif %}>Side Projects</a>
+        <a href="/creative-writing/" {% if nav_key == "creative-writing" %}class="active"{% endif %}>Creative Writing</a>
+        <a href="/food/" {% if nav_key == "food" %}class="active"{% endif %}>Food</a>
+        <a href="/book-reviews/" {% if nav_key == "books" %}class="active"{% endif %}>Books</a>
+        <a href="/life/" {% if nav_key == "life" %}class="active"{% endif %}>Life</a>
         <!-- <a href="/photos/">Photos</a> -->
-        <a href="/about/">About</a>
+        <a href="/about/" {% if nav_key == "about" %}class="active"{% endif %}>About</a>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    {% if page.title %}<h2>{{ page.title }}</h2>{% endif %}
-    {% if page.draft %}
-      <p class="post-date"><span class="badge badge-draft">Draft</span></p>
-    {% endif %}
-    {{ content }}
+    <div class="page-enter">
+      {{ content }}
+    </div>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p><a href="https://www.linkedin.com/in/john-spencer-terry/">LinkedIn</a></p>
+      <span>&copy; {{ site.time | date: "%Y" }} {{ site.title }}</span>
+      <a href="https://www.linkedin.com/in/john-spencer-terry/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 </body>

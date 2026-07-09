@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Train to Train"
 date: 2026-05-30
 ---

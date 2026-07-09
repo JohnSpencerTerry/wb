@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Testing your data contracts with dbt: schema tests, custom tests, and CI."
 date: 2026-05-14
 category: Software Engineering

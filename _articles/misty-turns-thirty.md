@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Misty Turns Thirty"
 date: 2026-05-13
 category: Life

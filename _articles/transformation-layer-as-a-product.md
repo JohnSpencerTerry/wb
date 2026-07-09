@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: "Treating the transformation layer as a product."
 date: 2026-05-01
 category: Software Engineering

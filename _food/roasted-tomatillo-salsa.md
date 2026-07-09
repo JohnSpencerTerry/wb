@@ -1,8 +1,9 @@
 ---
-layout: default
+layout: post
 title: "Roasted Tomatillo Salsa"
 date: 2026-06-01
 category: Recipes
+excerpt: "Charred tomatillos, jalapeño, and cilantro, blitzed rough."
 ---
 
 ## Ingredients
