@@ -4,7 +4,7 @@ permalink: /
 sitemap: false
 ---
 
-<p class="home-intro">I'm John, a software engineer in New York City. This site is where I work on my writing. I tend to focus on data and product engineering, cooking, and fiction, with the occasional book review or note from a trip.</p>
+<p class="home-intro">I'm John, a software engineer in New York City. This site is where I work on my writing. </p>
 {% assign articles = site.articles | where_exp: "a", "a.draft != true" | where_exp: "a", "a.category != 'Life'" | where_exp: "a", "a.category != 'Book Reviews'" | sort: 'date' | reverse %}
 {% if articles.size > 0 %}
 <div class="home-section">
