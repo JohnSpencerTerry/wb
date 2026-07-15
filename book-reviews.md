@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "Book Reviews"
+title: "What I'm Reading"
 permalink: /book-reviews/
 nav: books
 ---
 
 {% include page-heading.html title=page.title %}
-<p>Short notes on what I'm reading — mostly engineering, occasionally fiction.</p>
+<p>Books I've read lately, mostly engineering, occasionally fiction.</p>
 {% assign reviews = site.articles | where_exp: "a", "a.draft != true" | where: "category", "Book Reviews" | sort: 'date' | reverse %}
 {% if reviews.size > 0 %}
 <div class="listing">
