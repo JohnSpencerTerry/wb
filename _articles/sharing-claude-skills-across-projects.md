@@ -6,38 +6,6 @@ category: Software Engineering
 draft: true
 ---
 
-<!--
-OUTLINE
-
-## Copy-pasting a skill into a second repo is the same DRY problem as copy-pasting code
-- The concrete moment: wanting a standard skill (e.g. one that plans a codebase layout/architecture from a PRD or design doc) available in every new repo, not just the one it was first written in — personal projects tend to be POC-type work, but the problem isn't specific to POCs
-- Framed as a scale-of-consumers problem, not a single incident: a few dozen engineers at work vs. a handful of personal repos, same underlying issue
-- Set up the two halves of the article: what a fuller solution looks like at work, and what's still an open question for individual/POC use
-
-## At work, skills are distributed like packages, not files
-- Org-wide and team-specific plugin marketplaces, GitHub-synced
-- Namespaced invocation: `org-wide:skill-name`, `my-team:skill-name` — skills resolve by marketplace, not just by name
-- Admin controls that come with that infrastructure: installed-by-default, available-for-install, required, per-group overrides
-- This is built for an org with many engineers and many repos; the infrastructure cost is justified by the number of consumers
-- Link: [Manage plugins for your organization](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization)
-
-## For personal or POC repos, that infrastructure is overkill
-- No admin, no org, often just one person working across several small repos
-- Anthropic's current recommended path for individuals: host the skill folder on GitHub, clone or reference it from each repo — no built-in cross-repo sync or namespacing at this scale
-- What the lighter approach looks like concretely: a shared skills repo, cloned or referenced from each project, no admin layer or namespacing needed
-- skill-creator as the tool for authoring/reviewing the skill itself, independent of how it eventually gets distributed
-- Link: [The Complete Guide to Building Skills for Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf) (distribution and sharing chapter, skill-creator section)
-
-## The marketplace pattern is Claude-specific, not agent-agnostic
-- SKILL.md as a format is portable (published as an open standard, works across Claude.ai/Claude Code/API) — but the distribution mechanism (org/team marketplaces, `marketplace:plugin` namespacing, GitHub sync, install controls) is Claude Code/Claude.ai infrastructure
-- Building workflow around that mechanism is a real tradeoff: it makes switching to GPT or another model's agent tooling harder, because the skill content moves but the distribution layer doesn't
-- Worth naming explicitly before adopting the pattern, not discovering it later
-
-## Closing: right-size the mechanism to the number of consumers
-- Org marketplace for dozens of engineers, plain GitHub hosting for a handful of personal repos — same underlying DRY problem, different justified infrastructure
-- Connects back to the opening: the goal isn't to copy the org's marketplace pattern into a personal setup, it's to size the sharing mechanism to how many places are actually consuming the skill
--->
-
 ## Copy-pasting a skill into a second repo is the same DRY problem as copy-pasting code
 
 I have a Claude Code skill that reads a planning doc and proposes a codebase layout and architecture from it. The first time I wrote it, it lived in the repo I was working in at the time. Later, when I started a new project and wanted the same skill, the easiest option was to copy the `SKILL.md` file over.
