@@ -16,7 +16,7 @@ The tool would walk a team through a short questionnaire about what they're tryi
 - "Agent as computer" steps, similar to Operator mode in ChatGPT, where a step controls a UI directly instead of calling an API
 - Prebuilt UI components for different entry points (chat, form, webhook, scheduled run)
 
-*Building AI-Driven Products* has some good material on this that's shaping how I'm thinking about it.
+*[Building AI-Powered Products](https://www.oreilly.com/library/view/building-ai-powered-products/9781098152697/)* has some good material on this that's shaping how I'm thinking about it.
 
 ## The canvas
 
@@ -24,7 +24,7 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
 
 <div id="awb" class="awb-panel">
   <div class="awb-toolbar">
-    <span class="awb-hint">Drag a step onto the canvas, then drag from a step's right dot to another step's left dot to connect them.</span>
+    <span class="awb-hint">Drag or tap-and-drag a step onto the canvas, then drag from a step's right dot to another step's left dot to connect them.</span>
     <div class="awb-actions">
       <button type="button" class="awb-run">Run Test</button>
       <button type="button" class="awb-reset">Reset</button>
@@ -32,12 +32,12 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   </div>
   <div class="awb-body">
     <div class="awb-palette">
-      <div class="awb-palette-item" draggable="true" data-type="trigger">Trigger</div>
-      <div class="awb-palette-item" draggable="true" data-type="llm">LLM Call</div>
-      <div class="awb-palette-item" draggable="true" data-type="tool">Tool Call</div>
-      <div class="awb-palette-item" draggable="true" data-type="human">Human Review</div>
-      <div class="awb-palette-item" draggable="true" data-type="branch">Branch</div>
-      <div class="awb-palette-item" draggable="true" data-type="output">Output</div>
+      <div class="awb-palette-item" data-type="trigger">Trigger</div>
+      <div class="awb-palette-item" data-type="llm">LLM Call</div>
+      <div class="awb-palette-item" data-type="tool">Tool Call</div>
+      <div class="awb-palette-item" data-type="human">Human Review</div>
+      <div class="awb-palette-item" data-type="branch">Branch</div>
+      <div class="awb-palette-item" data-type="output">Output</div>
     </div>
     <div class="awb-canvas-wrap">
       <svg class="awb-edges"></svg>
@@ -86,8 +86,19 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     border-radius: 6px; padding: 0.5rem 0.4rem;
     font-size: 0.78rem; text-align: center;
     cursor: grab;
+    touch-action: none;
   }
   .awb-palette-item:active { cursor: grabbing; }
+  .awb-ghost {
+    position: fixed; z-index: 9999;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background: #2a2a2f; border: 1px solid #555;
+    border-radius: 6px; padding: 0.4rem 0.7rem;
+    font-size: 0.78rem; color: #fff;
+    font-family: system-ui, sans-serif;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
   .awb-canvas-wrap {
     position: relative; flex: 1;
     height: 340px;
@@ -113,6 +124,7 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     font-size: 0.78rem;
     cursor: move;
     user-select: none;
+    touch-action: none;
   }
   .awb-node.awb-running { border-color: #2ecc71; box-shadow: 0 0 0 2px rgba(46,204,113,0.3); }
   .awb-node .awb-node-del {
@@ -124,13 +136,19 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   }
   .awb-port {
     position: absolute; top: 50%; transform: translateY(-50%);
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #555; border: 2px solid #888;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: transparent; border: 0;
     cursor: crosshair;
+    touch-action: none;
+    display: flex; align-items: center; justify-content: center;
   }
-  .awb-port.awb-in { left: -6px; }
-  .awb-port.awb-out { right: -6px; }
-  .awb-port:hover { background: #2ecc71; }
+  .awb-port::after {
+    content: ""; width: 10px; height: 10px; border-radius: 50%;
+    background: #555; border: 2px solid #888;
+  }
+  .awb-port.awb-in { left: -12px; }
+  .awb-port.awb-out { right: -12px; }
+  .awb-port:hover::after { background: #2ecc71; }
   .awb-palette-item[data-type="trigger"], .awb-node[data-type="trigger"] { border-left: 3px solid #4a9eff; }
   .awb-palette-item[data-type="tool"], .awb-node[data-type="tool"] { border-left: 3px solid #ff9f43; }
   .awb-palette-item[data-type="llm"], .awb-node[data-type="llm"] { border-left: 3px solid #b967ff; }
@@ -140,6 +158,18 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   .awb-log {
     margin-top: 0.6rem; font-size: 0.78rem; color: #999;
     min-height: 1.2em;
+  }
+  @media (max-width: 560px) {
+    .awb-body { flex-direction: column; }
+    .awb-palette {
+      flex: 0 0 auto;
+      flex-direction: row;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .awb-palette-item { flex: 0 0 auto; white-space: nowrap; }
+    .awb-canvas-wrap { height: 260px; }
+    .awb-node { width: 92px; font-size: 0.72rem; }
   }
 </style>
 
@@ -185,16 +215,19 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   function wireNode(el) {
     const id = el.dataset.id;
     let dragging = null;
-    el.addEventListener('mousedown', (e) => {
-      if (e.target.classList.contains('awb-port') || e.target.classList.contains('awb-node-del')) return;
+
+    el.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.awb-port') || e.target.closest('.awb-node-del')) return;
       const rect = canvasWrap.getBoundingClientRect();
       dragging = {
+        pointerId: e.pointerId,
         offsetX: e.clientX - rect.left - el.offsetLeft,
         offsetY: e.clientY - rect.top - el.offsetTop
       };
+      el.setPointerCapture(e.pointerId);
     });
-    document.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
+    el.addEventListener('pointermove', (e) => {
+      if (!dragging || dragging.pointerId !== e.pointerId) return;
       const rect = canvasWrap.getBoundingClientRect();
       const x = Math.max(0, e.clientX - rect.left - dragging.offsetX);
       const y = Math.max(0, e.clientY - rect.top - dragging.offsetY);
@@ -205,7 +238,11 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
       node.y = y;
       drawEdges();
     });
-    document.addEventListener('mouseup', () => { dragging = null; });
+    const endDrag = (e) => {
+      if (dragging && dragging.pointerId === e.pointerId) dragging = null;
+    };
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointercancel', endDrag);
 
     el.querySelector('.awb-node-del').addEventListener('click', () => {
       nodes = nodes.filter(n => n.id !== id);
@@ -215,18 +252,26 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     });
 
     el.querySelectorAll('.awb-port').forEach(port => {
-      port.addEventListener('mousedown', (e) => {
+      port.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
         pendingConnect = { id, dir: port.dataset.dir };
+        port.setPointerCapture(e.pointerId);
       });
-      port.addEventListener('mouseup', (e) => {
+      port.addEventListener('pointerup', (e) => {
         e.stopPropagation();
-        if (!pendingConnect || pendingConnect.id === id) { pendingConnect = null; return; }
-        let from = pendingConnect, to = { id, dir: port.dataset.dir };
-        if (from.dir === 'in') { const t = from; from = to; to = t; }
-        if (from.dir === 'out' && to.dir === 'in') {
-          edges.push({ from: from.id, to: to.id });
-          drawEdges();
+        port.releasePointerCapture(e.pointerId);
+        const dropEl = document.elementFromPoint(e.clientX, e.clientY);
+        const dropPort = dropEl ? dropEl.closest('.awb-port') : null;
+        if (dropPort && pendingConnect) {
+          let from = pendingConnect;
+          let to = { id: dropPort.dataset.id, dir: dropPort.dataset.dir };
+          if (to.id !== from.id) {
+            if (from.dir === 'in') { const t = from; from = to; to = t; }
+            if (from.dir === 'out' && to.dir === 'in') {
+              edges.push({ from: from.id, to: to.id });
+              drawEdges();
+            }
+          }
         }
         pendingConnect = null;
       });
@@ -260,20 +305,36 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   }
 
   root.querySelectorAll('.awb-palette-item').forEach(item => {
-    item.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/plain', item.dataset.type);
+    let ghost = null;
+    item.addEventListener('pointerdown', (e) => {
+      const type = item.dataset.type;
+      ghost = document.createElement('div');
+      ghost.className = 'awb-ghost';
+      ghost.textContent = LABELS[type] || type;
+      ghost.style.left = e.clientX + 'px';
+      ghost.style.top = e.clientY + 'px';
+      document.body.appendChild(ghost);
+      item.setPointerCapture(e.pointerId);
     });
-  });
-
-  canvasWrap.addEventListener('dragover', (e) => e.preventDefault());
-  canvasWrap.addEventListener('drop', (e) => {
-    e.preventDefault();
-    const type = e.dataTransfer.getData('text/plain');
-    if (!type) return;
-    const rect = canvasWrap.getBoundingClientRect();
-    const x = Math.max(0, e.clientX - rect.left - 55);
-    const y = Math.max(0, e.clientY - rect.top - 20);
-    makeNode(type, x, y);
+    item.addEventListener('pointermove', (e) => {
+      if (!ghost) return;
+      ghost.style.left = e.clientX + 'px';
+      ghost.style.top = e.clientY + 'px';
+    });
+    const drop = (e) => {
+      if (!ghost) return;
+      ghost.remove();
+      ghost = null;
+      const type = item.dataset.type;
+      const rect = canvasWrap.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        const x = Math.max(0, e.clientX - rect.left - 45);
+        const y = Math.max(0, e.clientY - rect.top - 20);
+        makeNode(type, x, y);
+      }
+    };
+    item.addEventListener('pointerup', drop);
+    item.addEventListener('pointercancel', drop);
   });
 
   function topoOrder() {
@@ -332,9 +393,15 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     logEl.textContent = '';
   });
 
-  makeNode('trigger', 20, 40);
-  makeNode('llm', 180, 140);
-  makeNode('output', 340, 40);
+  const w = canvasWrap.clientWidth;
+  const h = canvasWrap.clientHeight;
+  const margin = 16;
+  const x1 = margin;
+  const x3 = Math.max(margin, w - margin - 100);
+  const xm = Math.round((x1 + x3) / 2);
+  makeNode('trigger', x1, margin);
+  makeNode('llm', xm, Math.max(margin, Math.round(h / 2) - 20));
+  makeNode('output', x3, margin);
   edges.push({ from: 'n1', to: 'n2' }, { from: 'n2', to: 'n3' });
   drawEdges();
 })();
