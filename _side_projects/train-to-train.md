@@ -118,6 +118,15 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
     <button class="t2t-next" type="button" hidden>Next →</button>
     <button class="t2t-change" type="button">← Change difficulty</button>
   </div>
+  <div class="t2t-end" hidden>
+    <div class="t2t-end-title">Game Over</div>
+    <div class="t2t-end-score"></div>
+    <div class="t2t-end-buttons">
+      <button class="t2t-again" type="button">Play Again</button>
+      <button class="t2t-share" type="button">Share</button>
+    </div>
+    <div class="t2t-share-status" aria-live="polite"></div>
+  </div>
   <div class="t2t-error" hidden></div>
 </div>
 
@@ -229,6 +238,26 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
     padding: 0.3rem 0.5rem;
   }
   .t2t-change:hover { color: #fff; }
+  .t2t-end { text-align: center; padding: 1.5rem 0; }
+  .t2t-end-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .t2t-end-score { font-size: 1.05rem; color: #ddd; margin-bottom: 1.5rem; }
+  .t2t-end-buttons {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .t2t-again {
+    background: #fff; color: #000; border: 0;
+    border-radius: 999px; padding: 0.6rem 1.5rem;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .t2t-share {
+    background: transparent; color: #fff; border: 2px solid #fff;
+    border-radius: 999px; padding: 0.6rem 1.5rem;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .t2t-share-status {
+    min-height: 1.4em; margin-top: 0.75rem;
+    font-size: 0.85rem; color: #888;
+  }
 </style>
 
 <script>
@@ -261,10 +290,19 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
   const feedbackEl = root.querySelector('.t2t-feedback');
   const nextEl = root.querySelector('.t2t-next');
   const changeEl = root.querySelector('.t2t-change');
+  const endEl = root.querySelector('.t2t-end');
+  const endScoreEl = root.querySelector('.t2t-end-score');
+  const againEl = root.querySelector('.t2t-again');
+  const shareEl = root.querySelector('.t2t-share');
+  const shareStatusEl = root.querySelector('.t2t-share-status');
+
+  const QUESTIONS_PER_GAME = 5;
 
   let stations = null;
   let routes = null;
   let currentDifficulty = null;
+  let score = 0;
+  let questionNum = 0;
 
   async function loadStations() {
     try {
@@ -417,25 +455,47 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
       if (b.textContent === q.correct.stop_name) b.classList.add('correct');
     });
     const isCorrect = choice.stop_name === q.correct.stop_name;
+    if (isCorrect) score++;
     if (!isCorrect) btn.classList.add('wrong');
     feedbackEl.textContent = isCorrect
       ? 'Correct.'
       : 'Nope — it was ' + q.correct.stop_name + '.';
     feedbackEl.classList.add(isCorrect ? 'correct' : 'wrong');
     nextEl.hidden = false;
+    nextEl.textContent = questionNum >= QUESTIONS_PER_GAME ? 'See Results →' : 'Next →';
   }
 
   function showPicker() {
     gameEl.hidden = true;
+    endEl.hidden = true;
     pickerEl.hidden = false;
+  }
+
+  function nextQuestion() {
+    if (questionNum >= QUESTIONS_PER_GAME) {
+      showEnd();
+      return;
+    }
+    questionNum++;
+    diffTagEl.textContent = currentDifficulty + ' · question ' + questionNum + ' of ' + QUESTIONS_PER_GAME;
+    renderQuestion(pickQuestion(currentDifficulty));
+  }
+
+  function showEnd() {
+    gameEl.hidden = true;
+    endEl.hidden = false;
+    shareStatusEl.textContent = '';
+    endScoreEl.textContent = 'You scored ' + score + ' out of ' + QUESTIONS_PER_GAME + '.';
   }
 
   function startGame(difficulty) {
     currentDifficulty = difficulty;
+    score = 0;
+    questionNum = 0;
     pickerEl.hidden = true;
+    endEl.hidden = true;
     gameEl.hidden = false;
-    diffTagEl.textContent = difficulty;
-    renderQuestion(pickQuestion(difficulty));
+    nextQuestion();
   }
 
   pickerEl.querySelectorAll('[data-difficulty]').forEach(btn => {
@@ -443,7 +503,26 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
   });
 
   changeEl.addEventListener('click', showPicker);
-  nextEl.addEventListener('click', () => renderQuestion(pickQuestion(currentDifficulty)));
+  nextEl.addEventListener('click', nextQuestion);
+  againEl.addEventListener('click', () => startGame(currentDifficulty));
+
+  shareEl.addEventListener('click', async () => {
+    const url = location.href.split('#')[0];
+    const text = 'I scored ' + score + ' out of ' + QUESTIONS_PER_GAME + ' on Train to Train. See what you get:';
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Train to Train', text, url });
+      } catch (e) { /* user cancelled */ }
+      return;
+    }
+    const shareText = text + ' ' + url;
+    try {
+      await navigator.clipboard.writeText(shareText);
+      shareStatusEl.textContent = 'Copied to clipboard — go ahead and paste it in.';
+    } catch (e) {
+      shareStatusEl.textContent = shareText;
+    }
+  });
 
   loadStations().then(data => {
     stations = data;
