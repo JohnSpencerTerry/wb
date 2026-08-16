@@ -30,7 +30,7 @@ nav: media
 {% else %}
 <div class="media-row" data-genre="{{ entry.genre }}">
 {% endif %}
-  <span class="media-date">{{ entry.date | date: "%b %-d" }}</span>
+  <span class="media-date">{{ entry.date | date: "%B" }}</span>
   <span class="media-genre media-genre-{{ entry.genre }}">{{ entry.genre }}</span>
   <span class="media-title">{{ entry.title }}{% if entry.creator %}<span class="media-creator"> — {{ entry.creator }}</span>{% endif %}</span>
 {% if entry.article %}
