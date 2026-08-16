@@ -5,7 +5,7 @@ date: 2026-05-01
 category: Software Engineering
 ---
 
-The data engineer can tell you the history of how StartupTechCo's transformation layer got the way it is. She helped build part of it during the early StartupTechCo days when getting customers and continuing to exist was the most pressing matter.
+The data engineer can tell you the history of how the transformation layer got the way it is. She helped build part of it during the early days, when getting customers and continuing to exist was the most pressing matter.
 
 In the early days, the pattern made sense. An analyst needed a number, so they wrote a script and pushed the result to a table in Postgres. It worked. Then another analyst needed a slightly different version of the same number, so they wrote another script. Then an engineer needed it in a pipeline, so they wrote it again. Everyone was solving their immediate problem.
 
@@ -19,7 +19,7 @@ The harder question was about ownership: did anyone own what the SQL promised?
 
 ## Nobody decided what the transformation layer was for
 
-StartupTechCo's stack isn't unusual. Most data teams at a certain age have some version of this: ingestion code in one place, transformation logic scattered across notebooks and scripts and stored procedures, results persisted somewhere shared that everyone reads but nobody fully owns. The specific tools change — pandas or PySpark, Postgres or S3 — but the dysfunction is the same.
+This stack isn't unusual. Most data teams at a certain age have some version of this: ingestion code in one place, transformation logic scattered across notebooks and scripts and stored procedures, results persisted somewhere shared that everyone reads but nobody fully owns. The specific tools change — pandas or PySpark, Postgres or S3 — but the dysfunction is the same.
 
 The instinct when you see this is to blame the tools. If we were using the right technology, the thinking goes, this wouldn't have happened. But the data engineer has seen clean tools produce messy systems and messy tools produce pipelines that ran reliably for years. Nobody ever decided what the transformation layer was supposed to be: who it served, what it promised, and how you'd know if it broke.
 
@@ -27,7 +27,7 @@ That's an architectural decision most new teams skip because in the early days, 
 
 ## When the cost becomes visible
 
-The new data scientist joined from a fintech background. He's good at building models. At StartupTechCo, his problem sat upstream of modeling: he couldn't trust the features he was training on.
+The new data scientist joined from a fintech background. He's good at building models. His problem sat upstream of modeling: he couldn't trust the features he was training on.
 
 He'd pull `fct_member_engagement_metrics` for an engagement model, the model would look reasonable in development, and then something downstream wouldn't match. An audit report. A number a stakeholder questioned. He'd bring it to the data engineer as a pipeline problem. She would dig in and find the raw data was fine. The issue sat in the transformation layer, in logic that existed in three places and had quietly diverged.
 

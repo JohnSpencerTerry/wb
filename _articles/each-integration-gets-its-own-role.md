@@ -6,7 +6,7 @@ category: Software Engineering
 draft: false
 ---
 
-StartupTechCo runs a fleet of vendor integrations: two flat-file vendors it pulls from over SFTP, a third that pushes files into an SFTP endpoint it hosts, a payments vendor it pulls from over SSH, and half a dozen HTTPS API integrations. All of it runs on a couple of Fargate workers. All of those workers assume the same task role, `svc-integrations`. The role's policy covers read/write on every integration's S3 prefix and `secretsmanager:GetSecretValue` on the secrets holding the SFTP keys and API keys.
+The team runs a fleet of vendor integrations: two flat-file vendors it pulls from over SFTP, a third that pushes files into an SFTP endpoint it hosts, a payments vendor it pulls from over SSH, and half a dozen HTTPS API integrations. All of it runs on a couple of Fargate workers. All of those workers assume the same task role, `svc-integrations`. The role's policy covers read/write on every integration's S3 prefix and `secretsmanager:GetSecretValue` on the secrets holding the SFTP keys and API keys.
 
 The setup had two problems.
 
@@ -24,7 +24,7 @@ The auditor's question and the cross-integration bug are the same property in di
 
 The shortcut is to keep the shared role and scope per-integration access through `StringEquals` conditions on a session tag or principal tag. This adds complexity to the policy without changing the blast radius. The fix is to give each integration its own deploy target with its own role.
 
-At StartupTechCo, this meant two changes that come together: each integration moved onto its own compute (Lambda for the HTTPS APIs, Fargate for the long-lived SFTP/SSH transfers), and each got its own IAM role. The role's policy mentions only the resources the integration touches: its S3 prefix, the one Secrets Manager secret holding its credential, and the KMS key that encrypts that secret.
+In practice, this meant two changes that come together: each integration moved onto its own compute (Lambda for the HTTPS APIs, Fargate for the long-lived SFTP/SSH transfers), and each got its own IAM role. The role's policy mentions only the resources the integration touches: its S3 prefix, the one Secrets Manager secret holding its credential, and the KMS key that encrypts that secret.
 
 The vendor-A Fargate task role looks like this:
 

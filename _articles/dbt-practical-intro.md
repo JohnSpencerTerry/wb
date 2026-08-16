@@ -5,9 +5,9 @@ date: 2026-05-07
 category: Software Engineering
 ---
 
-In the [last post](/articles/transformation-layer-as-a-product/), we talked about the ownership problem: StartupTechCo's transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/articles/transformation-layer-as-a-product/), we talked about the ownership problem: the transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
 
-This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how StartupTechCo's model hierarchy maps onto them.
+This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how a typical model hierarchy maps onto them.
 
 
 ## The three things dbt gives you
@@ -21,7 +21,7 @@ Three primitives carry most of that weight: **models**, **sources**, and **refs*
 
 A dbt model is a `.sql` file that contains a `SELECT` statement. That's it. dbt wraps it in a `CREATE TABLE AS` or `CREATE VIEW AS` depending on your [materialization](https://docs.getdbt.com/docs/build/materializations) config and handles the execution. You write the logic; dbt handles the plumbing.
 
-Here's what `stg_card_transactions` looks like at StartupTechCo:
+Here's what `stg_card_transactions` looks like in practice:
 
 ```sql
 -- models/staging/stg_card_transactions.sql
@@ -48,7 +48,7 @@ Second, the `{{ source(...) }}`. That's the next primitive.
 
 A source is how dbt refers to data that exists outside the transformation layer — tables your pipelines write directly to S3/Glue, raw Postgres exports, whatever lands in your warehouse before dbt touches it.
 
-At StartupTechCo, the payments pipeline writes card events into the Glue catalog as `payments_raw.card_events`. dbt doesn't own that table. It just needs to know it exists.
+At work, the payments pipeline writes card events into the Glue catalog as `payments_raw.card_events`. dbt doesn't own that table. It just needs to know it exists.
 
 You declare it in a `sources.yml`:
 
@@ -117,7 +117,7 @@ The practical consequence: when you run `dbt run --select +int_payment_reconcili
 
 ## The three-layer model hierarchy
 
-At StartupTechCo, the transformation layer is organized in three layers. The convention predates dbt, but dbt's model structure makes it natural to enforce.
+At work, the transformation layer is organized in three layers. The convention predates dbt, but dbt's model structure makes it natural to enforce.
 
 **Staging** (`stg_*`): One model per source table. Rename columns, cast types, apply minimal filtering. No joins. No business logic. `stg_card_transactions` doesn't know what a reconciliation mismatch is.
 

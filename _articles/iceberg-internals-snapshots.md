@@ -89,7 +89,7 @@ This is why all three operations are cheap. They do the same thing: choose a sna
 
 The `dim_members` bug had a well-formed schema. Snapshots handle that case. A different class of problem reaches the write boundary with a schema that doesn't match the table: a column type that drifted upstream, a nullable field that's suddenly required, a renamed column that breaks every downstream join. For that, you want the write to fail before it commits.
 
-At StartupTechCo, every batch headed for an Iceberg staging table runs through a PyArrow schema check first. Iceberg's own schema for the table is the source of truth, and PyArrow gives you a clean way to compare an incoming batch's schema to it. Using [`pyiceberg`](https://py.iceberg.apache.org/):
+At work, every batch headed for an Iceberg staging table runs through a PyArrow schema check first. Iceberg's own schema for the table is the source of truth, and PyArrow gives you a clean way to compare an incoming batch's schema to it. Using [`pyiceberg`](https://py.iceberg.apache.org/):
 
 ```python
 from pyiceberg.catalog import load_catalog

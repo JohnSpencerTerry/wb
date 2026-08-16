@@ -34,7 +34,7 @@ Not every decision needs a doc. If a Slack thread or a five-minute chat with the
 
 ## A worked example: the canonical record decision
 
-Take a typical StartupTechCo scenario. The team operates two upstream systems that both ingest customer records. Call them the operations platform and the legacy CRM. Both write to the lakehouse, and `dim_members` is supposed to expose a single canonical view to the rest of the org. The two systems agree most of the time, but they disagree on roughly 4% of records, usually on status fields, contact info, or the timestamp of the last update.
+Take a typical scenario from work. The team operates two upstream systems that both ingest customer records. Call them the operations platform and the legacy CRM. Both write to the lakehouse, and `dim_members` is supposed to expose a single canonical view to the rest of the org. The two systems agree most of the time, but they disagree on roughly 4% of records, usually on status fields, contact info, or the timestamp of the last update.
 
 The data engineer is about to start the work and needs a resolution rule. Product owns the rule logic. The analytics lead consumes `dim_members` downstream and has opinions about which fields they rely on.
 
