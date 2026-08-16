@@ -5,7 +5,7 @@ sitemap: false
 ---
 
 <p class="home-intro">I'm John, a software engineer in New York City. This site is where I work on my writing. </p>
-{% assign articles = site.articles | where_exp: "a", "a.draft != true" | where_exp: "a", "a.category != 'Life'" | where_exp: "a", "a.category != 'Book Reviews'" | sort: 'date' | reverse %}
+{% assign articles = site.articles | where_exp: "a", "a.draft != true" | where_exp: "a", "a.category != 'Life'" | where_exp: "a", "a.category != 'Media'" | sort: 'date' | reverse %}
 {% if articles.size > 0 %}
 <div class="home-section">
 <div class="section-head"><h2>Latest Articles</h2><a class="all-link" href="/articles/">All &rarr;</a></div>

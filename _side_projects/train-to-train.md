@@ -132,7 +132,7 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
 
 <style>
   .t2t-panel {
-    background: #0e0e10;
+    background: #12141c;
     color: #fff;
     border-radius: 10px;
     padding: 1.5rem 1.25rem;
@@ -176,14 +176,14 @@ Here's a playable demo that fetches stations once and caches the cleaned route m
     width: 14px; height: 14px; border-radius: 50%;
     background: #fff; border: 3px solid var(--t2t-line, #A7A9AC);
   }
-  .t2t-strip .t2t-missing .t2t-dot { background: #0e0e10; border-style: dashed; }
+  .t2t-strip .t2t-missing .t2t-dot { background: #12141c; border-style: dashed; }
   .t2t-strip .t2t-missing .t2t-label { font-weight: 700; color: #fff; font-size: 1rem; }
   .t2t-choices {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 10px; margin-bottom: 1rem;
   }
   .t2t-choices button {
-    background: #000; color: #fff;
+    background: #12141c; color: #fff;
     border: 2px solid #fff; border-radius: 999px;
     padding: 0.75rem 0.5rem; font-size: 0.95rem;
     cursor: pointer; font-family: inherit;

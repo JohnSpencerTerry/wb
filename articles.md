@@ -9,7 +9,7 @@ nav: articles
 {% assign visible_articles = site.articles | where_exp: "a", "a.draft != true" %}
 {% assign sorted_articles = visible_articles | sort: 'date' | reverse %}
 {% assign categories = sorted_articles | map: 'category' | uniq %}
-{% assign excluded = "Life,Book Reviews" | split: "," %}
+{% assign excluded = "Life,Media" | split: "," %}
 <div class="listing">
 {% for category in categories %}
 {% unless excluded contains category %}

@@ -341,6 +341,63 @@ main.container {
   max-width: 600px;
 }
 
+/* Media list (compact log of books/movies/etc) */
+
+.media-year {
+  margin-top: 40px;
+}
+
+.media-year-group:first-of-type .media-year {
+  margin-top: 0;
+}
+
+.media-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-hairline-light);
+  font-family: var(--font-sans);
+}
+
+a.media-row {
+  color: inherit;
+}
+
+.media-row:hover .media-title {
+  color: var(--color-accent);
+}
+
+.media-date {
+  flex: 0 0 64px;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.media-type {
+  flex: 0 0 48px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted-strong);
+}
+
+.media-title {
+  font-size: 16px;
+  color: var(--color-ink);
+}
+
+.media-row-linked .media-title {
+  text-decoration: underline;
+  text-decoration-color: var(--color-hairline);
+  text-underline-offset: 3px;
+}
+
+.media-creator {
+  color: var(--color-muted);
+}
+
 /* Article / post detail */
 
 .post-back {

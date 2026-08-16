@@ -1,0 +1,284 @@
+# List of books, movies, TV, and art consumed. Most entries are just a
+# title; some link to a full article via `article`.
+#
+# type: book | movie
+
+- title: "Hitting a Straight Lick with a Crooked Stick: Stories from the Harlem Renaissance"
+  creator: "Zora Neale Hurston"
+  type: book
+  date: 2026-07-26
+- title: "The Godfather"
+  type: movie
+  date: 2026-07-22
+- title: "'Round Midnight"
+  type: movie
+  date: 2026-07-22
+- title: "AI Engineering: Building Applications with Foundation Models"
+  creator: "Chip Huyen"
+  type: book
+  date: 2026-07-22
+- title: "Monica"
+  creator: "Daniel Clowes"
+  type: book
+  date: 2026-07-22
+- title: "Serpico"
+  type: movie
+  date: 2026-07-10
+- title: "Dog Day Afternoon"
+  type: movie
+  date: 2026-07-10
+- title: "The New Cooking School Cookbook: Fundamentals"
+  type: book
+  date: 2026-06-30
+- title: "Preserving the Japanese Way"
+  creator: "Nancy Singleton Hachisu"
+  type: book
+  date: 2026-06-30
+- title: "The Buy Side: A Wall Street Trader's Tale of Spectacular Excess"
+  creator: "Turney Duff"
+  type: book
+  date: 2026-06-30
+- title: "The Fermentation Kitchen"
+  creator: "Sam Cooper"
+  type: book
+  date: 2026-05-31
+- title: "Dinner Illustrated: 175 Meals Ready in 1 Hour or Less"
+  type: book
+  date: 2026-05-31
+- title: "Nobody"
+  type: movie
+  date: 2026-05-31
+- title: "Children of Men"
+  type: movie
+  date: 2026-05-31
+- title: "The DIY BBQ Cookbook"
+  creator: "James Whetlor"
+  type: book
+  date: 2026-05-31
+- title: "Building AI-Powered Products"
+  creator: "Marily Nika"
+  type: book
+  date: 2026-05-31
+- title: "Machine Learning for Dummies"
+  creator: "Luca Massaron"
+  type: book
+  date: 2026-05-31
+- title: "National Lampoon's Animal House"
+  type: movie
+  date: 2026-05-31
+- title: "Perini Ranch Steakhouse Cookbook"
+  creator: "Lisa and Tom Perini"
+  type: book
+  date: 2026-05-15
+- title: "The Big Texas Cookbook"
+  type: book
+  date: 2026-05-15
+- title: "Club Paradise"
+  type: movie
+  date: 2026-04-29
+- title: "The Complete Salad Cookbook"
+  creator: "America's Test Kitchen"
+  type: book
+  date: 2026-03-31
+- title: "Letters"
+  creator: "Oliver Sacks"
+  type: book
+  date: 2026-03-31
+- title: "Predictive Analytics for the Modern Enterprise"
+  creator: "Nooruddin Abbas Ali"
+  type: book
+  date: 2026-03-31
+- title: "Rear Window"
+  type: movie
+  date: 2026-03-31
+- title: "Principles of Web Design"
+  creator: "Brian D. Miller"
+  type: book
+  date: 2026-03-31
+- title: "Between Two Moons"
+  creator: "Aisha Abdel Gawad"
+  type: book
+  date: 2026-03-31
+- title: "Bram Stoker's Dracula"
+  type: movie
+  date: 2026-03-31
+- title: "Mystic River"
+  type: movie
+  date: 2026-03-31
+- title: "Business Statistics for Dummies"
+  creator: "Alan Anderson"
+  type: book
+  date: 2026-03-31
+- title: "Hell or High Water"
+  type: movie
+  date: 2026-03-31
+- title: "Raising Arizona"
+  type: movie
+  date: 2026-03-31
+- title: "Inherent Vice"
+  type: movie
+  date: 2026-03-20
+- title: "Project Hail Mary"
+  creator: "Andy Weir"
+  type: book
+  date: 2026-03-20
+- title: "The Staff Engineer's Path"
+  creator: "Tanya Reilly"
+  type: book
+  date: 2026-03-20
+- title: "There Will Be Blood"
+  type: movie
+  date: 2026-03-20
+- title: "Tombstone"
+  type: movie
+  date: 2026-03-20
+- title: "The Complete Cooking for Two Cookbook"
+  creator: "America's Test Kitchen"
+  type: book
+  date: 2026-03-08
+- title: "Citizen Kane"
+  type: movie
+  date: 2026-03-08
+- title: "The God of the Woods"
+  creator: "Liz Moore"
+  type: book
+  date: 2026-03-08
+- title: "Apple in China: The Capture of the World's Greatest Company"
+  creator: "Patrick McGee"
+  type: book
+  date: 2026-02-27
+- title: "Ghost Dog: The Way of the Samurai"
+  type: movie
+  date: 2026-02-27
+- title: "Casablanca"
+  type: movie
+  date: 2026-02-27
+- title: "The Big Chill"
+  type: movie
+  date: 2026-02-17
+- title: "The Seven Samurai"
+  type: movie
+  date: 2026-02-17
+- title: "Detour"
+  type: movie
+  date: 2026-02-17
+- title: "Escaping the Build Trap"
+  creator: "Melissa Perri"
+  type: book
+  date: 2026-02-17
+- title: "The Banshees of Inisherin"
+  type: movie
+  date: 2025-12-28
+- title: "Umma: A Korean Mom's Kitchen Wisdom & 100 Family Recipes"
+  creator: "Sarah Ahn"
+  type: book
+  date: 2025-12-28
+- title: "The Hunger Games: The Ballad of Songbirds & Snakes"
+  type: movie
+  date: 2025-12-28
+- title: "The Graduate"
+  type: movie
+  date: 2025-12-18
+- title: "The New Cooking School Cookbook: Advanced Fundamentals"
+  type: book
+  date: 2025-12-18
+- title: "Jacques Pépin Cooking My Way"
+  creator: "Jacques Pépin"
+  type: book
+  date: 2025-12-18
+- title: "Wonka"
+  type: movie
+  date: 2025-12-18
+- title: "Dune: Part Two"
+  type: movie
+  date: 2025-12-18
+- title: "Furiosa: A Mad Max Saga"
+  type: movie
+  date: 2025-12-09
+- title: "The Small Business Start-Up Kit"
+  creator: "Peri Pakroo"
+  type: book
+  date: 2025-12-09
+- title: "Digital Marketing Quickstart Guide"
+  creator: "Benjamin Sweeney"
+  type: book
+  date: 2025-12-09
+- title: "Digital Marketing All-in-One"
+  creator: "Stephanie Diamond"
+  type: book
+  date: 2025-12-09
+- title: "Boards: Stylish Spreads for Casual Gatherings"
+  creator: "America's Test Kitchen"
+  type: book
+  date: 2025-12-09
+- title: "The Digital Marketer's Playbook"
+  creator: "Diego Adolfo Carrasco Gubernatis"
+  type: book
+  date: 2025-12-09
+- title: "X-Men"
+  type: movie
+  date: 2025-12-09
+- title: "Bright Marketing for Small Business"
+  creator: "Robert Craven"
+  type: book
+  date: 2025-12-09
+- title: "Social Media for Small Business"
+  creator: "Franziska Iseli"
+  type: book
+  date: 2025-12-09
+- title: "Starting a Business 101"
+  creator: "Michele Cagan"
+  type: book
+  date: 2025-12-09
+- title: "You Gotta Eat"
+  creator: "Margaret Eby"
+  type: book
+  date: 2025-11-07
+- title: "Moneyball: The Art of Winning an Unfair Game"
+  creator: "Michael Lewis"
+  type: book
+  date: 2025-11-02
+- title: "The Complete Mediterranean Cookbook"
+  type: book
+  date: 2025-10-24
+- title: "More Mediterranean"
+  type: book
+  date: 2025-10-24
+- title: "Decoding Your Cat"
+  type: book
+  date: 2025-09-12
+- title: "Invitation to a Banquet: The Story of Chinese Food"
+  creator: "Fuchsia Dunlop"
+  type: book
+  date: 2025-09-12
+- title: "The Food of Sichuan"
+  creator: "Fuchsia Dunlop"
+  type: book
+  date: 2025-09-12
+- title: "UX for Business"
+  creator: "Joel Marsh"
+  type: book
+  date: 2025-08-15
+- title: "Healthy Air Fryer"
+  type: book
+  date: 2025-08-15
+- title: "Upstate New York: Off the Beaten Path"
+  creator: "Susan Finch"
+  type: book
+  date: 2025-07-11
+- title: "What an Owl Knows"
+  creator: "Jennifer Ackerman"
+  type: book
+  date: 2025-07-09
+- title: "Designing Data-Intensive Applications"
+  creator: "Martin Kleppmann"
+  type: book
+  date: 2025-06-07
+- title: "FastAPI: Modern Python Web Development"
+  creator: "Bill Lubanovic"
+  type: book
+  date: 2025-06-07
+- title: "BDD in Action"
+  creator: "John Ferguson Smart"
+  type: book
+  date: 2025-06-07
