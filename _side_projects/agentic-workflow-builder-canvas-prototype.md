@@ -342,48 +342,174 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
 
 ## Step details
 
-What each step actually needs under the hood:
+What each step actually needs under the hood. These are inert here — nothing wires into the canvas above — but set the fields to see how each step's config would read.
 
 <div class="awbd-grid">
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#4a9eff"></span>Trigger</div>
-    <div class="awbd-field"><span class="awbd-label">Kind</span><span class="awbd-val">Schedule · Calendar · Event · API call</span></div>
-    <div class="awbd-field"><span class="awbd-label">Schedule</span><span class="awbd-val">Cron-style cadence</span></div>
-    <div class="awbd-field"><span class="awbd-label">Event</span><span class="awbd-val">Topic/queue name, payload shape</span></div>
-    <div class="awbd-field"><span class="awbd-label">API</span><span class="awbd-val">Auth method, input schema</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Kind</span>
+      <select class="awbd-select" data-field="kind">
+        <option>Schedule</option>
+        <option>Calendar</option>
+        <option>Event</option>
+        <option>API call</option>
+      </select>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Cadence</span>
+      <select class="awbd-select" data-field="cadence">
+        <option>Every hour</option>
+        <option>Daily</option>
+        <option>Weekly</option>
+        <option>Custom cron</option>
+      </select>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Auth (if API)</span>
+      <div class="awbd-toggle" data-field="auth">
+        <button type="button" class="awbd-toggle-btn active" data-value="API key">API key</button>
+        <button type="button" class="awbd-toggle-btn" data-value="OAuth">OAuth</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Service account">Service account</button>
+      </div>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
+
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#ff9f43"></span>Tool Call</div>
-    <div class="awbd-field"><span class="awbd-label">Connection</span><span class="awbd-val">REST/GraphQL API · MCP server</span></div>
-    <div class="awbd-field"><span class="awbd-label">Auth</span><span class="awbd-val">API key · OAuth · service account · none</span></div>
-    <div class="awbd-field"><span class="awbd-label">Schema</span><span class="awbd-val">Input params, output shape</span></div>
-    <div class="awbd-field"><span class="awbd-label">Reliability</span><span class="awbd-val">Retry policy, timeout</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Connection</span>
+      <div class="awbd-toggle" data-field="connection">
+        <button type="button" class="awbd-toggle-btn active" data-value="REST/GraphQL API">REST/GraphQL API</button>
+        <button type="button" class="awbd-toggle-btn" data-value="MCP server">MCP server</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Auth</span>
+      <div class="awbd-toggle" data-field="auth">
+        <button type="button" class="awbd-toggle-btn active" data-value="API key">API key</button>
+        <button type="button" class="awbd-toggle-btn" data-value="OAuth">OAuth</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Service account">Service account</button>
+        <button type="button" class="awbd-toggle-btn" data-value="None">None</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Reliability</span>
+      <select class="awbd-select" data-field="reliability">
+        <option>No retries</option>
+        <option>Retry 3x, 30s timeout</option>
+        <option>Retry 5x, 60s timeout</option>
+        <option>Custom</option>
+      </select>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
+
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#b967ff"></span>LLM Call</div>
-    <div class="awbd-field"><span class="awbd-label">Model</span><span class="awbd-val">Provider + model</span></div>
-    <div class="awbd-field"><span class="awbd-label">Prompt</span><span class="awbd-val">Template, variables from upstream steps</span></div>
-    <div class="awbd-field"><span class="awbd-label">Output</span><span class="awbd-val">Freeform text or structured/JSON schema</span></div>
-    <div class="awbd-field"><span class="awbd-label">Fallback</span><span class="awbd-val">Secondary model on failure</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Model</span>
+      <select class="awbd-select" data-field="model">
+        <option>Claude Sonnet 5</option>
+        <option>Claude Opus 5</option>
+        <option>GPT-5</option>
+        <option>Local / self-hosted</option>
+      </select>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Output</span>
+      <div class="awbd-toggle" data-field="output">
+        <button type="button" class="awbd-toggle-btn active" data-value="Freeform text">Freeform text</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Structured / JSON">Structured / JSON</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Fallback model</span>
+      <div class="awbd-toggle" data-field="fallback">
+        <button type="button" class="awbd-toggle-btn active" data-value="Off">Off</button>
+        <button type="button" class="awbd-toggle-btn" data-value="On">On</button>
+      </div>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
+
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#2ecc71"></span>Human Review</div>
-    <div class="awbd-field"><span class="awbd-label">Channel</span><span class="awbd-val">Slack · email · in-app queue</span></div>
-    <div class="awbd-field"><span class="awbd-label">Shown to reviewer</span><span class="awbd-val">Proposed action, not raw state</span></div>
-    <div class="awbd-field"><span class="awbd-label">Actions</span><span class="awbd-val">Approve · reject · edit · redirect</span></div>
-    <div class="awbd-field"><span class="awbd-label">Timeout</span><span class="awbd-val">Auto-approve, escalate, or block</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Channel</span>
+      <div class="awbd-toggle" data-field="channel">
+        <button type="button" class="awbd-toggle-btn active" data-value="Slack">Slack</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Email">Email</button>
+        <button type="button" class="awbd-toggle-btn" data-value="In-app">In-app</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Actions allowed</span>
+      <div class="awbd-toggle awbd-multi" data-field="actions">
+        <button type="button" class="awbd-toggle-btn active" data-value="Approve">Approve</button>
+        <button type="button" class="awbd-toggle-btn active" data-value="Reject">Reject</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Edit">Edit</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Redirect">Redirect</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">On timeout</span>
+      <select class="awbd-select" data-field="timeout">
+        <option>Auto-approve</option>
+        <option>Escalate</option>
+        <option>Block</option>
+      </select>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
+
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#f1c40f"></span>Branch</div>
-    <div class="awbd-field"><span class="awbd-label">Condition</span><span class="awbd-val">Rule-based comparison or LLM-judged classification</span></div>
-    <div class="awbd-field"><span class="awbd-label">Paths</span><span class="awbd-val">Named outputs + default fallback</span></div>
-    <div class="awbd-field"><span class="awbd-label">Merge</span><span class="awbd-val">How state reconciles if paths rejoin</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Condition</span>
+      <div class="awbd-toggle" data-field="condition">
+        <button type="button" class="awbd-toggle-btn active" data-value="Rule-based">Rule-based</button>
+        <button type="button" class="awbd-toggle-btn" data-value="LLM-judged">LLM-judged</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Merge</span>
+      <select class="awbd-select" data-field="merge">
+        <option>Wait for all paths</option>
+        <option>First to complete</option>
+        <option>Independent (no merge)</option>
+      </select>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
+
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#8892a0"></span>Output</div>
-    <div class="awbd-field"><span class="awbd-label">Destination</span><span class="awbd-val">Return to caller · write to store · send message · trigger another workflow</span></div>
-    <div class="awbd-field"><span class="awbd-label">Format</span><span class="awbd-val">Matches caller's expected shape, or freeform</span></div>
-    <div class="awbd-field"><span class="awbd-label">Trace</span><span class="awbd-val">Attach run metadata for debugging</span></div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Destination</span>
+      <select class="awbd-select" data-field="destination">
+        <option>Return to caller</option>
+        <option>Write to store</option>
+        <option>Send message</option>
+        <option>Trigger another workflow</option>
+      </select>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Format</span>
+      <div class="awbd-toggle" data-field="format">
+        <button type="button" class="awbd-toggle-btn active" data-value="Match caller schema">Match caller schema</button>
+        <button type="button" class="awbd-toggle-btn" data-value="Freeform">Freeform</button>
+      </div>
+    </div>
+    <div class="awbd-field-form">
+      <span class="awbd-label">Trace</span>
+      <div class="awbd-toggle" data-field="trace">
+        <button type="button" class="awbd-toggle-btn" data-value="Off">Off</button>
+        <button type="button" class="awbd-toggle-btn active" data-value="On">On</button>
+      </div>
+    </div>
+    <div class="awbd-summary"></div>
   </div>
 </div>
 
@@ -408,15 +534,85 @@ What each step actually needs under the hood:
     margin-bottom: 0.6rem;
   }
   .awbd-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .awbd-field {
-    display: flex; flex-direction: column; gap: 0.1rem;
-    padding: 0.35rem 0;
+  .awbd-field-form {
+    display: flex; flex-direction: column; gap: 0.3rem;
+    padding: 0.45rem 0;
     border-top: 1px solid #1e1e22;
   }
-  .awbd-field:first-of-type { border-top: 0; }
+  .awbd-field-form:first-of-type { border-top: 0; }
   .awbd-label {
     text-transform: uppercase; font-size: 0.62rem;
     letter-spacing: 0.06em; color: #888;
   }
-  .awbd-val { font-size: 0.78rem; color: #ddd; }
+  .awbd-select {
+    background: #17171a; color: #fff;
+    border: 1px solid #333; border-radius: 6px;
+    padding: 0.35rem 0.4rem; font-size: 0.78rem;
+    font-family: inherit; width: 100%;
+  }
+  .awbd-select:focus { outline: 1px solid #666; }
+  .awbd-toggle {
+    display: flex; flex-wrap: wrap; gap: 0.35rem;
+  }
+  .awbd-toggle-btn {
+    background: #17171a; color: #ccc;
+    border: 1px solid #333; border-radius: 999px;
+    padding: 0.25rem 0.6rem; font-size: 0.72rem;
+    cursor: pointer; font-family: inherit;
+  }
+  .awbd-toggle-btn:hover { border-color: #555; }
+  .awbd-toggle-btn.active {
+    background: #fff; color: #000; border-color: #fff;
+  }
+  .awbd-multi .awbd-toggle-btn.active {
+    background: #2ecc71; color: #04150a; border-color: #2ecc71;
+  }
+  .awbd-summary {
+    margin-top: 0.6rem; padding-top: 0.5rem;
+    border-top: 1px dashed #262626;
+    font-size: 0.72rem; color: #9fd6ff;
+    min-height: 1.6em;
+  }
 </style>
+
+<script>
+(function() {
+  function summarize(card) {
+    const parts = [];
+    card.querySelectorAll('[data-field]').forEach(field => {
+      if (field.tagName === 'SELECT') {
+        if (field.value) parts.push(field.value);
+      } else if (field.classList.contains('awbd-multi')) {
+        const actives = Array.from(field.querySelectorAll('.awbd-toggle-btn.active')).map(b => b.dataset.value);
+        if (actives.length) parts.push(actives.join('/'));
+      } else if (field.classList.contains('awbd-toggle')) {
+        const active = field.querySelector('.awbd-toggle-btn.active');
+        if (active) parts.push(active.dataset.value);
+      }
+    });
+    const summaryEl = card.querySelector('.awbd-summary');
+    if (summaryEl) summaryEl.textContent = parts.join(' · ');
+  }
+
+  document.querySelectorAll('.awbd-card').forEach(card => {
+    card.querySelectorAll('.awbd-select').forEach(sel => {
+      sel.addEventListener('change', () => summarize(card));
+    });
+    card.querySelectorAll('.awbd-toggle').forEach(group => {
+      const multi = group.classList.contains('awbd-multi');
+      group.addEventListener('click', (e) => {
+        const btn = e.target.closest('.awbd-toggle-btn');
+        if (!btn) return;
+        if (multi) {
+          btn.classList.toggle('active');
+        } else {
+          group.querySelectorAll('.awbd-toggle-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+        summarize(card);
+      });
+    });
+    summarize(card);
+  });
+})();
+</script>
