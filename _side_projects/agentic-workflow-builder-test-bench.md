@@ -4,17 +4,17 @@ title: "Agentic Workflow Builder: Test Bench"
 date: 2026-08-16
 ---
 
-An LLM call doesn't return the same output twice, so you can't assert on an exact string like you would for a normal function. This follows up on the [canvas prototype](/side-projects/agentic-workflow-builder-canvas-prototype/) with what testing a single step might look like.
+An LLM call doesn't always return the same output twice, so you can't assert on specific outputs like in traditional software testing. As a follow up to the [canvas prototype](/side-projects/agentic-workflow-builder-canvas-prototype/), here are some thoughts on what testing a single step might look like.
 
 ## The concept
 
-Deterministic steps such as a tool call or a trigger firing can be tested the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* in the right neighborhood — rather than is it character-for-character identical.
+Deterministic steps such as a tool call or a trigger firing can be tested the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* correct?
 
 That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic.
 
 ## The bench
 
-Pick a step type below, edit its mocked output, then run the assertions against it. LLM Call is the only type with a "Semantic match" option — a stand-in for what would really be an embedding-similarity check, simplified here to a keyword-overlap heuristic so it runs without a network call.
+Pick a step type below, edit its mocked output, then run the assertions against it. LLM Call is the only type with a "Semantic match" option — a stand-in for what would really be an embedding-similarity check, simplified here to a keyword-overlap heuristic so it runs without an actual api call.
 
 <div id="awt" class="awb-panel">
   <div class="awb-toolbar">
