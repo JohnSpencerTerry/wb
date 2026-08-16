@@ -14,7 +14,7 @@ That's the core idea for a test bench: each step type gets assertion types that 
 
 ## The bench
 
-Pick a step type below, edit its mocked output, then run the assertions against it. LLM Call is the only type with a "Semantic match" option — a stand-in for what would really be an embedding-similarity check, simplified here to a keyword-overlap heuristic so it runs without an actual api call.
+Pick a step type below, edit its mocked output, then run the assertions against it. LLM Call is the only type with a "Semantic match" option — a real system would use an AI model to judge meaning; this demo just checks for overlapping keywords as a rough stand-in.
 
 <div id="awt" class="awb-panel">
   <div class="awb-toolbar">

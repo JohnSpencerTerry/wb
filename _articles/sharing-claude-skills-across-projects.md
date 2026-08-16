@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "Sharing Claude Code skills across projects."
-date: 2026-08-16
+date: 2026-08-15
 category: Software Engineering
-draft: true
+draft: false
 ---
 
 ## Copy-pasting a skill into a second repo is the same DRY problem as copy-pasting code
