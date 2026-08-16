@@ -113,6 +113,89 @@ a:hover {
   border-bottom-color: var(--color-accent);
 }
 
+.nav-toggle {
+  display: none;
+}
+
+.nav-toggle-label {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .header-top {
+    align-items: center;
+  }
+
+  .nav-toggle-label {
+    display: flex;
+    align-items: center;
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  .nav-toggle-label span {
+    position: relative;
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--color-ink);
+    transition: background 0.2s ease;
+  }
+
+  .nav-toggle-label span::before,
+  .nav-toggle-label span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-ink);
+    transition: transform 0.2s ease;
+  }
+
+  .nav-toggle-label span::before {
+    top: -7px;
+  }
+
+  .nav-toggle-label span::after {
+    top: 7px;
+  }
+
+  .nav-toggle:checked ~ .header-top .nav-toggle-label span {
+    background: transparent;
+  }
+
+  .nav-toggle:checked ~ .header-top .nav-toggle-label span::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .nav-toggle:checked ~ .header-top .nav-toggle-label span::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  .site-header nav {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-toggle:checked ~ nav {
+    display: flex;
+  }
+
+  .site-header nav a {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .site-header nav a.active {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+}
+
 /* Main */
 
 main.container {

@@ -35,9 +35,13 @@
   {% endif %}
   <header class="site-header">
     <div class="container">
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" />
       <div class="header-top">
         <h1><a href="/">{{ site.title }}</a></h1>
         <a class="header-linkedin" href="https://www.linkedin.com/in/john-spencer-terry/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation">
+          <span></span>
+        </label>
       </div>
       <nav>
         <a href="/articles/" {% if nav_key == "articles" %}class="active"{% endif %}>Articles</a>
