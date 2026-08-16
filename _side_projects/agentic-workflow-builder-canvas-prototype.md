@@ -4,11 +4,11 @@ title: "Agentic Workflow Builder: Canvas Prototype"
 date: 2026-08-16
 ---
 
-Agentic workflows are going to show up everywhere, but most companies that want one won't have the in-house expertise to build it. This is an early concept for a tool that lets a team assemble an agentic workflow without writing the orchestration code themselves.
+Agentic workflows are showing up everywhere, but most companies that want one don't have the in-house expertise to build it. This is an early concept for a tool that lets a team assemble an agentic workflow without writing the orchestration code themselves.
 
 ## The concept
 
-The tool would walk a team through a short questionnaire about what they're trying to automate, then let them build the workflow visually — picking from premade steps or defining custom ones, wiring them into a graph similar to a Dagster or Airflow DAG. A few ideas so far:
+The tool would walk a team through a short questionnaire about what they're trying to automate, then let them build the workflow visually — picking from premade steps or defining custom ones, wiring them into a visual graph, similar to a DAG. A few ideas so far:
 
 - A questionnaire that turns answers about the task into a starting workflow
 - Testing as a first-class citizen, not something bolted on after the workflow works
@@ -24,7 +24,7 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
 
 <div id="awb" class="awb-panel">
   <div class="awb-toolbar">
-    <span class="awb-hint">Drag or tap-and-drag a step onto the canvas, then drag from a step's right dot to another step's left dot to connect them.</span>
+    <span class="awb-hint">Drag a step onto the canvas, then drag from a step's right dot to another step's left dot to connect them.</span>
     <div class="awb-actions">
       <button type="button" class="awb-run">Run Test</button>
       <button type="button" class="awb-reset">Reset</button>
@@ -409,7 +409,7 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
 
 ## Step details
 
-What each step actually needs under the hood. These are inert here — nothing wires into the canvas above — but set the fields to see how each step's config would read.
+Some visual thoughts on what each step actually needs under the hood. Nothing wires into the canvas above but these visuals help set the fields to see how each step's config would read.
 
 <div class="awbd-grid">
   <div class="awbd-card">
