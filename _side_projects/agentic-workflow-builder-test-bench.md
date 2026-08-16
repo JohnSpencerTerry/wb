@@ -10,7 +10,7 @@ An LLM call doesn't always return the same output twice, so you can't assert on 
 
 Deterministic steps such as a tool call or a trigger firing can be tested the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* correct?
 
-That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic.
+That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic. Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) lays out a good framework for thinking about this more broadly.
 
 ## The bench
 
@@ -303,5 +303,220 @@ Pick a step type below, edit its mocked output, then run the assertions against 
   });
 
   selectType('trigger');
+})();
+</script>
+
+## Sampling across runs
+
+A single mocked output can't show how an assertion actually holds up, because that's not how LLM steps behave — the wording changes every time. Below are three plausible responses to the same request. Edit an assertion once and run it against all three at the same time.
+
+<div id="awv" class="awb-panel">
+  <div class="awb-toolbar">
+    <span class="awb-hint">Three different phrasings of the same LLM response. Edit an assertion, then run it against all three at once.</span>
+  </div>
+  <div class="awv-samples">
+    <div class="awv-sample">
+      <span class="awv-sample-tag">Sample 1</span>
+      <p class="awv-sample-text">Thanks for reaching out! I can help you track order A1029 — it shipped yesterday and should arrive by Friday.</p>
+    </div>
+    <div class="awv-sample">
+      <span class="awv-sample-tag">Sample 2</span>
+      <p class="awv-sample-text">Your order A1029 shipped yesterday and will arrive Friday.</p>
+    </div>
+    <div class="awv-sample">
+      <span class="awv-sample-tag">Sample 3</span>
+      <p class="awv-sample-text">I checked order A1029 for you — it should arrive by Friday.</p>
+    </div>
+  </div>
+  <div class="awv-tests"></div>
+  <button type="button" class="awv-add">+ Add assertion</button>
+  <div class="awt-actions">
+    <button type="button" class="awv-run">Run Tests</button>
+    <span class="awv-summary"></span>
+  </div>
+</div>
+
+<style>
+  .awv-samples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .awv-sample {
+    background: #141416; border: 1px solid #232327; border-radius: 6px;
+    padding: 0.6rem 0.7rem;
+  }
+  .awv-sample-tag {
+    display: block;
+    text-transform: uppercase; font-size: 0.62rem;
+    letter-spacing: 0.06em; color: #888;
+    margin-bottom: 0.3rem;
+  }
+  .awv-sample-text { font-size: 0.78rem; color: #ddd; margin: 0; line-height: 1.4; }
+  .awv-tests { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.6rem; }
+  .awv-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+    background: #141416; border: 1px solid #232327; border-radius: 6px;
+    padding: 0.4rem 0.5rem;
+  }
+  .awv-row select, .awv-row input[type="text"] {
+    background: #1e1e22; color: #fff;
+    border: 1px solid #333; border-radius: 5px;
+    padding: 0.3rem 0.4rem; font-size: 0.76rem; font-family: inherit;
+  }
+  .awv-row input[type="text"] { flex: 1; min-width: 120px; }
+  .awv-badges { display: flex; gap: 0.3rem; margin-left: auto; }
+  .awv-badge {
+    font-size: 0.65rem; font-weight: 600;
+    padding: 0.1rem 0.4rem; border-radius: 999px;
+    min-width: 2.2em; text-align: center;
+    background: #222; color: #777;
+  }
+  .awv-badge.pass { background: rgba(46,204,113,0.15); color: #2ecc71; }
+  .awv-badge.fail { background: rgba(231,76,60,0.15); color: #e74c3c; }
+  .awv-row-total { font-size: 0.72rem; color: #999; min-width: 2.6em; text-align: right; }
+  .awv-add {
+    background: transparent; color: #999; border: 1px dashed #444;
+    border-radius: 6px; padding: 0.35rem 0.7rem; font-size: 0.76rem;
+    cursor: pointer; font-family: inherit; align-self: flex-start;
+  }
+  .awv-add:hover { color: #fff; border-color: #666; }
+  .awv-run {
+    background: #fff; color: #000; border: 0;
+    border-radius: 999px; padding: 0.45rem 1.1rem;
+    font-weight: 600; font-size: 0.85rem;
+    cursor: pointer; font-family: inherit;
+  }
+  .awv-summary { font-size: 0.8rem; color: #999; }
+</style>
+
+<script>
+(function() {
+  const root = document.getElementById('awv');
+  const testsEl = root.querySelector('.awv-tests');
+  const addBtn = root.querySelector('.awv-add');
+  const runBtn = root.querySelector('.awv-run');
+  const summaryEl = root.querySelector('.awv-summary');
+
+  const SAMPLES = [
+    'Thanks for reaching out! I can help you track order A1029 — it shipped yesterday and should arrive by Friday.',
+    'Your order A1029 shipped yesterday and will arrive Friday.',
+    'I checked order A1029 for you — it should arrive by Friday.'
+  ];
+
+  const ASSERTION_LABELS = {
+    equals: 'Equals (exact)',
+    contains: 'Contains',
+    semantic: 'Semantic match (simulated)'
+  };
+  const TYPES = ['equals', 'contains', 'semantic'];
+
+  let tests = [
+    { type: 'equals', value: 'Your order A1029 shipped and will arrive Friday.' },
+    { type: 'contains', value: 'shipped yesterday' },
+    { type: 'semantic', value: 'when will the order arrive' }
+  ];
+
+  function evaluate(assertionType, output, value) {
+    switch (assertionType) {
+      case 'equals':
+        return output.trim() === value.trim();
+      case 'contains':
+        return output.toLowerCase().includes(value.toLowerCase());
+      case 'semantic': {
+        const words = s => new Set((s.toLowerCase().match(/[a-z0-9]+/g) || []).filter(w => w.length > 2));
+        const have = words(output), want = words(value);
+        if (!want.size) return false;
+        let overlap = 0;
+        want.forEach(w => { if (have.has(w)) overlap++; });
+        return overlap / want.size >= 0.35;
+      }
+      default:
+        return false;
+    }
+  }
+
+  function renderTests() {
+    testsEl.innerHTML = '';
+    tests.forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = 'awv-row';
+
+      const select = document.createElement('select');
+      TYPES.forEach(opt => {
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = ASSERTION_LABELS[opt];
+        if (opt === t.type) o.selected = true;
+        select.appendChild(o);
+      });
+      select.addEventListener('change', () => { tests[i].type = select.value; });
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = t.value;
+      input.placeholder = 'expected value';
+      input.addEventListener('input', () => { tests[i].value = input.value; });
+
+      const badges = document.createElement('div');
+      badges.className = 'awv-badges';
+      for (let s = 0; s < SAMPLES.length; s++) {
+        const b = document.createElement('span');
+        b.className = 'awv-badge';
+        b.textContent = 'S' + (s + 1);
+        badges.appendChild(b);
+      }
+
+      const total = document.createElement('span');
+      total.className = 'awv-row-total';
+
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'awt-row-remove';
+      remove.innerHTML = '&times;';
+      remove.addEventListener('click', () => {
+        tests.splice(i, 1);
+        renderTests();
+        summaryEl.textContent = '';
+      });
+
+      row.appendChild(select);
+      row.appendChild(input);
+      row.appendChild(badges);
+      row.appendChild(total);
+      row.appendChild(remove);
+      testsEl.appendChild(row);
+    });
+  }
+
+  addBtn.addEventListener('click', () => {
+    tests.push({ type: 'contains', value: '' });
+    renderTests();
+  });
+
+  runBtn.addEventListener('click', () => {
+    const rows = testsEl.querySelectorAll('.awv-row');
+    let totalPass = 0, totalCount = 0;
+    tests.forEach((t, i) => {
+      const row = rows[i];
+      const badgeEls = row.querySelectorAll('.awv-badge');
+      let passCount = 0;
+      SAMPLES.forEach((s, si) => {
+        const ok = evaluate(t.type, s, t.value);
+        if (ok) passCount++;
+        badgeEls[si].classList.toggle('pass', ok);
+        badgeEls[si].classList.toggle('fail', !ok);
+      });
+      row.querySelector('.awv-row-total').textContent = passCount + '/' + SAMPLES.length;
+      totalPass += passCount;
+      totalCount += SAMPLES.length;
+    });
+    summaryEl.textContent = tests.length
+      ? totalPass + ' / ' + totalCount + ' sample checks passing'
+      : 'No assertions yet.';
+  });
+
+  renderTests();
 })();
 </script>
