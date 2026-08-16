@@ -10,7 +10,7 @@ An LLM call doesn't always return the same output twice, so you can't assert on 
 
 Deterministic steps such as a tool call or a trigger firing can be tested the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* correct?
 
-That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic. Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) lays out a good framework for thinking about this more broadly.
+That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic. Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) calls these two families code-based graders (exact match, regex, schema checks — fast and reproducible, but brittle to valid variation) and model-based graders (an LLM or human judging against a rubric). Equals, Contains, and Has JSON keys below are code-based graders; Semantic match is a rough stand-in for a model-based one.
 
 ## The bench
 
@@ -309,6 +309,8 @@ Pick a step type below, edit its mocked output, then run the assertions against 
 ## Sampling across runs
 
 A single mocked output can't show how an assertion actually holds up, because that's not how LLM steps behave — the wording changes every time. Below are three plausible responses to the same request. Edit an assertion once and run it against all three at the same time.
+
+This is a small version of what evals literature calls pass^k versus pass@k: pass^k requires every sample in the batch to pass (what the per-row count below is measuring), while pass@k only requires at least one to. Which one matters depends on whether the step needs to be consistently right or just capable of being right.
 
 <div id="awv" class="awb-panel">
   <div class="awb-toolbar">
