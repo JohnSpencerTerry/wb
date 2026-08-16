@@ -327,3 +327,81 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   drawEdges();
 })();
 </script>
+
+## Step details
+
+What each step actually needs under the hood:
+
+<div class="awbd-grid">
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#4a9eff"></span>Trigger</div>
+    <div class="awbd-field"><span class="awbd-label">Kind</span><span class="awbd-val">Schedule · Calendar · Event · API call</span></div>
+    <div class="awbd-field"><span class="awbd-label">Schedule</span><span class="awbd-val">Cron-style cadence</span></div>
+    <div class="awbd-field"><span class="awbd-label">Event</span><span class="awbd-val">Topic/queue name, payload shape</span></div>
+    <div class="awbd-field"><span class="awbd-label">API</span><span class="awbd-val">Auth method, input schema</span></div>
+  </div>
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#ff9f43"></span>Tool Call</div>
+    <div class="awbd-field"><span class="awbd-label">Connection</span><span class="awbd-val">REST/GraphQL API · MCP server</span></div>
+    <div class="awbd-field"><span class="awbd-label">Auth</span><span class="awbd-val">API key · OAuth · service account · none</span></div>
+    <div class="awbd-field"><span class="awbd-label">Schema</span><span class="awbd-val">Input params, output shape</span></div>
+    <div class="awbd-field"><span class="awbd-label">Reliability</span><span class="awbd-val">Retry policy, timeout</span></div>
+  </div>
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#b967ff"></span>LLM Call</div>
+    <div class="awbd-field"><span class="awbd-label">Model</span><span class="awbd-val">Provider + model</span></div>
+    <div class="awbd-field"><span class="awbd-label">Prompt</span><span class="awbd-val">Template, variables from upstream steps</span></div>
+    <div class="awbd-field"><span class="awbd-label">Output</span><span class="awbd-val">Freeform text or structured/JSON schema</span></div>
+    <div class="awbd-field"><span class="awbd-label">Fallback</span><span class="awbd-val">Secondary model on failure</span></div>
+  </div>
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#2ecc71"></span>Human Review</div>
+    <div class="awbd-field"><span class="awbd-label">Channel</span><span class="awbd-val">Slack · email · in-app queue</span></div>
+    <div class="awbd-field"><span class="awbd-label">Shown to reviewer</span><span class="awbd-val">Proposed action, not raw state</span></div>
+    <div class="awbd-field"><span class="awbd-label">Actions</span><span class="awbd-val">Approve · reject · edit · redirect</span></div>
+    <div class="awbd-field"><span class="awbd-label">Timeout</span><span class="awbd-val">Auto-approve, escalate, or block</span></div>
+  </div>
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#f1c40f"></span>Branch</div>
+    <div class="awbd-field"><span class="awbd-label">Condition</span><span class="awbd-val">Rule-based comparison or LLM-judged classification</span></div>
+    <div class="awbd-field"><span class="awbd-label">Paths</span><span class="awbd-val">Named outputs + default fallback</span></div>
+  </div>
+  <div class="awbd-card">
+    <div class="awbd-head"><span class="awbd-dot" style="background:#8892a0"></span>Output</div>
+    <div class="awbd-field"><span class="awbd-label">Destination</span><span class="awbd-val">Return to caller · write to store · send message · trigger another workflow</span></div>
+  </div>
+</div>
+
+<style>
+  .awbd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .awbd-card {
+    background: #0e0e10;
+    border: 1px solid #26262a;
+    border-radius: 8px;
+    padding: 0.8rem 0.9rem;
+    font-family: system-ui, sans-serif;
+    color: #fff;
+  }
+  .awbd-head {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem; font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+  .awbd-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .awbd-field {
+    display: flex; flex-direction: column; gap: 0.1rem;
+    padding: 0.35rem 0;
+    border-top: 1px solid #1e1e22;
+  }
+  .awbd-field:first-of-type { border-top: 0; }
+  .awbd-label {
+    text-transform: uppercase; font-size: 0.62rem;
+    letter-spacing: 0.06em; color: #888;
+  }
+  .awbd-val { font-size: 0.78rem; color: #ddd; }
+</style>
