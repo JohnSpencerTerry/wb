@@ -425,6 +425,30 @@ main.container {
   overflow-x: auto;
   font-size: 15px;
   line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-hairline) transparent;
+}
+
+.post-body pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.post-body pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.post-body pre::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border-radius: 3px;
+}
+
+@media (min-width: 900px) {
+  .post-body pre {
+    max-width: 732px;
+    margin-right: -92px;
+  }
 }
 
 .post-body pre code {
