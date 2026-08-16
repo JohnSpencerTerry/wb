@@ -10,7 +10,7 @@ draft: false
 
 Tech leads often need a way to align on a specific decision point, like the canonical source for a record. Two source systems disagree about which one wins when fields conflict, and product, engineering, and analytics each have a stake in the answer. The team needs to land on a rule before anyone builds.
 
-This is facet-level alignment — agreement on one specific choice that downstream work depends on. Tech leads run into a lot of these: this resolution rule, this contract boundary, this approach to backfilling. The project moves or stalls on those decisions.
+Tech leads run into a lot of this kind of facet-level alignment: this resolution rule, this contract boundary, this approach to backfilling. The project moves or stalls on those decisions.
 
 The instinct when stakeholders are misaligned is to write more — a longer doc, more context, more options, more diagrams. That instinct makes the alignment harder.
 
@@ -36,7 +36,7 @@ Not every decision needs a doc. If a Slack thread or a five-minute chat with the
 
 Take a typical StartupTechCo scenario. The team operates two upstream systems that both ingest customer records. Call them the operations platform and the legacy CRM. Both write to the lakehouse, and `dim_members` is supposed to expose a single canonical view to the rest of the org. The two systems agree most of the time, but they disagree on roughly 4% of records, usually on status fields, contact info, or the timestamp of the last update.
 
-The data engineer is about to start the work and needs a resolution rule. Product owns the rule logic. The analytics lead consumes `dim_members` downstream and has opinions about which fields he relies on.
+The data engineer is about to start the work and needs a resolution rule. Product owns the rule logic. The analytics lead consumes `dim_members` downstream and has opinions about which fields they rely on.
 
 Here's what the doc looks like.
 
