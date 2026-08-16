@@ -6,7 +6,7 @@ nav: media
 ---
 
 {% include page-heading.html title=page.title %}
-<p>Books, movies, and the occasional TV show or exhibit — a non-exhaustive log of what I've consumed and when. Most entries are just a title; a few link out to something longer I wrote about them.</p>
+<p>Books, movies, and the occasional TV show or exhibit.</p>
 <div class="media-filter">
   <button type="button" class="media-filter-btn active" data-filter="all">All</button>
   <button type="button" class="media-filter-btn" data-filter="fiction">Fiction</button>
