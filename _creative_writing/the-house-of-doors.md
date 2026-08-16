@@ -1,13 +1,15 @@
+---
+layout: post
+title: "The House of Doors"
+date: 2026-08-16
+draft: true
+---
 
-
-
-It was deep in the swamp, or what was left of it after governor x and the federal work grant people filled it in to make room for residential housing developments. The world was warping around the old relic of a distant voodoo they hoped might save their old matraiach. 
+It was deep in the swamp, or what was left of it after governor x and the federal work grant people filled it in to make room for residential housing developments. The world was warping around the old relic of a distant voodoo they hoped might save their old matraiach.
 
 They had to pick up her wheelchair when the soggy soil got too soft, and clear out the moss and leaves that started to act like brake pads as they got stuffed into the little spaces between the wheels.
 
-It was there in front of them finally, a massive dome covered heel to tow in old doors painted in an ephiphany of colors she imagined had fabulous names like burnt lilac, barn door red, and daisy yellow. 
-
-
+It was there in front of them finally, a massive dome covered heel to tow in old doors painted in an ephiphany of colors she imagined had fabulous names like burnt lilac, barn door red, and daisy yellow.
 
 ---
 
