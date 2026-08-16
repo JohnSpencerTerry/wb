@@ -12,7 +12,7 @@ Set your work hours. The app reads Google Calendar for meetings and other unmova
 
 A task like "Write report" estimated at three hours becomes six 25-minute workblocks with 10-minute breaks (both configurable), scheduled into whatever open time is left in the day. Reminders and start/stop handle the rest.
 
-Built in Python with tkinter, in the same codebase together.
+Built in Python with tkinter.
 
 ## The tech
 
@@ -24,7 +24,7 @@ Given work hours, a set of fixed meetings, and a task with a duration, the sched
 
 ## Try it
 
-Set work hours, add or edit a couple of meetings, give it a task and a duration, and hit Schedule. It reimplements the same gap-filling logic in JS.
+This isn't the original app — it's a quick recreation in JS to demo the scheduling logic. Set work hours, add or edit a couple of meetings, give it a task and a duration, and hit Schedule.
 
 <div id="wb" class="wb-panel">
   <div class="wb-controls">
@@ -70,6 +70,20 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
     <span><i class="wb-swatch wb-swatch-free"></i>Free</span>
   </div>
   <div class="wb-status"></div>
+</div>
+
+Drag the slider to see what the app's current-block view would show at that point in the schedule.
+
+<div id="wb-now" class="wb-panel">
+  <div class="wb-row">
+    <label class="wb-now-time-label">Simulated time: <strong class="wb-now-time-value"></strong>
+      <input type="range" class="wb-now-time" min="0" max="1439" step="5" value="600">
+    </label>
+  </div>
+  <div class="wb-now-card">
+    <div class="wb-now-kind"></div>
+    <div class="wb-now-detail"></div>
+  </div>
 </div>
 
 <style>
@@ -139,6 +153,21 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
   .wb-swatch-break { background: #f1c40f; }
   .wb-swatch-free { background: #1a1a1d; border: 1px solid #333; }
   .wb-status { margin-top: 0.75rem; font-size: 0.82rem; color: #9fd6ff; min-height: 1.2em; }
+  .wb-now-marker {
+    position: absolute; top: -5px; bottom: -5px; width: 2px;
+    background: #fff; box-shadow: 0 0 5px rgba(255,255,255,0.7);
+  }
+  .wb-now-time-label {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.85rem; color: #ccc; width: 100%;
+  }
+  .wb-now-time { flex: 1; }
+  .wb-now-card {
+    margin-top: 1rem; padding: 0.85rem 1rem;
+    background: #17171a; border: 1px solid #333; border-radius: 8px;
+  }
+  .wb-now-kind { font-size: 0.95rem; font-weight: 600; }
+  .wb-now-detail { margin-top: 0.2rem; font-size: 0.82rem; color: #9fd6ff; }
   @media (max-width: 560px) {
     .wb-row { flex-direction: column; gap: 0.5rem; }
     .wb-meeting-row { flex-wrap: wrap; }
@@ -159,6 +188,14 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
   const timelineEl = root.querySelector('.wb-timeline');
   const ticksEl = root.querySelector('.wb-ticks');
   const statusEl = root.querySelector('.wb-status');
+
+  const nowRoot = document.getElementById('wb-now');
+  const nowTimeEl = nowRoot.querySelector('.wb-now-time');
+  const nowTimeValueEl = nowRoot.querySelector('.wb-now-time-value');
+  const nowKindEl = nowRoot.querySelector('.wb-now-kind');
+  const nowDetailEl = nowRoot.querySelector('.wb-now-detail');
+
+  let schedule = { dayStart: 0, dayEnd: 0, meetings: [], blocks: [] };
 
   function toMinutes(hhmm) {
     const [h, m] = hhmm.split(':').map(Number);
@@ -251,6 +288,8 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
     const gaps = freeGaps(dayStart, dayEnd, meetings);
     const { blocks, unscheduled } = scheduleBlocks(gaps, totalMinutesNeeded, blockLen, breakLen);
 
+    schedule = { dayStart, dayEnd, meetings, blocks };
+
     blocks.forEach(b => {
       const seg = document.createElement('div');
       seg.className = 'wb-seg ' + (b.type === 'block' ? 'wb-seg-block' : 'wb-seg-break');
@@ -268,6 +307,10 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
       ticksEl.appendChild(tick);
     });
 
+    const marker = document.createElement('div');
+    marker.className = 'wb-now-marker';
+    timelineEl.appendChild(marker);
+
     const blockCount = blocks.filter(b => b.type === 'block').length;
     const taskName = taskNameEl.value || 'Task';
     if (unscheduled > 0) {
@@ -277,9 +320,62 @@ Set work hours, add or edit a couple of meetings, give it a task and a duration,
       statusEl.textContent = taskName + ': scheduled ' + blockCount + ' workblock' + (blockCount === 1 ? '' : 's') +
         ' of ' + blockLen + ' minutes, with ' + breakLen + '-minute breaks, around ' + meetings.length + ' meeting' + (meetings.length === 1 ? '' : 's') + '.';
     }
+
+    renderNow();
+  }
+
+  function renderNow() {
+    const t = Number(nowTimeEl.value);
+    nowTimeValueEl.textContent = fmt(t);
+
+    const marker = timelineEl.querySelector('.wb-now-marker');
+    const { dayStart, dayEnd, meetings, blocks } = schedule;
+
+    if (dayEnd <= dayStart) {
+      if (marker) marker.style.display = 'none';
+      nowKindEl.textContent = 'No schedule yet';
+      nowDetailEl.textContent = 'Hit Schedule above first.';
+      return;
+    }
+
+    if (t < dayStart || t > dayEnd) {
+      if (marker) marker.style.display = 'none';
+      nowKindEl.textContent = 'Outside work hours';
+      nowDetailEl.textContent = 'Day runs ' + fmt(dayStart) + '–' + fmt(dayEnd) + '.';
+      return;
+    }
+
+    if (marker) {
+      marker.style.display = '';
+      marker.style.left = (((t - dayStart) / (dayEnd - dayStart)) * 100) + '%';
+    }
+
+    const meeting = meetings.find(m => t >= m.start && t < m.end);
+    if (meeting) {
+      nowKindEl.textContent = 'In a meeting: ' + meeting.title;
+      nowDetailEl.textContent = 'Until ' + fmt(meeting.end) + '.';
+      return;
+    }
+
+    const block = blocks.find(b => t >= b.start && t < b.end);
+    if (block) {
+      const minsLeft = block.end - t;
+      if (block.type === 'block') {
+        nowKindEl.textContent = 'In a workblock';
+        nowDetailEl.textContent = minsLeft + ' min left, then a break.';
+      } else {
+        nowKindEl.textContent = 'On break';
+        nowDetailEl.textContent = minsLeft + ' min left.';
+      }
+      return;
+    }
+
+    nowKindEl.textContent = 'Free time';
+    nowDetailEl.textContent = 'No workblock scheduled right now.';
   }
 
   scheduleBtn.addEventListener('click', render);
+  nowTimeEl.addEventListener('input', renderNow);
   render();
 })();
 </script>
