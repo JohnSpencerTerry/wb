@@ -115,10 +115,6 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     user-select: none;
   }
   .awb-node.awb-running { border-color: #2ecc71; box-shadow: 0 0 0 2px rgba(46,204,113,0.3); }
-  .awb-node .awb-node-type {
-    text-transform: uppercase; font-size: 0.62rem;
-    letter-spacing: 0.06em; color: #888; margin-bottom: 0.15rem;
-  }
   .awb-node .awb-node-del {
     position: absolute; top: -6px; right: -6px;
     width: 16px; height: 16px; border-radius: 50%;
@@ -135,6 +131,12 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   .awb-port.awb-in { left: -6px; }
   .awb-port.awb-out { right: -6px; }
   .awb-port:hover { background: #2ecc71; }
+  .awb-palette-item[data-type="trigger"], .awb-node[data-type="trigger"] { border-left: 3px solid #4a9eff; }
+  .awb-palette-item[data-type="tool"], .awb-node[data-type="tool"] { border-left: 3px solid #ff9f43; }
+  .awb-palette-item[data-type="llm"], .awb-node[data-type="llm"] { border-left: 3px solid #b967ff; }
+  .awb-palette-item[data-type="human"], .awb-node[data-type="human"] { border-left: 3px solid #2ecc71; }
+  .awb-palette-item[data-type="branch"], .awb-node[data-type="branch"] { border-left: 3px solid #f1c40f; }
+  .awb-palette-item[data-type="output"], .awb-node[data-type="output"] { border-left: 3px solid #8892a0; }
   .awb-log {
     margin-top: 0.6rem; font-size: 0.78rem; color: #999;
     min-height: 1.2em;
@@ -151,6 +153,11 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   const runBtn = root.querySelector('.awb-run');
   const resetBtn = root.querySelector('.awb-reset');
 
+  const LABELS = {
+    trigger: 'Trigger', llm: 'LLM Call', tool: 'Tool Call',
+    human: 'Human Review', branch: 'Branch', output: 'Output'
+  };
+
   let nodes = [];
   let edges = [];
   let nextId = 1;
@@ -163,9 +170,9 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
     el.style.left = x + 'px';
     el.style.top = y + 'px';
     el.dataset.id = id;
+    el.dataset.type = type;
     el.innerHTML =
-      '<div class="awb-node-type">' + type + '</div>' +
-      '<div class="awb-node-label">' + type[0].toUpperCase() + type.slice(1) + '</div>' +
+      '<div class="awb-node-label">' + (LABELS[type] || type) + '</div>' +
       '<div class="awb-port awb-in" data-id="' + id + '" data-dir="in"></div>' +
       '<div class="awb-port awb-out" data-id="' + id + '" data-dir="out"></div>' +
       '<div class="awb-node-del">&times;</div>';
@@ -229,7 +236,9 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   function portPos(id, dir) {
     const node = nodes.find(n => n.id === id);
     if (!node) return { x: 0, y: 0 };
-    const width = 110, height = 40;
+    const el = canvas.querySelector('[data-id="' + id + '"]');
+    const width = el ? el.offsetWidth : 110;
+    const height = el ? el.offsetHeight : 40;
     return {
       x: node.x + (dir === 'out' ? width : 0),
       y: node.y + height / 2
@@ -291,7 +300,10 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
   runBtn.addEventListener('click', () => {
     if (!nodes.length) { logEl.textContent = 'Add some steps first.'; return; }
     const order = topoOrder();
-    const labels = order.map(id => (nodes.find(n => n.id === id) || {}).type).filter(Boolean);
+    const labels = order.map(id => {
+      const node = nodes.find(n => n.id === id);
+      return node ? (LABELS[node.type] || node.type) : null;
+    }).filter(Boolean);
     logEl.textContent = 'Running: ' + labels.join(' → ');
     canvas.querySelectorAll('.awb-node').forEach(el => el.classList.remove('awb-running'));
     const activeEdges = new Set();
@@ -365,10 +377,13 @@ What each step actually needs under the hood:
     <div class="awbd-head"><span class="awbd-dot" style="background:#f1c40f"></span>Branch</div>
     <div class="awbd-field"><span class="awbd-label">Condition</span><span class="awbd-val">Rule-based comparison or LLM-judged classification</span></div>
     <div class="awbd-field"><span class="awbd-label">Paths</span><span class="awbd-val">Named outputs + default fallback</span></div>
+    <div class="awbd-field"><span class="awbd-label">Merge</span><span class="awbd-val">How state reconciles if paths rejoin</span></div>
   </div>
   <div class="awbd-card">
     <div class="awbd-head"><span class="awbd-dot" style="background:#8892a0"></span>Output</div>
     <div class="awbd-field"><span class="awbd-label">Destination</span><span class="awbd-val">Return to caller · write to store · send message · trigger another workflow</span></div>
+    <div class="awbd-field"><span class="awbd-label">Format</span><span class="awbd-val">Matches caller's expected shape, or freeform</span></div>
+    <div class="awbd-field"><span class="awbd-label">Trace</span><span class="awbd-val">Attach run metadata for debugging</span></div>
   </div>
 </div>
 
