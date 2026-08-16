@@ -409,7 +409,7 @@ The visual builder is the part I wanted to prototype first. Drag a step from the
 
 ## Step details
 
-Some visual thoughts on what each step actually needs under the hood. Nothing wires into the canvas above but these visuals help set the fields to see how each step's config would read.
+Some visual thoughts on what each step needs under the hood. Nothing wires into the canvas above, but set the fields to see how each step's config would read.
 
 <div class="awbd-grid">
   <div class="awbd-card">

@@ -308,7 +308,7 @@ Pick a step type below, edit its mocked output, then run the assertions against 
 
 ## Sampling across runs
 
-A single mocked output can't show how an assertion actually holds up, because that's not how LLM steps behave — the wording changes every time. Below are three plausible responses to the same request. Edit an assertion once and run it against all three at the same time.
+A single mocked output can't show how an assertion holds up, because that's not how LLM steps behave — the wording changes every time. Below are three plausible responses to the same request. Edit an assertion once and run it against all three at the same time.
 
 This is a small version of what evals literature calls pass^k versus pass@k: pass^k requires every sample in the batch to pass (what the per-row count below is measuring), while pass@k only requires at least one to. Which one matters depends on whether the step needs to be consistently right or just capable of being right.
 

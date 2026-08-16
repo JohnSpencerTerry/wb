@@ -397,6 +397,17 @@ main.container {
   color: var(--color-ink);
 }
 
+.post-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(188, 106, 71, 0.4);
+  text-underline-offset: 3px;
+}
+
+.post-body a:hover {
+  text-decoration-color: var(--color-accent);
+}
+
 .media-figure {
   margin: 2rem auto;
   max-width: 500px;

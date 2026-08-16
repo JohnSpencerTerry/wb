@@ -4,7 +4,7 @@ title: "Agentic Workflow Builder: Questionnaire"
 date: 2026-08-16
 ---
 
-Before a workflow gets built, someone has to decide it's worth building. This is a look at a short, structured intake for that decision — a specialized version of "what do you want to build?" — that turns a rough idea into requirements the [canvas](/side-projects/agentic-workflow-builder-canvas-prototype/) can start from.
+Before a workflow gets built, someone has to decide it's worth building. This is a look at a short, structured intake for that decision, a specialized version of "what do you want to build?" that turns a rough idea into requirements the [canvas](/side-projects/agentic-workflow-builder-canvas-prototype/) can start from.
 
 ## The concept
 
@@ -12,7 +12,7 @@ Before a workflow gets built, someone has to decide it's worth building. This is
 
 - **0 → 1 or 1 → n?** Is this making something possible that wasn't before, or improving something that already exists? A 0 → 1 product has no baseline to compare against, so "done" is fuzzier and there's more room to iterate. A 1 → n product is judged against what it's replacing, so the bar is concrete from day one.
 - **What does AI actually enable here?** Learning from data, personalizing an experience, automating judgment or creative work, handling unstructured input — naming which one applies keeps the workflow honest about *why* it needs a probabilistic step at all, rather than reaching for an LLM call where a deterministic one would do.
-- **RICE — Reach, Impact, Confidence, Effort.** Once there's more than one candidate workflow, RICE gives a way to rank them against each other. The score only means something in comparison to other ideas in the same backlog — it's not an absolute bar to clear.
+- **RICE — Reach, Impact, Confidence, Effort.** Once there's more than one candidate workflow, RICE gives a way to rank them against each other. The score only means something in comparison to other ideas in the same backlog. It's not an absolute bar to clear.
 
 Asking these up front is what turns "we should build an agent for this" into something with enough shape to hand to the canvas.
 
@@ -35,7 +35,7 @@ A short questionnaire generates a starting brief: what kind of product this is, 
     <div class="awq-q">What kind of product is this?</div>
     <label class="awq-option">
       <input type="radio" name="awq-type" value="0to1" checked>
-      <span>Something new — this wouldn't really be possible without AI</span>
+      <span>Something new — this wouldn't be possible without AI</span>
     </label>
     <label class="awq-option">
       <input type="radio" name="awq-type" value="1ton">
@@ -44,7 +44,7 @@ A short questionnaire generates a starting brief: what kind of product this is, 
   </div>
 
   <div class="awq-step" data-step="1" hidden>
-    <div class="awq-q">What is AI actually doing here? (pick any that apply)</div>
+    <div class="awq-q">What is AI doing here? (pick any that apply)</div>
     <label class="awq-option">
       <input type="checkbox" name="awq-driver" value="data" checked>
       <span>Learning from data — personalization, insight, pattern-finding</span>
@@ -86,7 +86,7 @@ A short questionnaire generates a starting brief: what kind of product this is, 
         </select>
       </label>
       <label class="awq-field">
-        <span class="awq-label">How sure are you this will actually work?</span>
+        <span class="awq-label">How sure are you this will work?</span>
         <select class="awq-select" data-field="confidence">
           <option value="high">Very sure</option>
           <option value="medium" selected>Somewhat sure</option>
