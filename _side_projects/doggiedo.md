@@ -8,7 +8,7 @@ My wife and I built DoggieDo, an app for dog owners to find dog-friendly places 
 
 ## The concept
 
-Two pieces on the consumer side. The first is a map of dog-friendly parks, vets, cafes, and groomers. You can filter it by category. Each place shows tips and activity counts from other owners. The second is a pet profile builder. It's a short wizard. You enter your dog's name, breed, and age. Then you add personality and health notes. Then you add a photo and bio.
+We built two key pieces of functionality on the consumer side. The first is a map of dog-friendly parks, vets, cafes, and groomers that can be filtered by category. Each place shows tips and activity counts from other owners. The second is a pet profile builder. It's a short wizard. You enter your dog's name, breed, and age. Then you add personality and health notes. Then you add a photo and bio.
 
 Alongside that, we built out DoggieDo for Business. The idea was to make DoggieDo a two-sided platform: dog owners get a free, useful app, and pet care businesses (vets, groomers, cafes, boarding) pay to advertise directly to the owners already using it in their neighborhood. The consumer app was the audience; the business side was the revenue.
 
@@ -43,79 +43,99 @@ These are quick recreations of the two features in plain JS, not the original ap
 
 <style>
   .dd-panel {
-    background: #0e0e10;
-    color: #fff;
-    border-radius: 10px;
-    padding: 1.25rem 1.25rem 1.5rem;
+    --dd-primary: #8a4b11;
+    --dd-on-primary: #fff0e7;
+    --dd-primary-container: #ffab69;
+    --dd-on-primary-container: #5d2e00;
+    --dd-secondary-container: #8cf5e4;
+    --dd-on-secondary-container: #005c53;
+    --dd-tertiary-container: #ccedfe;
+    --dd-on-tertiary-container: #3a5967;
+    --dd-surface: #fff5ee;
+    --dd-on-surface: #462700;
+    --dd-on-surface-variant: #7a5327;
+    --dd-surface-container-low: #ffeee0;
+    --dd-surface-container: #ffe3cb;
+    --dd-surface-container-high: #ffdcbc;
+    --dd-surface-container-highest: #ffd5ad;
+    --dd-outline-variant: #d5a470;
+    background: var(--dd-surface);
+    color: var(--dd-on-surface);
+    border-radius: 20px;
+    padding: 1.5rem;
     margin: 1.5rem 0;
     font-family: system-ui, sans-serif;
   }
-  .dd-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+  .dd-filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
   .dd-filter-btn {
-    background: #17171a; color: #ccc; border: 1px solid #333;
-    border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.8rem;
-    cursor: pointer; font-family: inherit;
+    background: var(--dd-surface-container); color: var(--dd-on-surface); border: none;
+    border-radius: 999px; padding: 0.45rem 1rem; font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; font-family: inherit; transition: background 0.15s ease;
   }
-  .dd-filter-btn.active { background: #fff; color: #000; border-color: #fff; }
-  .dd-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .dd-filter-btn:hover { background: var(--dd-surface-container-high); }
+  .dd-filter-btn.active { background: var(--dd-primary); color: var(--dd-on-primary); }
+  .dd-list { display: flex; flex-direction: column; gap: 0.65rem; }
   .dd-place {
     display: flex; justify-content: space-between; align-items: center;
-    background: #17171a; border: 1px solid #333; border-radius: 8px;
-    padding: 0.65rem 0.9rem;
+    background: var(--dd-surface-container-low); border: 1px solid var(--dd-outline-variant);
+    border-radius: 14px; padding: 0.75rem 1rem;
   }
-  .dd-place-name { font-weight: 600; font-size: 0.9rem; }
-  .dd-place-meta { font-size: 0.78rem; color: #9fd6ff; margin-top: 0.15rem; }
+  .dd-place-name { font-weight: 700; font-size: 0.92rem; }
+  .dd-place-meta { font-size: 0.78rem; color: var(--dd-on-secondary-container); margin-top: 0.2rem; font-weight: 600; }
+  .dd-place-icon { font-size: 1.2rem; margin-right: 0.5rem; }
   .dd-place-tag {
-    font-size: 0.7rem; color: #aaa; border: 1px solid #333;
-    border-radius: 999px; padding: 0.15rem 0.6rem; text-transform: capitalize;
+    font-size: 0.68rem; font-weight: 700; color: var(--dd-on-surface-variant);
+    background: var(--dd-surface-container-high);
+    border-radius: 999px; padding: 0.2rem 0.7rem; text-transform: capitalize;
   }
-  .dd-steps { display: flex; gap: 0.5rem; margin-bottom: 1rem; font-size: 0.78rem; color: #666; }
-  .dd-step { display: flex; align-items: center; gap: 0.4rem; }
-  .dd-step.active { color: #fff; font-weight: 600; }
-  .dd-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: #333; display: inline-block;
-  }
-  .dd-step.active .dd-dot { background: #2ecc71; }
-  .dd-step-body { display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.85rem; color: #ccc; }
-  .dd-step-body label { display: flex; flex-direction: column; gap: 0.3rem; }
+  .dd-steps { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+  .dd-steps-label { font-size: 0.72rem; font-weight: 800; color: var(--dd-primary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .dd-steps-bars { display: flex; gap: 0.4rem; }
+  .dd-step-bar { height: 6px; flex: 1; border-radius: 999px; background: var(--dd-surface-container-high); }
+  .dd-step-bar.active { background: var(--dd-primary); }
+  .dd-step-body { display: flex; flex-direction: column; gap: 0.9rem; font-size: 0.85rem; }
+  .dd-step-body > div:first-child { font-weight: 700; }
+  .dd-step-body label { display: flex; flex-direction: column; gap: 0.4rem; font-weight: 700; }
   .dd-panel input[type="text"],
   .dd-panel input[type="number"],
   .dd-panel textarea {
-    background: #17171a; color: #fff;
-    border: 1px solid #333; border-radius: 6px;
-    padding: 0.4rem 0.6rem; font-size: 0.85rem;
+    background: #fff; color: var(--dd-on-surface);
+    border: 1px solid var(--dd-outline-variant); border-radius: 999px;
+    padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 500;
     font-family: inherit;
   }
-  .dd-panel textarea { resize: vertical; min-height: 3.5rem; }
+  .dd-panel textarea { border-radius: 14px; resize: vertical; min-height: 3.5rem; }
   .dd-check-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .dd-check-row label {
-    flex-direction: row; align-items: center; gap: 0.4rem;
-    background: #17171a; border: 1px solid #333; border-radius: 999px;
-    padding: 0.3rem 0.75rem; font-size: 0.8rem; cursor: pointer;
+    flex-direction: row; align-items: center; gap: 0.4rem; font-weight: 600;
+    background: var(--dd-surface-container-highest); border: none; border-radius: 999px;
+    padding: 0.4rem 0.85rem; font-size: 0.8rem; cursor: pointer; transition: background 0.15s ease;
   }
+  .dd-check-row label:has(input:checked) { background: var(--dd-secondary-container); color: var(--dd-on-secondary-container); }
+  .dd-check-row input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
   .dd-emoji-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .dd-emoji-btn {
-    background: #17171a; border: 1px solid #333; border-radius: 8px;
-    font-size: 1.4rem; padding: 0.3rem 0.6rem; cursor: pointer;
+    background: var(--dd-surface-container-highest); border: 2px solid transparent; border-radius: 999px;
+    font-size: 1.4rem; padding: 0.35rem 0.65rem; cursor: pointer; line-height: 1;
   }
-  .dd-emoji-btn.active { border-color: #2ecc71; background: #1a2e22; }
-  .dd-nav { display: flex; justify-content: space-between; margin-top: 1.1rem; }
+  .dd-emoji-btn.active { border-color: var(--dd-primary); background: var(--dd-primary-container); }
+  .dd-nav { display: flex; justify-content: space-between; margin-top: 1.25rem; }
   .dd-nav button {
-    background: #fff; color: #000; border: 0;
-    border-radius: 999px; padding: 0.5rem 1.25rem;
-    font-weight: 600; font-size: 0.85rem;
+    background: var(--dd-primary); color: var(--dd-on-primary); border: 0;
+    border-radius: 999px; padding: 0.6rem 1.4rem;
+    font-weight: 700; font-size: 0.85rem;
     cursor: pointer; font-family: inherit;
   }
-  .dd-back { background: transparent !important; color: #ccc !important; border: 1px solid #333 !important; }
+  .dd-back { background: transparent !important; color: var(--dd-on-surface-variant) !important; border: 1px solid var(--dd-outline-variant) !important; }
   .dd-nav button:disabled { opacity: 0.4; cursor: default; }
   .dd-card {
-    margin-top: 1rem; padding: 1rem; background: #17171a;
-    border: 1px solid #333; border-radius: 8px;
+    margin-top: 1.1rem; padding: 1.1rem; background: var(--dd-surface-container-low);
+    border: 1px solid var(--dd-outline-variant); border-radius: 16px;
   }
-  .dd-card-name { font-size: 1.1rem; font-weight: 700; }
-  .dd-card-emoji { font-size: 2rem; margin-right: 0.5rem; }
-  .dd-card-row { font-size: 0.82rem; color: #9fd6ff; margin-top: 0.3rem; }
-  .dd-card-bio { font-size: 0.82rem; color: #ccc; margin-top: 0.5rem; }
+  .dd-card-name { font-size: 1.15rem; font-weight: 800; vertical-align: middle; }
+  .dd-card-emoji { font-size: 2rem; margin-right: 0.5rem; vertical-align: middle; }
+  .dd-card-row { font-size: 0.82rem; color: var(--dd-on-surface-variant); margin-top: 0.4rem; font-weight: 600; }
+  .dd-card-bio { font-size: 0.85rem; color: var(--dd-on-surface); margin-top: 0.6rem; }
 </style>
 
 <script>
@@ -129,6 +149,7 @@ These are quick recreations of the two features in plain JS, not the original ap
     { name: "Muddy Paws Grooming", category: "groomer", tips: 21, distance: "0.5 mi" }
   ];
   const categories = ["all", "park", "vet", "cafe", "groomer"];
+  const categoryIcon = { park: "🌳", vet: "🩺", cafe: "☕", groomer: "✂️" };
 
   const placesRoot = document.getElementById('dd-places');
   const filtersEl = placesRoot.querySelector('.dd-filters');
@@ -157,7 +178,7 @@ These are quick recreations of the two features in plain JS, not the original ap
       row.className = 'dd-place';
       row.innerHTML =
         '<div>' +
-          '<div class="dd-place-name">' + p.name + '</div>' +
+          '<div class="dd-place-name"><span class="dd-place-icon">' + (categoryIcon[p.category] || '') + '</span>' + p.name + '</div>' +
           '<div class="dd-place-meta">' + p.tips + ' tips &middot; ' + p.distance + ' away</div>' +
         '</div>' +
         '<span class="dd-place-tag">' + p.category + '</span>';
@@ -184,13 +205,11 @@ These are quick recreations of the two features in plain JS, not the original ap
   const pet = { name: '', breed: '', age: '', traits: [], emoji: emojis[0], bio: '' };
 
   function renderSteps() {
-    stepsEl.innerHTML = '';
-    stepNames.forEach((name, i) => {
-      const el = document.createElement('div');
-      el.className = 'dd-step' + (i === step ? ' active' : '');
-      el.innerHTML = '<span class="dd-dot"></span>' + name;
-      stepsEl.appendChild(el);
-    });
+    stepsEl.innerHTML =
+      '<div class="dd-steps-label">Step ' + (step + 1) + ' of ' + stepNames.length + ': ' + stepNames[step] + '</div>' +
+      '<div class="dd-steps-bars">' +
+      stepNames.map((_, i) => '<div class="dd-step-bar' + (i <= step ? ' active' : '') + '"></div>').join('') +
+      '</div>';
   }
 
   function renderStepBody() {
