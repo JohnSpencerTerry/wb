@@ -3,10 +3,10 @@ layout: post
 title: "A New Cove at Bushwick Inlet Park"
 date: 2026-06-14
 category: Life
-draft: true
+draft: false
 ---
 
-Recently, Crystal and I went to the new cove section of [Bushwick Inlet Park](https://www.nycgovparks.org/parks/bushwick-inlet-park) with Jupiter. It sits on Franklin between N 12th and Quay, extending the older section of the park. The existing park has a dog run, soccer fields, a bathroom, and a small beach that's one of Jupiter's favorites. We stop by often on runs, for bathroom breaks, or just for the skyline view.
+Recently, my wife and I went to the new cove section of [Bushwick Inlet Park](https://www.nycgovparks.org/parks/bushwick-inlet-park) with Jupiter. It sits on Franklin between N 12th and Quay, extending the older section of the park. The existing park has a dog run, soccer fields, a bathroom, and a small beach that's one of Jupiter's favorites. We stop by often on runs, for bathroom breaks, or just for the skyline view.
 
 <figure class="media-figure">
   <img src="/assets/photos/bushwick-inlet/jupiter_2023.jpg" alt="Jupiter at the little beach in the existing park in 2023, skyline behind her." />
