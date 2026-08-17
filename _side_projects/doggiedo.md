@@ -28,6 +28,12 @@ These are quick recreations of the two features in plain JS, not the original ap
 
 <div id="dd-places" class="dd-panel">
   <div class="dd-filters"></div>
+  <div class="dd-map-wrap">
+    <div class="dd-map">
+      <div class="dd-popup" style="display:none;"></div>
+    </div>
+    <div class="dd-legend"></div>
+  </div>
   <div class="dd-list"></div>
 </div>
 
@@ -47,8 +53,10 @@ These are quick recreations of the two features in plain JS, not the original ap
     --dd-on-primary: #fff0e7;
     --dd-primary-container: #ffab69;
     --dd-on-primary-container: #5d2e00;
+    --dd-secondary: #00675d;
     --dd-secondary-container: #8cf5e4;
     --dd-on-secondary-container: #005c53;
+    --dd-tertiary: #40606d;
     --dd-tertiary-container: #ccedfe;
     --dd-on-tertiary-container: #3a5967;
     --dd-surface: #fff5ee;
@@ -78,7 +86,7 @@ These are quick recreations of the two features in plain JS, not the original ap
   .dd-place {
     display: flex; justify-content: space-between; align-items: center;
     background: var(--dd-surface-container-low); border: 1px solid var(--dd-outline-variant);
-    border-radius: 14px; padding: 0.75rem 1rem;
+    border-radius: 14px; padding: 0.75rem 1rem; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease;
   }
   .dd-place-name { font-weight: 700; font-size: 0.92rem; }
   .dd-place-meta { font-size: 0.78rem; color: var(--dd-on-secondary-container); margin-top: 0.2rem; font-weight: 600; }
@@ -88,6 +96,49 @@ These are quick recreations of the two features in plain JS, not the original ap
     background: var(--dd-surface-container-high);
     border-radius: 999px; padding: 0.2rem 0.7rem; text-transform: capitalize;
   }
+  .dd-map-wrap { margin-bottom: 1.25rem; }
+  .dd-map {
+    position: relative; height: 220px; border-radius: 16px; overflow: hidden;
+    background-color: var(--dd-surface-container-low);
+    background-image:
+      repeating-linear-gradient(0deg, var(--dd-outline-variant) 0, var(--dd-outline-variant) 1px, transparent 1px, transparent 15%),
+      repeating-linear-gradient(90deg, var(--dd-outline-variant) 0, var(--dd-outline-variant) 1px, transparent 1px, transparent 12.5%);
+    background-size: 100% 100%;
+    opacity: 1;
+    border: 1px solid var(--dd-outline-variant);
+  }
+  .dd-pin {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 30px; height: 30px; border-radius: 999px; border: 2px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; line-height: 1; cursor: pointer;
+    box-shadow: 0 2px 6px rgba(70, 39, 0, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .dd-pin:hover { transform: translate(-50%, -50%) scale(1.12); }
+  .dd-pin-park { background: var(--dd-primary); }
+  .dd-pin-vet { background: var(--dd-secondary); }
+  .dd-pin-cafe { background: var(--dd-tertiary); }
+  .dd-pin-groomer { background: var(--dd-surface-container-highest); border-color: var(--dd-outline-variant); }
+  .dd-popup {
+    position: absolute; z-index: 5; width: 180px;
+    background: #fff; border-radius: 12px; padding: 0.7rem 0.8rem;
+    box-shadow: 0 8px 24px rgba(70, 39, 0, 0.2);
+  }
+  .dd-popup-close {
+    position: absolute; top: 0.35rem; right: 0.5rem; border: none; background: none;
+    color: var(--dd-on-surface-variant); font-size: 1rem; cursor: pointer; line-height: 1;
+  }
+  .dd-popup-name { font-weight: 700; font-size: 0.85rem; padding-right: 1rem; }
+  .dd-popup-meta { font-size: 0.72rem; color: var(--dd-on-surface-variant); margin-top: 0.3rem; text-transform: capitalize; }
+  .dd-legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.6rem; font-size: 0.72rem; color: var(--dd-on-surface-variant); font-weight: 600; }
+  .dd-legend span { display: flex; align-items: center; gap: 0.35rem; }
+  .dd-legend-swatch { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+  .dd-legend-swatch.dd-pin-park { border: none; }
+  .dd-legend-swatch.dd-pin-vet { border: none; }
+  .dd-legend-swatch.dd-pin-cafe { border: none; }
+  .dd-legend-swatch.dd-pin-groomer { border: 1px solid var(--dd-outline-variant); }
+  .dd-place.dd-place-active { border-color: var(--dd-primary); background: var(--dd-primary-container); }
   .dd-steps { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
   .dd-steps-label { font-size: 0.72rem; font-weight: 800; color: var(--dd-primary); text-transform: uppercase; letter-spacing: 0.06em; }
   .dd-steps-bars { display: flex; gap: 0.4rem; }
@@ -141,19 +192,23 @@ These are quick recreations of the two features in plain JS, not the original ap
 <script>
 (function() {
   const places = [
-    { name: "Tompkins Square Dog Run", category: "park", tips: 42, distance: "0.3 mi" },
-    { name: "East River Off-Leash Area", category: "park", tips: 18, distance: "0.6 mi" },
-    { name: "Lucky Paws Vet Clinic", category: "vet", tips: 27, distance: "0.4 mi" },
-    { name: "Downtown Animal Hospital", category: "vet", tips: 15, distance: "1.1 mi" },
-    { name: "Barkery Cafe", category: "cafe", tips: 33, distance: "0.2 mi" },
-    { name: "Muddy Paws Grooming", category: "groomer", tips: 21, distance: "0.5 mi" }
+    { id: 0, name: "Tompkins Square Dog Run", category: "park", tips: 42, distance: "0.3 mi", x: 38, y: 62 },
+    { id: 1, name: "East River Off-Leash Area", category: "park", tips: 18, distance: "0.6 mi", x: 78, y: 38 },
+    { id: 2, name: "Lucky Paws Vet Clinic", category: "vet", tips: 27, distance: "0.4 mi", x: 55, y: 22 },
+    { id: 3, name: "Downtown Animal Hospital", category: "vet", tips: 15, distance: "1.1 mi", x: 18, y: 78 },
+    { id: 4, name: "Barkery Cafe", category: "cafe", tips: 33, distance: "0.2 mi", x: 65, y: 72 },
+    { id: 5, name: "Muddy Paws Grooming", category: "groomer", tips: 21, distance: "0.5 mi", x: 28, y: 33 }
   ];
   const categories = ["all", "park", "vet", "cafe", "groomer"];
   const categoryIcon = { park: "🌳", vet: "🩺", cafe: "☕", groomer: "✂️" };
+  const categoryLabel = { park: "Parks", vet: "Vets", cafe: "Cafes", groomer: "Groomers" };
 
   const placesRoot = document.getElementById('dd-places');
   const filtersEl = placesRoot.querySelector('.dd-filters');
   const listEl = placesRoot.querySelector('.dd-list');
+  const mapEl = placesRoot.querySelector('.dd-map');
+  const popupEl = placesRoot.querySelector('.dd-popup');
+  const legendEl = placesRoot.querySelector('.dd-legend');
   let activeCategory = "all";
 
   categories.forEach(cat => {
@@ -170,23 +225,80 @@ These are quick recreations of the two features in plain JS, not the original ap
     filtersEl.appendChild(btn);
   });
 
+  legendEl.innerHTML = Object.keys(categoryIcon).map(cat =>
+    '<span><i class="dd-legend-swatch dd-pin-' + cat + '"></i>' + categoryLabel[cat] + '</span>'
+  ).join('');
+
+  function hidePopup() {
+    popupEl.style.display = 'none';
+  }
+
+  function showPopup(p, pinEl) {
+    const mapRect = mapEl.getBoundingClientRect();
+    const pinRect = pinEl.getBoundingClientRect();
+    popupEl.innerHTML =
+      '<button type="button" class="dd-popup-close">&times;</button>' +
+      '<div class="dd-popup-name">' + p.name + '</div>' +
+      '<div class="dd-popup-meta">' + p.category + ' &middot; ' + p.tips + ' tips &middot; ' + p.distance + '</div>';
+    popupEl.style.display = 'block';
+
+    const popupWidth = popupEl.offsetWidth;
+    const popupHeight = popupEl.offsetHeight;
+    let left = (pinRect.left - mapRect.left) + pinRect.width / 2 - popupWidth / 2;
+    left = Math.max(8, Math.min(left, mapRect.width - popupWidth - 8));
+    const top = p.y > 55
+      ? (pinRect.top - mapRect.top) - popupHeight - 10
+      : (pinRect.bottom - mapRect.top) + 10;
+
+    popupEl.style.left = left + 'px';
+    popupEl.style.top = top + 'px';
+    popupEl.querySelector('.dd-popup-close').addEventListener('click', hidePopup);
+
+    listEl.querySelectorAll('.dd-place').forEach(row => {
+      row.classList.toggle('dd-place-active', Number(row.dataset.id) === p.id);
+    });
+  }
+
+  function renderMap(filtered) {
+    mapEl.querySelectorAll('.dd-pin').forEach(pin => pin.remove());
+    hidePopup();
+    filtered.forEach(p => {
+      const pin = document.createElement('button');
+      pin.type = 'button';
+      pin.className = 'dd-pin dd-pin-' + p.category;
+      pin.dataset.id = p.id;
+      pin.style.left = p.x + '%';
+      pin.style.top = p.y + '%';
+      pin.title = p.name;
+      pin.textContent = categoryIcon[p.category] || '📍';
+      pin.addEventListener('click', () => showPopup(p, pin));
+      mapEl.appendChild(pin);
+    });
+  }
+
   function renderPlaces() {
     listEl.innerHTML = '';
     const filtered = places.filter(p => activeCategory === 'all' || p.category === activeCategory);
     filtered.forEach(p => {
       const row = document.createElement('div');
       row.className = 'dd-place';
+      row.dataset.id = p.id;
       row.innerHTML =
         '<div>' +
           '<div class="dd-place-name"><span class="dd-place-icon">' + (categoryIcon[p.category] || '') + '</span>' + p.name + '</div>' +
           '<div class="dd-place-meta">' + p.tips + ' tips &middot; ' + p.distance + ' away</div>' +
         '</div>' +
         '<span class="dd-place-tag">' + p.category + '</span>';
+      row.addEventListener('click', () => {
+        const pin = mapEl.querySelector('.dd-pin[data-id="' + p.id + '"]');
+        if (pin) showPopup(p, pin);
+      });
       listEl.appendChild(row);
     });
     if (!filtered.length) {
       listEl.innerHTML = '<div class="dd-place-meta">No places in this category yet.</div>';
     }
+    renderMap(filtered);
   }
   renderPlaces();
 
