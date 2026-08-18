@@ -125,6 +125,40 @@ At work, the transformation layer is organized in three layers. The convention p
 
 **Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what the data scientist uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
 
+<figure class="diagram-figure">
+  <svg viewBox="0 0 640 220" role="img" aria-labelledby="awb-dag-title awb-dag-desc" style="width:100%;height:auto;font-family:var(--font-sans);">
+    <title id="awb-dag-title">The staging to intermediate to marts DAG for the reconciliation example</title>
+    <desc id="awb-dag-desc">stg_card_transactions and stg_member_eligibility both feed into int_payment_reconciliation, which feeds a downstream mart. Each column is owned by a different team.</desc>
+
+    <line x1="180" y1="45" x2="290" y2="100" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#awb-dag-arrow)" />
+    <line x1="180" y1="155" x2="290" y2="105" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#awb-dag-arrow)" />
+    <line x1="460" y1="100" x2="560" y2="100" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#awb-dag-arrow)" />
+
+    <rect x="10" y="25" width="170" height="40" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
+    <text x="95" y="49" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">stg_card_transactions</text>
+
+    <rect x="10" y="135" width="170" height="40" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
+    <text x="95" y="159" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">stg_member_eligibility</text>
+
+    <rect x="290" y="80" width="170" height="40" rx="3" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="2" />
+    <text x="375" y="104" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">int_payment_reconciliation</text>
+
+    <rect x="560" y="80" width="70" height="40" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
+    <text x="595" y="104" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">fct_*</text>
+
+    <text x="95" y="200" fill="var(--color-muted)" font-size="12" text-anchor="middle">staging</text>
+    <text x="375" y="200" fill="var(--color-muted)" font-size="12" text-anchor="middle">intermediate</text>
+    <text x="595" y="200" fill="var(--color-muted)" font-size="12" text-anchor="middle">marts</text>
+
+    <defs>
+      <marker id="awb-dag-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="var(--color-hairline)" />
+      </marker>
+    </defs>
+  </svg>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Each `{{ ref() }}` call from the reconciliation example is a real edge in this graph — dbt derives execution order from it instead of you tracking it by hand.</figcaption>
+</figure>
+
 The ownership rule that follows from this: staging models are owned by the data engineering team (they mirror your raw data contracts). Intermediate models are owned by whoever owns the business logic (often a shared responsibility between engineering and analytics). Marts are owned by whoever's accountable for what those numbers mean.
 
 The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. He came around when he realized the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter.
