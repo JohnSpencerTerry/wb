@@ -80,16 +80,9 @@
   creator: "America's Test Kitchen"
   genre: cookbook
   date: 2026-03-31
-- title: "Letters"
-  creator: "Oliver Sacks"
-  genre: nonfiction
-  date: 2026-03-31
 - title: "Predictive Analytics for the Modern Enterprise"
   creator: "Nooruddin Abbas Ali"
   genre: nonfiction
-  date: 2026-03-31
-- title: "Rear Window"
-  genre: movie
   date: 2026-03-31
 - title: "Principles of Web Design"
   creator: "Brian D. Miller"
@@ -98,12 +91,6 @@
 - title: "Between Two Moons"
   creator: "Aisha Abdel Gawad"
   genre: fiction
-  date: 2026-03-31
-- title: "Bram Stoker's Dracula"
-  genre: movie
-  date: 2026-03-31
-- title: "Mystic River"
-  genre: movie
   date: 2026-03-31
 - title: "Business Statistics for Dummies"
   creator: "Alan Anderson"
@@ -115,19 +102,9 @@
 - title: "Raising Arizona"
   genre: movie
   date: 2026-03-31
-- title: "Inherent Vice"
-  genre: movie
-  date: 2026-03-20
-- title: "Project Hail Mary"
-  creator: "Andy Weir"
-  genre: fiction
-  date: 2026-03-20
 - title: "The Staff Engineer's Path"
   creator: "Tanya Reilly"
   genre: nonfiction
-  date: 2026-03-20
-- title: "There Will Be Blood"
-  genre: movie
   date: 2026-03-20
 - title: "Tombstone"
   genre: movie
