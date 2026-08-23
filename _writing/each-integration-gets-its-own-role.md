@@ -69,9 +69,9 @@ Vendor-A's Fargate task pulls files from the vendor's SFTP endpoint, writes them
 
 Each integration deals with two credentials. The first is the AWS identity the workload runs as: the Fargate task role or Lambda execution role. The AWS SDK handles this automatically; the integration code never sees an AWS access key. The second is the vendor credential: the SFTP private key, the API key. The integration code uses the first to fetch the second from Secrets Manager at runtime.
 
-For the Lambda API integrations, the execution role is attached at deploy time. The function calls `GetSecretValue` at start to pull the vendor API key, holds it in memory for the lifetime of the execution environment, and passes it into the outbound HTTP client (`requests`, `httpx`, or equivalent).
+For the Lambda API integrations, Lambda attaches the execution role at deploy time. The function calls `GetSecretValue` at start to pull the vendor API key, holds it in memory for the lifetime of the execution environment, and passes it into the outbound HTTP client (`requests`, `httpx`, or equivalent).
 
-For the Fargate SFTP tasks, the task role is attached when the task launches. The task pulls the SFTP private key from Secrets Manager, hands the key material straight to the SFTP client (`paramiko` or equivalent), and never writes it to disk. When the task exits, the key material is gone with the task memory.
+For the Fargate SFTP tasks, Fargate attaches the task role when the task launches. The task pulls the SFTP private key from Secrets Manager, hands the key material straight to the SFTP client (`paramiko` or equivalent), and never writes it to disk. When the task exits, the key material is gone with the task memory.
 
 The integration code only handles application logic: pull files, push files, call the API, parse the response. The credential management is between the AWS SDK and the role. IAM enforces the boundary.
 

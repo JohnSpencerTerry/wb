@@ -13,7 +13,7 @@ Three years later, `member_engagement_metrics` exists in four places. They don't
 
 When the analytics lead says analysts should own the SQL, he's not wrong. The analysts do own it: several of them, independently, with no shared definition of what the output is supposed to promise.
 
-She's not trying to start a turf war either. She's been here when a number gets questioned by a customer and the team has to spend several hectic days tracing it back through three notebooks and a stored procedure to figure out which version of the logic produced it.
+She's not trying to start a turf war either. She's been here when a customer questions a number and the team has to spend several hectic days tracing it back through three notebooks and a stored procedure to figure out which version of the logic produced it.
 
 The harder question was about ownership: did anyone own what the SQL promised?
 

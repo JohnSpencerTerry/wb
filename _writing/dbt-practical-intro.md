@@ -39,7 +39,7 @@ from {{ source('payments_raw', 'card_events') }}
 where status_cd != 'VOID'
 ```
 
-A few things to notice here. First, the column renames: the raw Kafka event schema uses abbreviated field names that made sense when the pipeline was first built and are now just noise for anyone reading downstream SQL. The staging model is the one place where those names get translated. Every model that builds on top of `stg_card_transactions` uses `amount_cents` and `transacted_at` and doesn't care what the source called them.
+A few things to notice here. First, the column renames: the raw Kafka event schema uses abbreviated field names that made sense when the pipeline was first built and are now just noise for anyone reading downstream SQL. The staging model is the one place that translates those names. Every model that builds on top of `stg_card_transactions` uses `amount_cents` and `transacted_at` and doesn't care what the source called them.
 
 Second, the `{{ source(...) }}`. That's the next primitive.
 
@@ -117,7 +117,7 @@ The practical consequence: when you run `dbt run --select +int_payment_reconcili
 
 ## The three-layer model hierarchy
 
-At work, the transformation layer is organized in three layers. The convention predates dbt, but dbt's model structure makes it natural to enforce.
+At work, we organize the transformation layer in three layers. The convention predates dbt, but dbt's model structure makes it natural to enforce.
 
 **Staging** (`stg_*`): One model per source table. Rename columns, cast types, apply minimal filtering. No joins. No business logic. `stg_card_transactions` doesn't know what a reconciliation mismatch is.
 
@@ -159,7 +159,7 @@ At work, the transformation layer is organized in three layers. The convention p
   <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Each `{{ ref() }}` call from the reconciliation example is a real edge in this graph — dbt derives execution order from it instead of you tracking it by hand.</figcaption>
 </figure>
 
-The ownership rule that follows from this: staging models are owned by the data engineering team (they mirror your raw data contracts). Intermediate models are owned by whoever owns the business logic (often a shared responsibility between engineering and analytics). Marts are owned by whoever's accountable for what those numbers mean.
+The ownership rule that follows from this: the data engineering team owns staging models (they mirror your raw data contracts). Whoever owns the business logic owns intermediate models (often a shared responsibility between engineering and analytics). Whoever's accountable for what those numbers mean owns marts.
 
 The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. He came around when he realized the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter.
 
@@ -170,7 +170,7 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 **One definition, one place.** The reconciliation logic that used to exist in four analyst queries now lives in `int_payment_reconciliation`. Anyone who needs it uses `{{ ref('int_payment_reconciliation') }}`. There is no second copy to drift.
 
-**Testable.** Because models are declared in one place with explicit inputs, you can write tests against them. That's the next post. The reason testing is even possible at this level of granularity is because the models are discrete, named things with known schemas. You can't test what you can't point at.
+**Testable.** Because you declare models in one place with explicit inputs, you can write tests against them. That's the next post. Testing is possible at this level of granularity because the models are discrete, named things with known schemas. You can't test what you can't point at.
 
 **Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer is `dbt docs generate && dbt docs serve` and click through. He doesn't have to ask the data engineer.
 

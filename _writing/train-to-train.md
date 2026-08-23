@@ -74,7 +74,7 @@ function buildRoutes(stations) {
 
 ## The mockups
 
-From sketch to mockup, we iterated on a few details: the route bullet picked up the real MTA color, the answer tiles got tightened and rounded, and the prompt became "What is the Missing Stop?".
+From sketch to mockup, we iterated on a few details: the route bullet picked up the real MTA color, we tightened and rounded the answer tiles, and the prompt became "What is the Missing Stop?".
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/Start%20Page.png" alt="Final mockup of the Train to Train home screen on iPhone." />

@@ -10,7 +10,7 @@ There was almost always something they needed to solve in the morning. Sometimes
 
 This morning, he grabbed his keys and said "We're out of dog food." It wasn't the typical fire drill. The closest pet store was all the way in Manhattan, so they usually ordered the food online. But this week, they got caught up in circumstances.
 
-There'd been an odd storm the night before. At first, it was just heavy snow and wind. But then, the birds started following strange patterns. People noticed, and the mayor declared a state of emergency to keep everyone calm. The box that was meant to be there today, with their dog's food, was stuck in a processing center in Maspeth, Queens. Always something in the city.
+There'd been an odd storm the night before. At first, it was just heavy snow and wind. But then, the birds started following strange patterns. People noticed, and the mayor declared a state of emergency to keep everyone calm. The box due today, with their dog's food, was stuck in a processing center in Maspeth, Queens. Always something in the city.
 
 It was 8:40 when he walked out the door. He was going to stop by the big grocery store in Union Square. It was already open, so he could grab dinner supplies and then hop across the park to the pet store when they opened at 9:00. He'd be back home by 9:30 and easily make his 10:30 meeting to discuss the migration plan for one of his team's projects. Plenty of time and no need to stress, but he couldn't help himself. He was checking Slack and email, walking down the street to the subway station.
 

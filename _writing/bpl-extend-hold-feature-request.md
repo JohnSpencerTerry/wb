@@ -25,7 +25,7 @@ An **Extend Hold** button, next to Pause Hold and Cancel Hold on any item marked
 - Clicking it pushes the **Pickup By** date out by 5 days.
 - It's only available if no other patron is waiting on the item, that is, there's no one behind you in line for that copy. If someone's waiting, extending your hold delays their pickup, so the button shouldn't be actionable.
 - The 5-day count skips days the library is closed, Sundays and holidays, so a patron gets 5 open days to make it in, not 5 calendar days that might include a closed one or two.
-- It can only be used once per item. Hold shelves have finite physical space, and letting the same item get extended over and over would be burdensome.
+- A patron can only use it once per item. Hold shelves have finite physical space, and letting the same item get extended over and over would be burdensome.
 
 ## Try it
 

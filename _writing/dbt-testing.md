@@ -12,7 +12,7 @@ dbt tests are post-execution data quality assertions. They execute against whate
 
 ## Generic tests
 
-dbt ships with four [generic tests](https://docs.getdbt.com/docs/build/data-tests): `unique`, `not_null`, `accepted_values`, and `relationships`. They're declared in a `schema.yml` alongside your model.
+dbt ships with four [generic tests](https://docs.getdbt.com/docs/build/data-tests): `unique`, `not_null`, `accepted_values`, and `relationships`. You declare them in a `schema.yml` alongside your model.
 
 ```yaml
 # models/staging/schema.yml
@@ -132,4 +132,4 @@ jobs:
         run: dbt test --select staging --profiles-dir ./profiles
 ```
 
-Two things to get right. First, run against a CI environment with representative data. `dbt test` against an empty schema passes every test. Second, `--select staging` scopes tests to the layer where raw data contracts are enforced. If `stg_card_transactions` passes, you've verified ingestion output before any downstream model runs.
+Two things to get right. First, run against a CI environment with representative data. `dbt test` against an empty schema passes every test. Second, `--select staging` scopes tests to the layer that enforces raw data contracts. If `stg_card_transactions` passes, you've verified ingestion output before any downstream model runs.

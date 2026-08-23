@@ -38,7 +38,7 @@ Authoring the skill in the first place is the same job regardless of which distr
 
 The skill format itself is portable. Anthropic has published Agent Skills as an open standard, and a `SKILL.md` file works the same way across Claude.ai, Claude Code, and the API without modification. That's the content.
 
-The distribution layer is a different matter. Org and team plugin marketplaces, GitHub sync, `marketplace:plugin` namespacing, the install and override controls, all of that is Claude Code and Claude.ai infrastructure. None of it has an equivalent in another model's agent tooling. Building the sharing mechanism around it is a real cost worth knowing about upfront: if the team ever needs to switch models or run a second agent alongside Claude, the skill content travels, but the marketplace it lives in doesn't. It's not a reason to avoid the pattern, but it's worth naming before investing in it, not discovering after.
+The distribution layer is a different matter. Org and team plugin marketplaces, GitHub sync, `marketplace:plugin` namespacing, the install and override controls, all of that is Claude Code and Claude.ai infrastructure. None of it has an equivalent in another model's agent tooling. Building the sharing mechanism around it is a real cost worth knowing about upfront: if the team ever needs to switch models or run a second agent alongside Claude, the skill content travels, but the marketplace it lives in doesn't.
 
 ## Right-size the mechanism to the number of consumers
 

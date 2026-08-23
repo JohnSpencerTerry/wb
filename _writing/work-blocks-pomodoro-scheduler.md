@@ -25,7 +25,7 @@ Given work hours, a set of fixed meetings, and a task with a duration, the sched
 
 ## Try it
 
-This isn't the original app — it's a quick recreation in JS to demo the scheduling logic. Set work hours, add or edit a couple of meetings, give it a task and a duration, and hit Schedule.
+This is a quick recreation in JS to demo the scheduling logic, not the original app. Set work hours, add or edit a couple of meetings, give it a task and a duration, and hit Schedule.
 
 <div id="wb" class="wb-panel">
   <div class="wb-controls">
@@ -423,4 +423,4 @@ def schedule_blocks(gaps, total_minutes, block_len, break_len):
     return blocks, max(0, remaining)
 ```
 
-A gap that's too small for even one block gets skipped entirely, and a task that doesn't fit in the day comes back with `remaining > 0` so the app can flag it instead of silently dropping time.
+The scheduler skips a gap that's too small for even one block entirely, and a task that doesn't fit in the day comes back with `remaining > 0` so the app can flag it instead of silently dropping time.

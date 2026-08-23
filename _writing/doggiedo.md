@@ -9,7 +9,7 @@ My wife and I built DoggieDo, an app for dog owners to find dog-friendly places 
 
 ## The concept
 
-We built two key pieces of functionality on the consumer side. The first is a map of dog-friendly parks, vets, cafes, and groomers that can be filtered by category. Each place shows tips and activity counts from other owners. The second is a pet profile builder. It's a short wizard. You enter your dog's name, breed, and age. Then you add personality and health notes. Then you add a photo and bio.
+We built two key pieces of functionality on the consumer side. The first is a map of dog-friendly parks, vets, cafes, and groomers that you can filter by category. Each place shows tips and activity counts from other owners. The second is a pet profile builder. It's a short wizard. You enter your dog's name, breed, and age. Then you add personality and health notes. Then you add a photo and bio.
 
 Alongside that, we built out DoggieDo for Business. The idea was to make DoggieDo a two-sided platform: dog owners get a free, useful app, and pet care businesses (vets, groomers, cafes, boarding) pay to advertise directly to the owners already using it in their neighborhood. The consumer app was the audience; the business side was the revenue.
 

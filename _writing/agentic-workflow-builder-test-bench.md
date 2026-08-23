@@ -9,7 +9,7 @@ An LLM call doesn't always return the same output twice, so you can't assert on 
 
 ## The concept
 
-Deterministic steps such as a tool call or a trigger firing can be tested the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* correct?
+You can test deterministic steps such as a tool call or a trigger firing the way you'd test any function: run it, assert the output matches exactly. LLM steps are probabilistic, so the assertion has to change shape too: does the output *contain* the right information, does it match a schema, is it *semantically* correct?
 
 That's the core idea for a test bench: each step type gets assertion types that fit whether its output is deterministic or probabilistic. Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) calls these two families code-based graders (exact match, regex, schema checks — fast and reproducible, but brittle to valid variation) and model-based graders (an LLM or human judging against a rubric). Equals, Contains, and Has JSON keys below are code-based graders; Semantic match is a rough stand-in for a model-based one.
 

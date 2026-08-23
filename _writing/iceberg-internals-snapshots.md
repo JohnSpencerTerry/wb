@@ -180,7 +180,7 @@ def validate_batch(batch: pa.Table) -> None:
         )
 ```
 
-The check runs on the writer side, before `batch` is committed to the table. If upstream changed `event_timestamp` from `timestamp[us]` to `string` because a serializer was swapped out, the writer raises immediately. The Iceberg snapshot chain stays clean: no bad commit to roll back, no downstream consumer to notify.
+The check runs on the writer side, before the writer commits `batch` to the table. If upstream changed `event_timestamp` from `timestamp[us]` to `string` by swapping out a serializer, the writer raises immediately. The Iceberg snapshot chain stays clean: no bad commit to roll back, no downstream consumer to notify.
 
 Two things make this worth doing. First, it puts the failure at the point closest to the cause. A stack trace from the writer names the column and the type mismatch. A stack trace from a downstream query three hours later names some null pointer in an aggregation. Second, the table schema stays canonical. PyArrow doesn't get to decide what `db.stg_member_events` looks like; Iceberg does, and the check verifies the batch agrees.
 
@@ -190,4 +190,4 @@ For a data engineer new to Iceberg, the most useful first mental model is that t
 
 Both guardrails in this post work because of it. Snapshot rollback is cheap because the previous state of the table is a snapshot id in the metadata tree, and walking from there reads the same Parquet files that were already on S3. Schema enforcement at write time is possible because the table schema is itself a metadata fact you can read and compare against.
 
-The `dim_members` bug from the lead was fixed with a one-line procedure call. The bad write was still in the snapshot log, alongside the good one before it; moving the table's pointer back was the entire fix. The schema check that runs in front of `stg_member_events` is the same idea running forward instead of backward. The metadata layer is where the table is, and that's where you fix it from.
+A one-line procedure call fixed the `dim_members` bug from the lead. The bad write was still in the snapshot log, alongside the good one before it; moving the table's pointer back was the entire fix. The schema check that runs in front of `stg_member_events` is the same idea running forward instead of backward. The metadata layer is where the table is, and that's where you fix it from.
