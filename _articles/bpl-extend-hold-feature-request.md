@@ -3,12 +3,12 @@ layout: post
 title: "A feature request for the Brooklyn Public Library hold shelf."
 date: 2026-08-22
 category: Software Engineering
-draft: true
+draft: false
 ---
 
 I use the Brooklyn Public Library a lot. When you request an item and it becomes available, it gets pulled and held on a physical shelf inside the branch, with a **Pickup By** date. If you miss that date, the hold is canceled and it goes back into circulation.
 
-BPL branches keep limited hours: closed Sundays, shorter days midweek. A trip out of town, or a stretch of days too busy to make it to the branch while it's open, can run out the Pickup By date before you get there.
+BPL branches keep limited hours: closed Sundays, shorter days midweek. A trip out of town or a stretch of busy days can make it difficult to get there in time.
 
 **Pause Hold** is only available before an item reaches the shelf. Once it's on the shelf, the only options are to pick it up or cancel the hold outright.
 
@@ -23,9 +23,9 @@ Canceling sends you back to the end of the list, waiting for the copy to come ar
 An **Extend Hold** button, next to Pause Hold and Cancel Hold on any item marked "Ready for Pickup":
 
 - Clicking it pushes the **Pickup By** date out by 5 days.
-- It's only available if no other patron is waiting on the item, that is, there's no one behind you in line for that copy. If someone's waiting, extending your hold just delays their pickup, so the button shouldn't be offered at all in that case.
+- It's only available if no other patron is waiting on the item, that is, there's no one behind you in line for that copy. If someone's waiting, extending your hold delays their pickup, so the button shouldn't be actionable.
 - The 5-day count skips days the library is closed, Sundays and holidays, so a patron actually gets 5 open days to make it in, not 5 calendar days that might include two closed ones.
-- It can only be used once per item. Hold shelves have finite physical space, and letting the same item get extended over and over would let a few patrons quietly monopolize it.
+- It can only be used once per item. Hold shelves have finite physical space, and letting the same item get extended over and over would be burdensome.
 
 ## Try it
 
