@@ -22,4 +22,4 @@ excerpt: "Charred tomatillos, jalapeño, and cilantro, blitzed rough."
 3. While it cools, chop about 2 tbsp cilantro and dice half an onion.
 4. After dicing the onion, rinse it under cold water to take off the sulfur — that "onion bite."
 5. Peel the roasted garlic, then add the tomatillos, jalapeño, and garlic to a blender. Pulse to the smoothness you want — a little chunky is fine.
-6. Transfer to a bowl or container and stir in the cilantro and onion. You don't have to use all of the onion if the ratio feels off.
+6. Transfer to a bowl or container and stir in the cilantro and onion. You don't have to use all of the onion if the ratio feels off. Season with salt to taste.

@@ -18,7 +18,7 @@ The new section [just opened](https://www.nycgovparks.org/parks/bushwick-inlet-p
   <img src="/assets/photos/bushwick-inlet/park-area.png" alt="Map of the new cove extension on Franklin between N 12th and Quay." />
 </figure>
 
-The extension is small and has no shade, so it got hot fast. But the flowers are nice, and it does feel out of the city. A father and son were out with an RC boat, which Jupiter took an intense interest in. We hope to be back often. A kayak makes sense here, and with the cove, it's a good bird sanctuary.
+The extension is small and has no shade, so it got hot fast. But the flowers are nice, and it does feel out of the city. A father and son were out with an RC boat, which Jupiter took an intense interest in. We hope to be back often. A kayak makes sense here, and the cove looks like it'd make a good bird sanctuary too.
 
 <figure class="media-figure">
   <img src="/assets/photos/bushwick-inlet/crystal.jpg" alt="Crystal at the cove." />

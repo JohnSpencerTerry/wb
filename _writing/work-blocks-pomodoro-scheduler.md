@@ -11,7 +11,7 @@ Early in covid, a lot of people were suddenly working remote with a workday that
 
 Set your work hours. The app reads Google Calendar for meetings and other unmovable blocks. Everything else is open for "workblocks" — focus chunks with breaks between them.
 
-A task like "Write report" estimated at three hours becomes six 25-minute workblocks with 10-minute breaks (both configurable), scheduled into whatever open time is left in the day. Reminders and start/stop handle the rest.
+A task like "Write report" estimated at two and a half hours becomes six 25-minute workblocks with 10-minute breaks (both configurable), scheduled into whatever open time is left in the day. Reminders and start/stop handle the rest.
 
 Built in Python with tkinter.
 

@@ -15,7 +15,7 @@ Thirty is a big number for a horse, so it was a good excuse to make the trip.
 
 Misty lived at our home in Cartersville for most of her life. A few years ago, after my sister and I moved to New York, my parents decided to leave Georgia and head to Essex, Connecticut — partly to be closer to family and partly to be a shorter drive from us. My parents sold the property, and Misty stayed in Georgia. She's now boarded at Blackberry Pastures.
 
-The farm threw Misty a birthday party. It was a great chance for my Dad and I to spend a few days together while reconnecting with the town I called home for almost twenty years.
+The farm threw Misty a birthday party. It was a great chance for my dad and me to spend a few days together while reconnecting with the town I called home for almost twenty years.
 
 <figure class="media-figure">
   <video controls src="/assets/videos/dad-misty.mp4"></video>

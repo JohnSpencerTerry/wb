@@ -121,9 +121,9 @@ At work, the transformation layer is organized in three layers. The convention p
 
 **Staging** (`stg_*`): One model per source table. Rename columns, cast types, apply minimal filtering. No joins. No business logic. `stg_card_transactions` doesn't know what a reconciliation mismatch is.
 
-**Intermediate** (`int_*`): Business logic lives here. Joins happen here. `int_payment_reconciliation` is where transaction events meet member eligibility. Intermediate models are not exposed to analysts directly — they're building blocks.
+**Intermediate** (`int_*`): Business logic lives here. Joins happen here. `int_payment_reconciliation` is where transaction events meet member eligibility. Intermediate models are not exposed to analysts directly. They're building blocks.
 
-**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what the data scientist uses for modeling. Marts should be stable interfaces — when they change, downstream consumers know about it.
+**Marts** (`fct_*`, `dim_*`): Consumer-facing outputs. `fct_card_transactions` is what analysts query for reporting. `fct_member_engagement_metrics` is what the data scientist uses for modeling. Marts should be stable interfaces. When they change, downstream consumers know about it.
 
 <figure class="diagram-figure">
   <svg viewBox="0 0 640 220" role="img" aria-labelledby="awb-dag-title awb-dag-desc" style="width:100%;height:auto;font-family:var(--font-sans);">
@@ -170,7 +170,7 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 **One definition, one place.** The reconciliation logic that used to exist in four analyst queries now lives in `int_payment_reconciliation`. Anyone who needs it uses `{{ ref('int_payment_reconciliation') }}`. There is no second copy to drift.
 
-**Testable.** Because models are declared in one place with explicit inputs, you can write tests against them. That's the next post — but the reason testing is even possible at this level of granularity is because the models are discrete, named things with known schemas. You can't test what you can't point at.
+**Testable.** Because models are declared in one place with explicit inputs, you can write tests against them. That's the next post. The reason testing is even possible at this level of granularity is because the models are discrete, named things with known schemas. You can't test what you can't point at.
 
 **Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer is `dbt docs generate && dbt docs serve` and click through. He doesn't have to ask the data engineer.
 

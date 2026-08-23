@@ -56,7 +56,7 @@ models:
 
 A null `event_id` means `fct_card_transactions` has null primary keys. A `status` outside the accepted set means mart logic with a `CASE WHEN status = 'APPROVED'` is silently producing wrong numbers for some rows.
 
-The `relationships` test is worth highlighting. At work, it caught a timing issue: transactions were arriving for `account_id` values that hadn't loaded into `dim_members` yet because two pipelines had no guaranteed ordering in Airflow. The fix was in the DAG, not the dbt model — but the test is what surfaced it.
+The `relationships` test is worth highlighting. At work, it caught a timing issue: transactions were arriving for `account_id` values that hadn't loaded into `dim_members` yet because two pipelines had no guaranteed ordering in Airflow. The fix was in the DAG, not the dbt model, but the test is what surfaced it.
 
 
 ## Custom tests
@@ -96,7 +96,8 @@ Not every failure should stop the pipeline. [`severity: warn`](https://docs.getd
           - not_null
           - dbt_utils.expression_is_true:  # requires dbt-utils — see https://github.com/dbt-labs/dbt-utils
               expression: ">= 0"
-              severity: warn
+              config:
+                severity: warn
 ```
 
 Negative amounts can be valid. They're reversals. Surface it. Don't halt the mart refresh. The calibration matters: if everything is an error, teams start ignoring failures. Null primary keys are always errors. Domain anomalies worth investigating are warnings.

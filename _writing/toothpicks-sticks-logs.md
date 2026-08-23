@@ -6,6 +6,8 @@ tags: [Tech]
 draft: true
 ---
 
+The right tool changes with scale. You wouldn't crane toothpicks, and you can't hand-carry logs.
+
 <div class="tsl-panel">
   <svg viewBox="0 0 660 260" role="img" aria-labelledby="tsl-title tsl-desc" style="width:100%;height:auto;">
     <title id="tsl-title">Three panels: a person bending to pick up toothpicks by hand, a person carrying a bundle of sticks, a crane lifting a log</title>
@@ -84,7 +86,6 @@ draft: true
       <text x="100" y="238" fill="#6b5c47" font-size="14" font-weight="600" text-anchor="middle">by crane</text>
     </g>
   </svg>
-  <div class="tsl-caption">The right tool changes with scale. You wouldn't crane toothpicks, and you can't hand-carry logs.</div>
 </div>
 
 <style>
@@ -93,12 +94,5 @@ draft: true
     border-radius: 16px;
     padding: 1.5rem;
     margin: 1.5rem 0;
-  }
-  .tsl-caption {
-    font-family: system-ui, sans-serif;
-    font-size: 13px;
-    color: #7a6c56;
-    text-align: center;
-    margin-top: 0.75rem;
   }
 </style>

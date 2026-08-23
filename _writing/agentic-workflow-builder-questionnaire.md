@@ -12,7 +12,7 @@ Before a workflow gets built, someone has to decide it's worth building. This is
 *[Building AI-Powered Products](https://www.oreilly.com/library/view/building-ai-powered-products/9781098152697/)* raises a handful of questions worth asking before any AI feature gets scoped. A few of them map cleanly onto a workflow-builder intake:
 
 - **0 → 1 or 1 → n?** Is this making something possible that wasn't before, or improving something that already exists? A 0 → 1 product has no baseline to compare against, so "done" is fuzzier and there's more room to iterate. A 1 → n product is judged against what it's replacing, so the bar is concrete from day one.
-- **What does AI actually enable here?** Learning from data, personalizing an experience, automating judgment or creative work, handling unstructured input — naming which one applies keeps the workflow honest about *why* it needs a probabilistic step at all, rather than reaching for an LLM call where a deterministic one would do.
+- **What does AI enable here?** Learning from data, personalizing an experience, automating judgment or creative work, handling unstructured input — naming which one applies keeps the workflow honest about *why* it needs a probabilistic step at all, rather than reaching for an LLM call where a deterministic one would do.
 - **RICE — Reach, Impact, Confidence, Effort.** Once there's more than one candidate workflow, RICE gives a way to rank them against each other. The score only means something in comparison to other ideas in the same backlog. It's not an absolute bar to clear.
 
 Asking these up front is what turns "we should build an agent for this" into something with enough shape to hand to the canvas.
