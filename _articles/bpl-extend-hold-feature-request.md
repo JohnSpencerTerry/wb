@@ -6,7 +6,7 @@ category: Software Engineering
 draft: true
 ---
 
-I use the Brooklyn Public Library a lot. When you request an item and it becomes available, it gets pulled and held on a physical shelf inside the branch, with a **Pickup By** date. Miss that date and it goes back into circulation for the next person on the list.
+I use the Brooklyn Public Library a lot. When you request an item and it becomes available, it gets pulled and held on a physical shelf inside the branch, with a **Pickup By** date. If you miss that date, the hold is canceled and it goes back into circulation.
 
 BPL branches keep limited hours: closed Sundays, shorter days midweek. A trip out of town, or a stretch of days too busy to make it to the branch while it's open, can run out the Pickup By date before you get there.
 
