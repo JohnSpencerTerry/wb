@@ -2,7 +2,7 @@
 layout: post
 title: "Fractional engineering work after a startup's venture-scale plan falters."
 date: 2026-06-10
-category: Software Engineering
+tags: [Tech]
 draft: true
 ---
 

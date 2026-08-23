@@ -2,7 +2,7 @@
 layout: post
 title: "Async refinement replaces the requirements meeting."
 date: 2026-07-26
-category: Software Engineering
+tags: [Tech, AI]
 draft: true
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "FHIR and BCDA."
 date: 2026-05-29
-category: Software Engineering
+tags: [Tech]
 draft: true
 ---
 

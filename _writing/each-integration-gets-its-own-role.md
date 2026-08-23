@@ -2,7 +2,7 @@
 layout: post
 title: "Each integration gets its own role."
 date: 2026-05-29
-category: Software Engineering
+tags: [Tech]
 draft: false
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Treating the transformation layer as a product."
 date: 2026-05-01
-category: Software Engineering
+tags: [Tech]
 ---
 
 The data engineer can tell you the history of how the transformation layer got the way it is. She helped build part of it during the early days, when getting customers and continuing to exist was the most pressing matter.

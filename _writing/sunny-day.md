@@ -2,6 +2,7 @@
 layout: post
 title: "Sunny day"
 date: 2026-05-31
+tags: [Fiction]
 draft: false
 ---
 

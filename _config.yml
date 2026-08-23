@@ -2,15 +2,9 @@ title: "John Spencer Terry"
 google_analytics: G-KCKCJBP62T
 permalink: pretty
 collections:
-  articles:
+  writing:
     output: true
-    permalink: /articles/:path/
-  side_projects:
-    output: true
-    permalink: /side-projects/:path/
-  creative_writing:
-    output: true
-    permalink: /creative-writing/:path/
+    permalink: /writing/:path/
   food:
     output: true
     permalink: /food/:path/

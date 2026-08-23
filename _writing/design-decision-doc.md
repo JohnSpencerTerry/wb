@@ -2,7 +2,7 @@
 layout: post
 title: "Modular design decision docs."
 date: 2026-05-25
-category: Software Engineering
+tags: [Tech]
 draft: false
 ---
 

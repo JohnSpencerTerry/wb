@@ -2,10 +2,10 @@
 layout: post
 title: "dbt models, refs, and sources — a practical intro."
 date: 2026-05-07
-category: Software Engineering
+tags: [Tech]
 ---
 
-In the [last post](/articles/transformation-layer-as-a-product/), we talked about the ownership problem: the transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/writing/transformation-layer-as-a-product/), we talked about the ownership problem: the transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
 
 This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how a typical model hierarchy maps onto them.
 
@@ -166,7 +166,7 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 ## How this solves the problem
 
-[Post 1](/articles/transformation-layer-as-a-product/) named three symptoms: logic in multiple places, no way to know which version was right, and no path from a number back to the code that produced it. These three primitives address all three directly.
+[Post 1](/writing/transformation-layer-as-a-product/) named three symptoms: logic in multiple places, no way to know which version was right, and no path from a number back to the code that produced it. These three primitives address all three directly.
 
 **One definition, one place.** The reconciliation logic that used to exist in four analyst queries now lives in `int_payment_reconciliation`. Anyone who needs it uses `{{ ref('int_payment_reconciliation') }}`. There is no second copy to drift.
 

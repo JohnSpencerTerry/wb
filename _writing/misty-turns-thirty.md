@@ -2,7 +2,7 @@
 layout: post
 title: "Misty Turns Thirty"
 date: 2026-05-13
-category: Life
+tags: [Random]
 ---
 
 This past weekend my dad and I flew down to Atlanta, rented a car, and drove out to our hometown of Cartersville, Georgia for a few days. We went to see our horse Misty, who turned thirty.

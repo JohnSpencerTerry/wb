@@ -2,7 +2,7 @@
 layout: post
 title: "A feature request for the Brooklyn Public Library hold shelf."
 date: 2026-08-22
-category: Software Engineering
+tags: [Tech]
 draft: false
 ---
 

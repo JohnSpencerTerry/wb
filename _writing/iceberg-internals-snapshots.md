@@ -2,7 +2,7 @@
 layout: post
 title: "Apache Iceberg internals: snapshots, manifests, and time travel."
 date: 2026-05-21
-category: Software Engineering
+tags: [Tech]
 draft: false
 ---
 

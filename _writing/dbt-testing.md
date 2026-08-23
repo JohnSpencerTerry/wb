@@ -2,10 +2,10 @@
 layout: post
 title: "Testing your data contracts with dbt: schema tests, custom tests, and CI."
 date: 2026-05-14
-category: Software Engineering
+tags: [Tech]
 ---
 
-In the [last post](/articles/dbt-models-refs-sources/), we built out the model structure: staging, intermediate, marts. This post is about testing it: asserting that what those models produce is what you expect.
+In the [last post](/writing/dbt-practical-intro/), we built out the model structure: staging, intermediate, marts. This post is about testing it: asserting that what those models produce is what you expect.
 
 dbt tests are post-execution data quality assertions. They execute against whatever data exists in your target schema (typically a test dataset) and fail if the output violates a condition. You're not aiming for coverage of every column in every model. The goal is to assert the properties that, if violated, would silently corrupt everything downstream.
 

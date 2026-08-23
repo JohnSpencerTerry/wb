@@ -2,6 +2,7 @@
 layout: post
 title: "We're out of dog food"
 date: 2026-05-31
+tags: [Fiction]
 draft: false
 ---
 

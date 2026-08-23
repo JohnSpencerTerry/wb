@@ -2,7 +2,7 @@
 layout: post
 title: "Software factory built from Claude Skills."
 date: 2026-08-01
-category: Software Engineering
+tags: [Tech, AI]
 draft: true
 ---
 
@@ -62,7 +62,7 @@ The "software factory" idea going around the industry right now, [described well
 
 ## Three skills chain from task to reviewed PR
 
-["Async refinement replaces the requirements meeting."](/articles/async-refinement/) covered `create-task`, the first skill in the chain: it turns a Slack thread, a code TODO, a plain description, or a PRD into a scoped task assigned to the right epic. That's where this factory picks up. Once a task exists, two more skills carry it the rest of the way: `plan-from-task` turns the task into a plan, and `implement-from-plan` turns an approved plan into open pull requests. Together the three cover the loop from "here's a task" to "here's an open, reviewed PR," with a human review gate sitting between planning and implementation.
+["Async refinement replaces the requirements meeting."](/writing/async-refinement/) covered `create-task`, the first skill in the chain: it turns a Slack thread, a code TODO, a plain description, or a PRD into a scoped task assigned to the right epic. That's where this factory picks up. Once a task exists, two more skills carry it the rest of the way: `plan-from-task` turns the task into a plan, and `implement-from-plan` turns an approved plan into open pull requests. Together the three cover the loop from "here's a task" to "here's an open, reviewed PR," with a human review gate sitting between planning and implementation.
 
 ## What plan-from-task produces
 

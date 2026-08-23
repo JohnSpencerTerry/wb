@@ -2,7 +2,7 @@
 layout: post
 title: "Sharing Claude Code skills across projects."
 date: 2026-08-15
-category: Software Engineering
+tags: [Tech, AI]
 draft: false
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "What the agentic workflow builder market looks like."
 date: 2026-08-17
-category: Software Engineering
+tags: [Tech, AI]
 draft: true
 ---
 
@@ -68,7 +68,7 @@ Two patterns hold once you strip the marketing. First, learning curve and agenti
 
 ## Gaps to explore in the project
 
-My proof of concept works through the ideas from three earlier posts — a [canvas](/side-projects/agentic-workflow-builder-canvas-prototype/), a [test bench](/side-projects/agentic-workflow-builder-test-bench/), and an [intake questionnaire](/side-projects/agentic-workflow-builder-questionnaire/) — and isn't trying to compete with any of the four products above. But the comparison sharpens what's worth building out.
+My proof of concept works through the ideas from three earlier posts — a [canvas](/writing/agentic-workflow-builder-canvas-prototype/), a [test bench](/writing/agentic-workflow-builder-test-bench/), and an [intake questionnaire](/writing/agentic-workflow-builder-questionnaire/) — and isn't trying to compete with any of the four products above. But the comparison sharpens what's worth building out.
 
 **Testing.** All four products underserve it relative to how much it matters once a workflow includes an LLM step. My test bench prototype treats it as a first-class citizen already — assertions and pass@k/pass^k sampling alongside the canvas, not bolted on after. Formalizing that (code-based graders for deterministic steps, model-based graders for probabilistic ones, testable before a workflow runs live) is a more specific angle than "another visual builder."
 

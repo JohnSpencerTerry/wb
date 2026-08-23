@@ -1,26 +1,9 @@
 ---
 layout: default
 ---
-{% assign back_url = "/articles/" %}
-{% assign back_label = "Articles" %}
-{% if page.collection == "articles" %}
-  {% if page.category == "Life" %}
-    {% assign back_url = "/life/" %}
-    {% assign back_label = "Life" %}
-  {% elsif page.category == "Media" %}
-    {% assign back_url = "/media/" %}
-    {% assign back_label = "Reading &amp; Watching" %}
-  {% else %}
-    {% assign back_url = "/articles/" %}
-    {% assign back_label = "Articles" %}
-  {% endif %}
-{% elsif page.collection == "side_projects" %}
-  {% assign back_url = "/side-projects/" %}
-  {% assign back_label = "Side Projects" %}
-{% elsif page.collection == "creative_writing" %}
-  {% assign back_url = "/creative-writing/" %}
-  {% assign back_label = "Creative Writing" %}
-{% elsif page.collection == "food" %}
+{% assign back_url = "/writing/" %}
+{% assign back_label = "Write Ups" %}
+{% if page.collection == "food" %}
   {% assign back_url = "/food/" %}
   {% assign back_label = "Food" %}
 {% endif %}

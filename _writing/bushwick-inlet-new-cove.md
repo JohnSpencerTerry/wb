@@ -2,7 +2,7 @@
 layout: post
 title: "A New Cove at Bushwick Inlet Park"
 date: 2026-06-14
-category: Life
+tags: [Random]
 draft: false
 ---
 

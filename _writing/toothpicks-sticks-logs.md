@@ -2,7 +2,7 @@
 layout: post
 title: "Toothpicks, sticks, logs."
 date: 2026-07-27
-category: Software Engineering
+tags: [Tech]
 draft: true
 ---
 

@@ -18,18 +18,8 @@
 </head>
 <body>
   {% assign nav_key = page.nav %}
-  {% if page.collection == "articles" %}
-    {% if page.category == "Life" %}
-      {% assign nav_key = "life" %}
-    {% elsif page.category == "Media" %}
-      {% assign nav_key = "media" %}
-    {% else %}
-      {% assign nav_key = "articles" %}
-    {% endif %}
-  {% elsif page.collection == "side_projects" %}
-    {% assign nav_key = "side-projects" %}
-  {% elsif page.collection == "creative_writing" %}
-    {% assign nav_key = "creative-writing" %}
+  {% if page.collection == "writing" %}
+    {% assign nav_key = "writing" %}
   {% elsif page.collection == "food" %}
     {% assign nav_key = "food" %}
   {% endif %}
@@ -44,12 +34,9 @@
         </label>
       </div>
       <nav>
-        <a href="/articles/" {% if nav_key == "articles" %}class="active"{% endif %}>Articles</a>
-        <a href="/side-projects/" {% if nav_key == "side-projects" %}class="active"{% endif %}>Side Projects</a>
-        <a href="/creative-writing/" {% if nav_key == "creative-writing" %}class="active"{% endif %}>Creative Writing</a>
+        <a href="/writing/" {% if nav_key == "writing" %}class="active"{% endif %}>Write Ups</a>
         <a href="/food/" {% if nav_key == "food" %}class="active"{% endif %}>Food</a>
         <a href="/media/" {% if nav_key == "media" %}class="active"{% endif %}>Reading &amp; Watching</a>
-        <a href="/life/" {% if nav_key == "life" %}class="active"{% endif %}>Life</a>
         <!-- <a href="/photos/">Photos</a> -->
         <a href="/about/" {% if nav_key == "about" %}class="active"{% endif %}>About</a>
       </nav>

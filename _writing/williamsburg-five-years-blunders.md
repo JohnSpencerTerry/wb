@@ -2,7 +2,7 @@
 layout: post
 title: "Five Years in Williamsburg, and Our Blunders So Far"
 date: 2026-08-16
-category: Life
+tags: [Random]
 draft: true
 ---
 

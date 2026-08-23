@@ -2,7 +2,7 @@
 layout: post
 title: "Strips, panels, and the graphic novel."
 date: 2026-06-28
-category: Life
+tags: [Random]
 draft: true
 ---
 
