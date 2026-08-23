@@ -4,7 +4,6 @@ permalink: /
 sitemap: false
 ---
 
-<p class="home-intro">I'm John, a software engineer in New York City. This site is where I work on my writing. </p>
 {% assign writing = site.writing | where_exp: "p", "p.draft != true" | sort: 'date' | reverse %}
 {% if writing.size > 0 %}
 <div class="home-section">
