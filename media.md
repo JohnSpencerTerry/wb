@@ -5,7 +5,6 @@ permalink: /media/
 nav: media
 ---
 
-{% include page-heading.html title=page.title %}
 <p>Books, movies, and the occasional TV show or exhibit.</p>
 <div class="media-filter">
   <button type="button" class="media-filter-btn active" data-filter="all">All</button>

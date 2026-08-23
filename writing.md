@@ -5,7 +5,6 @@ permalink: /writing/
 nav: writing
 ---
 
-{% include page-heading.html title=page.title %}
 <p>Articles, side projects, and stories, filterable by tag. Select multiple tags to narrow to posts that match all of them.</p>
 <div class="media-filter">
   <button type="button" class="media-filter-btn active" data-filter="all">All</button>

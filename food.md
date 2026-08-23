@@ -5,7 +5,6 @@ permalink: /food/
 nav: food
 ---
 
-{% include page-heading.html title=page.title %}
 <p>Recipes  plus notes from cooking, shopping, and eating.</p>
 {% assign visible_posts = site.food | where_exp: "p", "p.draft != true" %}
 {% assign sorted_posts = visible_posts | sort: 'date' | reverse %}
