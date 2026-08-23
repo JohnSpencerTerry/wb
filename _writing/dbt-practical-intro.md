@@ -5,7 +5,7 @@ date: 2026-05-07
 tags: [Tech]
 ---
 
-In the [last post](/writing/transformation-layer-as-a-product/), we talked about the ownership problem: the transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to promise. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
+In the [last post](/writing/transformation-layer-as-a-product/), we talked about the ownership problem: the transformation layer had grown into logic copied between notebooks and SQL duplicated across stored procedures, with no shared definition of what the output was supposed to be. The argument was that treating the transformation layer as a product, with real contracts and clear ownership, was the fix.
 
 This post is about what that looks like in practice: the three [dbt](https://www.getdbt.com/product/what-is-dbt) primitives you need to understand to build a structured transformation layer, and how a typical model hierarchy maps onto them.
 
@@ -161,7 +161,7 @@ At work, we organize the transformation layer in three layers. The convention pr
 
 The ownership rule that follows from this: the data engineering team owns staging models (they mirror your raw data contracts). Whoever owns the business logic owns intermediate models (often a shared responsibility between engineering and analytics). Whoever's accountable for what those numbers mean owns marts.
 
-The analytics lead initially pushed back on the intermediate layer. His read was that it was an extra abstraction between him and the data. He came around when he realized the reconciliation logic in `int_payment_reconciliation` was logic he'd been duplicating in four different analyst queries, and each copy had drifted. The intermediate model is where that logic lives now. His queries got shorter.
+The intermediate layer can look like an extra abstraction between an analyst and the data, until the alternative is counted: the reconciliation logic in `int_payment_reconciliation` used to be duplicated across four separate analyst queries, and each copy had drifted from the others. Consolidating it into one intermediate model means every analyst query that needs it gets shorter, and there's exactly one version to keep correct.
 
 
 ## How this solves the problem
@@ -172,6 +172,6 @@ The analytics lead initially pushed back on the intermediate layer. His read was
 
 **Testable.** Because you declare models in one place with explicit inputs, you can write tests against them. That's the next post. Testing is possible at this level of granularity because the models are discrete, named things with known schemas. You can't test what you can't point at.
 
-**Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. When the data scientist asks where `is_unmatched` comes from, the answer is `dbt docs generate && dbt docs serve` and click through. He doesn't have to ask the data engineer.
+**Traceable.** Every `{{ ref() }}` and `{{ source() }}` call is a dependency edge. dbt builds the full lineage graph from those edges. Tracing where `is_unmatched` comes from is `dbt docs generate && dbt docs serve` and a few clicks, instead of tracking down whoever wrote the model.
 
 Next up: those models need tests. Declaring the structure is step one. Enforcing the contracts, making sure `event_id` is unique, `account_id` never nulls, and `is_unmatched` only has two valid states, is step two, and it's where dbt testing earns its keep.

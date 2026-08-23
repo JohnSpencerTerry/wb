@@ -5,48 +5,42 @@ date: 2026-05-01
 tags: [Tech]
 ---
 
-The data engineer can tell you the history of how the transformation layer got the way it is. She helped build part of it during the early days, when getting customers and continuing to exist was the most pressing matter.
-
-In the early days, the pattern made sense. An analyst needed a number, so they wrote a script and pushed the result to a table in Postgres. It worked. Then another analyst needed a slightly different version of the same number, so they wrote another script. Then an engineer needed it in a pipeline, so they wrote it again. Everyone was solving their immediate problem.
+A transformation layer accumulates duplicate logic fast. An analyst needs a number, writes a script, and pushes the result to a table in Postgres. It works. Another analyst needs a slightly different version of the same number and writes another script. An engineer needs it in a pipeline and writes it a third time. Each decision solves an immediate problem.
 
 Three years later, `member_engagement_metrics` exists in four places. They don't agree.
 
-When the analytics lead says analysts should own the SQL, he's not wrong. The analysts do own it: several of them, independently, with no shared definition of what the output is supposed to promise.
+The standard argument is about who should own the SQL. That's not the problem. Analysts already write it, several of them, independently, with no shared definition of what the output is supposed to be. Every time a customer questions a number, tracing it back through three notebooks and a stored procedure to find out which version of the logic produced it costs the team days.
 
-She's not trying to start a turf war either. She's been here when a customer questions a number and the team has to spend several hectic days tracing it back through three notebooks and a stored procedure to figure out which version of the logic produced it.
-
-The harder question was about ownership: did anyone own what the SQL promised?
+The harder question isn't who writes the SQL. It's whether anyone actually owns it.
 
 ## Nobody decided what the transformation layer was for
 
 This stack isn't unusual. Most data teams at a certain age have some version of this: ingestion code in one place, transformation logic scattered across notebooks and scripts and stored procedures, results persisted somewhere shared that everyone reads but nobody fully owns. The specific tools change — pandas or PySpark, Postgres or S3 — but the dysfunction is the same.
 
-The instinct when you see this is to blame the tools. If we were using the right technology, the thinking goes, this wouldn't have happened. But the data engineer has seen clean tools produce messy systems and messy tools produce pipelines that ran reliably for years. Nobody ever decided what the transformation layer was supposed to be: who it served, what it promised, and how you'd know if it broke.
+The instinct when you see this is to blame the tools. If the team were using the right technology, the thinking goes, this wouldn't have happened. But clean tools produce messy systems just as often as messy tools produce pipelines that run reliably for years. Nobody ever decided what the transformation layer was supposed to be: who it served, who owned it, and how anyone would know if it broke.
 
-That's an architectural decision most new teams skip because in the early days, the cost is invisible.
+That's an architectural decision most new teams skip, because in the early days the cost is invisible.
 
 ## When the cost becomes visible
 
-The new data scientist joined from a fintech background. He's good at building models. His problem sat upstream of modeling: he couldn't trust the features he was training on.
+The cost shows up first for whoever trains models on the output. A feature pulled from `fct_member_engagement_metrics` looks reasonable in development, then something downstream doesn't match: an audit report, a number a stakeholder questions. The pipeline itself didn't fail. The raw data is fine. The issue sits in the transformation layer, in logic that exists in three places and has quietly diverged.
 
-He'd pull `fct_member_engagement_metrics` for an engagement model, the model would look reasonable in development, and then something downstream wouldn't match. An audit report. A number a stakeholder questioned. He'd bring it to the data engineer as a pipeline problem. She would dig in and find the raw data was fine. The issue sat in the transformation layer, in logic that existed in three places and had quietly diverged.
-
-The damage stayed silent. The pipeline didn't fail. The model trained. The report generated. Everything looked like it was working right up until someone asked a hard question about a specific number.
+The damage stays silent. The pipeline doesn't fail. The model trains. The report generates. Everything looks like it's working right up until someone asks a hard question about a specific number.
 
 That's the worst kind of bug to have in a data system. A pipeline that crashes is easy to fix. A pipeline that produces plausible wrong answers for months is the one that erodes trust in the entire platform.
 
-## What owning the promise means
+## What having ownership means
 
-The argument between the data engineer and the analytics lead ends when they both look at the `member_engagement_metrics` situation. The analytics lead is right that analysts should write SQL. The data engineer is right that uncoordinated SQL ownership is how you end up here. They're both right, and the system is still broken. What moves the conversation forward is both of them agreeing that the question of who writes the SQL is less important than the question of whether anyone can stand behind what it produces.
+Two positions are both defensible on their own: analysts should write their own SQL, since they understand the business logic best, and uncoordinated SQL ownership is how a metric ends up defined four different ways. Both can be true at once, and the system is still broken. The question of who writes the SQL matters less than the question of whether anyone can stand behind what it produces.
 
-The analytics lead's SQL is good. Three things were missing: a single place where the definition lived, a test that would catch the logic drifting, and a path back from any number to the code that produced it without days of archaeology.
+Good SQL isn't the missing piece. What's missing is a single place where the definition lives, a test that catches the logic drifting, and a path back from any number to the code that produced it without days of archaeology.
 
-Owning the promise means something specific: there is one definition, it lives in one place, it has tests that enforce what it's supposed to produce, and anyone can trace a number back to the logic that generated it. Those are the requirements. They live at the level of discipline. It's a decision to treat the transformation layer as something with consumers and contracts, rather than as a collection of scripts that happen to produce the right answer most of the time.
+Having ownership means something specific: there is one definition, it lives in one place, it has tests that enforce what it's supposed to produce, and anyone can trace a number back to the logic that generated it. Those requirements live at the level of discipline, not tooling. It's a decision to treat the transformation layer as something with consumers and contracts, rather than as a collection of scripts that happen to produce the right answer most of the time.
 
-The harder part is cultural. You can adopt the best tooling available and still end up with four versions of `member_engagement_metrics` if the team hasn't agreed on what the transformation layer is supposed to be. Excellent SQL with no shared contract, no tests, and no traceable lineage produces exactly this. Those are solvable problems. But solving them requires agreeing they're problems first.
+The harder part is cultural. A team can adopt the best tooling available and still end up with four versions of `member_engagement_metrics` if it hasn't agreed on what the transformation layer is supposed to be. Excellent SQL with no shared contract, no tests, and no traceable lineage produces exactly this. Those are solvable problems, but solving them requires agreeing they're problems first.
 
-The data engineer knows this because she built the scripts. She knows exactly how reasonable each individual decision felt at the time, and she knows exactly what three years of reasonable individual decisions produces.
+Every one of those four versions felt like a reasonable decision when someone wrote it. Three years of reasonable individual decisions is exactly what produces this.
 
 ## What comes next
 
-Once you've agreed on the problem — one definition, one place, testable, traceable — the next question is what that looks like inside a real stack. How do you structure the transformation layer so models build on each other cleanly? Where do the contracts live? How does it fit into an orchestration layer that isn't going anywhere?
+Once the problem is agreed on — one definition, one place, testable, traceable — the next question is what that looks like inside a real stack. How do you structure the transformation layer so models build on each other cleanly? Where do the contracts live? How does it fit into an orchestration layer that isn't going anywhere?
