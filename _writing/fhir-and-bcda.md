@@ -3,62 +3,8 @@ layout: post
 title: "FHIR and BCDA."
 date: 2026-05-29
 tags: [Tech]
-draft: true
+draft: false
 ---
-
-<!--
-OUTLINE
-
-1. What FHIR is, and where it came from
-   - REST-based standard: healthcare concepts (Patient, Claim, ExplanationOfBenefit) modeled
-     as discrete resources, fetched over HTTPS, JSON or XML
-   - Brief history: HL7 started work on it in 2011, revised through Release 5 (2023); built to
-     be easier to implement than the older HL7 v2/v3 document-based standards it's succeeding
-   - FHIR is one standard among many in healthcare data — link the xkcd "standards" comic as
-     the acknowledgment that FHIR doesn't make the proliferation problem go away, it's just
-     the current widely-adopted answer
-
-2. CMS runs more than one feed, and they're not interchangeable
-   - CCLF: monthly, fixed-width tabular files, sourced from the Integrated Data Repository,
-     accessed manually/via command line
-   - BCDA: FHIR-formatted, API-based, adjudicated claims weekly and partially adjudicated
-     claims daily, sourced from CCW plus FISS/MCS
-   - Ground this in the reason for building around BCDA at work: it's a materially lower
-     latency source than CCLF for the same underlying claims
-
-3. What partially adjudicated data actually is, and the pipeline that produces it
-   - Recreate the CMS pipeline diagram as an inline SVG: Provider submission → CMS validates/
-     aggregates → Shared Systems Software → Common Working File → Chronic Conditions
-     Warehouse → BCDA (partially adjudicated at 2-4 days via the Beneficiary FHIR Data
-     Server; fully adjudicated at 8-14 days)
-   - The two FHIR resource types here are Claim and ClaimResponse, covering Medicare Parts
-     A and B
-
-4. Use cases this actually unlocks
-   - Transition of care: ACOs spot recent hospital discharges within days instead of weeks,
-     to coordinate follow-up and cut readmissions
-   - Intervention opportunities: procedures flagged for review get caught early enough for a
-     provider to intervene before unnecessary treatment happens
-   - Care coordination: building a fuller patient history by tracking services across
-     providers faster than the monthly CCLF cadence allows
-
-5. The resources aren't vanilla FHIR (brief, not the main point)
-   - CMS's BCDA responses follow the CARIN Blue Button Implementation Guide's EOB profile,
-     which adds required fields and constraints on top of the base FHIR ExplanationOfBenefit
-     resource (status/use restrictions, a focal-coverage invariant, required identifiers)
-   - The practical point: build against the profile a source actually uses, not the base spec
-
-6. Closing
-   - Tie back to the opening: FHIR gives healthcare data a common shape, but "FHIR-compliant"
-     is a spectrum defined by whichever implementation guide a source has layered on top
-
-7. Update — BCDA v3
-   - Dated note: BCDA v3 launched July 1, 2026, after this piece was originally written
-   - Key change: BCDA v3 lets claims be linked back to their CCLF counterparts, closing the
-     gap between the two feeds this piece opens with
-   - Also new: the _typeFilter parameter, consolidated FHIR resources for partially
-     adjudicated claims, new endpoints/mapping; v1/v2 access ends July 30, 2027
--->
 
 At work, we built an ingest pipeline against CMS's Beneficiary Claims Data API (BCDA), pulling ExplanationOfBenefit, Claim, and Patient data to give downstream systems a lower-latency source than CMS's older claims feed. Getting that pipeline right meant understanding both FHIR, the format BCDA speaks, and the specific way CMS implements it.
 
@@ -68,7 +14,7 @@ FHIR (Fast Healthcare Interoperability Resources) models healthcare concepts, a 
 
 HL7 International, the standards body behind the older HL7 v2 and v3 healthcare messaging formats, started work on FHIR in 2011 and has been revising it since, most recently Release 5 in 2023. Where HL7 v2 and v3 relied on complex document-based messaging, FHIR's pitch was a standard healthcare engineers could work with using the same REST conventions they'd use anywhere else.
 
-FHIR isn't the only standard in healthcare data (see [xkcd 927](https://xkcd.com/927/)). It's the current widely-adopted one.
+FHIR isn't the only standard in healthcare data (see [xkcd 927](https://xkcd.com/927/)). It's just a widely-adopted one.
 
 ## CMS runs more than one feed, and they're not interchangeable
 

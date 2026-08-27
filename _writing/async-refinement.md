@@ -3,48 +3,14 @@ layout: post
 title: "Async refinement replaces the requirements meeting."
 date: 2026-07-26
 tags: [Tech, AI]
-draft: true
+draft: false
 ---
-
-<!--
-OUTLINE
-
-1. The problem — the requirements meeting has a cost
-   - A 45-minute refinement meeting where engineers over-litigate a simple requirement,
-     nothing gets learned, the requirement was already clear
-   - The meeting existed to relitigate a decision that had already been made, not to clarify it
-   - Name the actual cost: hours of a team's time, recurring, per requirement
-
-2. The process — async refinement
-   - Instead of a live meeting, the requirement gets written up and submitted; the team has a
-     window to comment if something needs to change; if nothing's flagged, it's settled
-   - This is the practice, independent of any specific tool — it's a different venue for
-     surfacing disagreement, not a different amount of scrutiny
-
-3. The implementation — the create-task Skill
-   - A Claude Skill that accepts input from wherever a task actually originates: a Slack thread,
-     a code-level TODO, a plain string description, an HLD/PRD
-   - Drafts a scoped task and finds the right epic by reading the team's epics (descriptive
-     names) — assumes and verifies, or asks if genuinely unclear
-   - Asks its own clarifying questions before finalizing, so ambiguity gets resolved at draft
-     time instead of surfacing live in a meeting
-   - Submits to the tracker (ClickUp for this team; same pattern works against Jira or anything
-     else with an API)
-
-4. The reward / conclusion
-   - The 2-day SLA is what lets async actually close things out — a meeting can't have an SLA,
-     it's synchronous by construction
-   - Low per-run cost (a fraction of a cent) means the team doesn't ration using it the way
-     they'd ration a 45-minute meeting
-   - Closing: the skill encodes the process, it doesn't replace it — good process (epic
-     convention, clarification step, the SLA) is the precondition, not a byproduct
--->
 
 ## The requirements meeting has a cost
 
-I was talking to a product manager friend recently who was venting about a 45-minute refinement meeting his team had just sat through. Afterward I asked him what actually got discussed. Were there real edge cases the engineers had a point about? No. The requirement was already clear. He'd made the call. The meeting existed to relitigate a decision that had already been made, not to clarify anything. Nothing was learned in 45 minutes that wasn't already known going in.
+I was talking to a product manager friend recently who was venting about a 45-minute refinement meeting his team had just sat through. Afterward I asked him what actually got discussed. Were there real edge cases the engineers had a point about? No. The requirement was already clear. The meeting existed to relitigate a decision that had already been made, not to clarify anything. Nothing was learned in 45 minutes that wasn't already known going in.
 
-That's not a one-off. Refinement meetings recur, per requirement, across a whole team, and the cost is the same shape every time: a room full of engineers spending real hours re-deriving a conclusion someone already reached, because the meeting is the default venue for surfacing disagreement, whether or not there's anything to disagree about.
+That's not too uncommon. Refinement meetings recur, per requirement, across a whole team, and the cost is the same shape every time: a room full of engineers spending real hours re-deriving a conclusion someone already reached, because the meeting is the default venue for surfacing disagreement, whether or not there's anything to disagree about.
 
 ## Async refinement
 
