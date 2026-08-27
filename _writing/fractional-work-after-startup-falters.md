@@ -6,52 +6,6 @@ tags: [Tech]
 draft: false
 ---
 
-<!--
-OUTLINE
-
-1. The factual scenario
-   - Capital constraints or investor pressure make the original venture-scale plan
-     unsustainable — not a moral failure, just a plan that stopped fitting the capital
-     available to it
-   - A lean subset of the original team sometimes finds a smaller, sustainable business
-     model in the same idea/IP, one aimed at revenue-funded growth instead of investor-funded,
-     infinite growth
-
-2. Sometimes the founders buy the IP back, cheap
-   - Investors often know that the founders are the only real lever left for getting any
-     value out of the asset — there's no market to sell the IP into otherwise
-   - Reference Buffer (Joel Gascoigne bought out backers to run it profitably rather than
-     chase growth) and Wistia (Chris Savage and Brendan Schwartz bought back the company to
-     run it profitably) as well-known real examples of this exact pattern
-
-3. What the lean team's business actually looks like
-   - Lower ceiling than the original pitch, deliberately — a business sized to what a small
-     team can run on its own revenue, not one sized to what a board wanted
-   - No longer chasing infinite growth; chasing sustainable growth
-   - This is also why fractional engineers fit: a lean team gets more value hiring for
-     specific deliverables than carrying a full-time headcount it can't yet justify, and that
-     model buys access to more senior talent than a full-time hire at the same budget would
-
-4. The skills a fractional engineer actually needs here
-   - Seniority — enough experience to know what the environment should look like without
-     someone senior already in place to tell you
-   - Product focus — understanding the users and how to deliver value within the constraints
-     the lean team is actually operating under
-   - Maintainability — a complex system can't be maintained by a lean team once you're gone,
-     so simplicity and vendor/managed options over custom infrastructure matter more here
-     than they would on a larger team
-   - Flexibility — small teams pivot quickly, and the engagement has to move with them
-   - Availability — small teams have limited time of their own; being available when they
-     need you is part of the job
-
-5. Where to find this as a fractional engineer
-   - This is a common, recurring pattern, not a rare exception
-   - Practical advice: seek out lean teams, or situations where the traditional VC-round
-     narrative didn't pan out for a business
-
-6. Closing
--->
-
 ## A venture-scale plan can falter without the business dying
 
 Sometimes the capital runs out before the growth curve a board needed ever shows up, or the round that was supposed to come through doesn't. That's not always a verdict on the underlying idea. It's a mismatch between the plan and the capital available to fund it. When that happens, the company built around the venture-scale version of the plan can wind down while the idea underneath it survives, if a smaller group of people is willing to run it at a size that doesn't need another round.
