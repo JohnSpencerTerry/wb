@@ -4,6 +4,7 @@ title: "Learning LangGraph by building a clinical guideline assistant."
 date: 2026-08-28
 tags: [Tech, AI, Side Project]
 draft: true
+mermaid: true
 ---
 
 This project was an opportunity to experiment with LangChain and LangGraph while building a clinical-guidelines grounded Q&A tool. That required guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification, which is a lot more graph than a single retrieval chain. Code is on GitHub: [clinical-guideline-assistant](https://github.com/JohnSpencerTerry/clinical-guideline-assistant).
@@ -14,48 +15,41 @@ There's a [live demo](https://john-spencer-terry-clinical-guideline-assistant.st
 
 ## The flow, at a glance
 
-<figure class="diagram-figure">
-  <svg viewBox="0 0 860 200" role="img" aria-labelledby="cga-flow-title cga-flow-desc" style="width:100%;height:auto;font-family:var(--font-sans);">
-    <title id="cga-flow-title">The LangGraph flow, from question to answer</title>
-    <desc id="cga-flow-desc">A question passes through guardrail checks, which can short-circuit to a redirect answer. Otherwise it proceeds to retrieval and extraction per source, then comparison and branch-specific synthesis, ending in a cited answer.</desc>
+This is the actual graph, straight out of the project's design doc ([mvp.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/mvp.md)):
 
-    <line x1="90" y1="42" x2="130" y2="42" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#cga-flow-arrow)" />
-    <line x1="280" y1="42" x2="320" y2="42" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#cga-flow-arrow)" />
-    <line x1="500" y1="42" x2="540" y2="42" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#cga-flow-arrow)" />
-    <line x1="730" y1="42" x2="770" y2="42" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#cga-flow-arrow)" />
-    <line x1="205" y1="64" x2="205" y2="128" stroke="var(--color-hairline)" stroke-width="1.5" marker-end="url(#cga-flow-arrow)" />
+<pre class="mermaid">
+flowchart TD
+    Start([User Question]) --> KW[urgent_check_keyword]
+    KW -->|hit| ER[emergency_redirect]
+    KW -->|no hit| LLMU[urgent_check_llm]
+    LLMU -->|hit| ER
+    LLMU -->|no hit| SC[scope_classifier]
+    SC -->|patient-specific| SR[scope_redirect]
+    SC -->|general question| RET[retrieve_per_source]
 
-    <rect x="0" y="20" width="90" height="44" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
-    <text x="45" y="46" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">Question</text>
+    RET --> RA[retrieve: ADA]
+    RET --> RN[retrieve: NICE]
 
-    <rect x="130" y="20" width="150" height="44" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
-    <text x="205" y="40" fill="var(--color-ink)" font-size="12" text-anchor="middle">Guardrails</text>
-    <text x="205" y="55" fill="var(--color-muted)" font-size="10.5" text-anchor="middle">urgent + scope checks</text>
+    RA --> EA[extract_structured_claim: ADA]
+    RN --> EN[extract_structured_claim: NICE]
 
-    <rect x="320" y="20" width="180" height="44" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
-    <text x="410" y="40" fill="var(--color-ink)" font-size="12" text-anchor="middle">Retrieve + extract</text>
-    <text x="410" y="55" fill="var(--color-muted)" font-size="10.5" text-anchor="middle">per source: ADA, NICE</text>
+    EA --> CMP[compare_claims]
+    EN --> CMP
 
-    <rect x="540" y="20" width="190" height="44" rx="3" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="2" />
-    <text x="635" y="40" fill="var(--color-ink)" font-size="12" text-anchor="middle">Compare + synthesize</text>
-    <text x="635" y="55" fill="var(--color-muted)" font-size="9.5" text-anchor="middle">same / scope diff / conflict / silent</text>
+    CMP -->|same| SYN1[synthesize: unified answer]
+    CMP -->|scope difference| SYN2[synthesize: explain scope]
+    CMP -->|conflict| SYN3[synthesize: present both + grounded rationale if stated]
+    CMP -->|silent| SYN4[synthesize: note gap]
 
-    <rect x="770" y="20" width="90" height="44" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" />
-    <text x="815" y="46" fill="var(--color-ink)" font-size="12.5" text-anchor="middle">Answer</text>
+    SYN1 --> End([Answer + Citations])
+    SYN2 --> End
+    SYN3 --> End
+    SYN4 --> End
+    ER --> End
+    SR --> End
+</pre>
 
-    <rect x="130" y="128" width="150" height="40" rx="3" fill="none" stroke="var(--color-ink-mid)" stroke-width="1.5" stroke-dasharray="3,2" />
-    <text x="205" y="152" fill="var(--color-muted)" font-size="11" text-anchor="middle">Redirect (short-circuits)</text>
-
-    <defs>
-      <marker id="cga-flow-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-        <path d="M0,0 L6,3 L0,6 Z" fill="var(--color-hairline)" />
-      </marker>
-    </defs>
-  </svg>
-  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Two guardrail nodes can short-circuit the graph before retrieval ever runs. Otherwise the question flows through per-source retrieval and extraction, comparison, and branch-specific synthesis.</figcaption>
-</figure>
-
-Grounded factual recall walks the main spine. Cross-source comparison is what compare + synthesize is for. The scope guardrail and urgent/emergency detection each trigger a different short-circuit.
+Grounded factual recall walks the main spine down through `compare_claims`. Cross-source comparison is what the four `synthesize` branches are for. The scope guardrail and urgent/emergency detection each trigger a different redirect, short-circuiting straight to `End`.
 
 ## Setting up the system
 
