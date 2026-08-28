@@ -85,7 +85,7 @@ A prompt such as "What is the first-line pharmacologic treatment for type 2 diab
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/first-line-treatment.png" alt="Demo screenshot: question 'What is the first-line pharmacologic treatment for type 2 diabetes?' answered with a metformin recommendation, a note that the NICE excerpt doesn't explicitly state a first-line drug, and sources [13] [1.45.2]." style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
-  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Citations rendered under the answer.</figcaption>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Citations rendered under the answer.</figcaption>
 </figure>
 
 Behind the scenes, the graph retrieves from the ADA index and the NICE index independently, then runs each source's passages through an extraction step that turns them into a structured claim rather than free text: a recommendation, the population it applies to, an evidence grade where the source states one, and a citation identifier (code: [`extraction.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/extraction.py)).
@@ -98,7 +98,7 @@ A prompt such as "How do ADA and NICE differ on managing chronic kidney disease 
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/ckd-comparison.png" alt="Demo screenshot: question about ADA vs NICE on chronic kidney disease risk, answered with ADA's broad glucose-agnostic guidance in one paragraph and NICE's specific metformin plus SGLT-2 inhibitor recommendation in another, plus a closing paragraph naming the key difference." style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
-  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Both positions kept intact, not merged.</figcaption>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Both positions kept intact, not merged.</figcaption>
 </figure>
 
 The comparison node's job is narrow on purpose: classify the two claims as `same`, `scope_difference`, `conflict`, or `silent`, and nothing else. It's tempting to let the classifier also explain a disagreement while it's looking at both claims, but folding resolution into classification is how a model ends up quietly deciding which guideline is "right" (code: [`compare.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/compare.py)). Synthesis handles that harder judgment call instead, in a separate, explicit branch per classification. The `conflict` branch carries the constraint that matters most in the whole system:
@@ -122,7 +122,7 @@ A prompt such as "Should I stop taking my metformin? My doctor prescribed it but
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/scope-redirect.png" alt="Demo screenshot: question 'Should I stop taking my metformin? My doctor prescribed it but I feel sick.' answered with a redirect: 'I can explain what published Type 2 Diabetes guidelines say in general, but I can't give individualized medical advice for a specific person's situation.'" style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
-  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Rendered as a distinct warning bubble, not a normal answer.</figcaption>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Rendered as a distinct warning bubble, not a normal answer.</figcaption>
 </figure>
 
 The harder part of this guardrail is holding that boundary without over-triggering. A prompt such as "If I have CKD, does that change treatment recommendations?" is phrased with "I," but it should still get answered as a general question, because it's asking about a population, not requesting advice for a real, specific situation. The scope classifier's prompt spells out that distinction directly, with worked examples on both sides of the line (code: [`scope_classifier.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/scope_classifier.py)).
@@ -135,7 +135,7 @@ A prompt such as "I'm experiencing pain in my chest that I think is due to low b
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/emergency-redirect.png" alt="Demo screenshot: message 'I'm experiencing pain in my chest that I think is due to low blood sugar. Can I take aspirin alongside my normal diabetes medication?' answered with an emergency redirect telling the user to call 911 or go to the nearest emergency room." style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
-  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;">Triggered before the medication question reaches retrieval.</figcaption>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Triggered before the medication question reaches retrieval.</figcaption>
 </figure>
 
 The check runs in two stages: a fast keyword/pattern match first, then an LLM classifier that only runs if the keywords don't hit, specifically to catch phrasing a fixed pattern list wouldn't (code: [`urgent_check.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/urgent_check.py)). This particular message is phrased as "pain in my chest" rather than the literal "chest pain" the keyword pattern looks for, so it's the LLM classifier stage that catches it — and it catches the whole message, guideline question and all, before any of it reaches retrieval. Both stages are deliberately biased toward over-triggering. A false positive costs a mildly annoying redirect. A false negative means an emergency gets a calm, cited RAG answer instead of "call 911." The LLM classifier's own prompt says outright to bias toward "yes" if it's unsure, instead of aiming for the balanced precision and recall a classifier would normally target.
