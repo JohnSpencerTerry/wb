@@ -7,11 +7,28 @@ draft: true
 mermaid: true
 ---
 
-This project was an opportunity to experiment with LangChain and LangGraph while building a clinical-guidelines grounded Q&A tool. That required guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification, which is a lot more graph than a single retrieval chain. Code is on GitHub: [clinical-guideline-assistant](https://github.com/JohnSpencerTerry/clinical-guideline-assistant).
+This project was an opportunity to experiment with LangChain and LangGraph while building a clinical-guidelines grounded Q&A tool. That required guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification, which is a lot more graph than a single retrieval chain. Code is on GitHub:
+
+<a href="https://github.com/JohnSpencerTerry/clinical-guideline-assistant" target="_blank" rel="noopener" style="display:flex;gap:14px;align-items:flex-start;text-decoration:none;border:1px solid var(--color-hairline);border-radius:8px;padding:16px 18px;margin:1.25rem 0;color:inherit;">
+  <svg viewBox="0 0 16 16" width="28" height="28" fill="var(--color-ink-mid)" style="flex:none;margin-top:2px;" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+  <div>
+    <div style="font-weight:600;font-size:15px;color:var(--color-ink);">JohnSpencerTerry/clinical-guideline-assistant</div>
+    <div style="font-size:13.5px;color:var(--color-muted);margin-top:4px;line-height:1.45;">Grounded Q&amp;A over Type 2 Diabetes clinical guidelines (ADA, NICE) &mdash; a LangChain/LangGraph learning project.</div>
+    <div style="font-size:12.5px;color:var(--color-muted);margin-top:10px;display:flex;align-items:center;gap:6px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#3572A5;display:inline-block;"></span> Python
+    </div>
+  </div>
+</a>
 
 This project focused on Type 2 diabetes and draws on two sources: the ADA's Standards of Care and the UK's NICE guideline (NG28), both public and well-structured. The two can agree, disagree, or one can be silent on a given question, and that range is what the comparison and classification part of the graph is built to handle.
 
-There's a [live demo](https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/), and the repo's [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md) has a longer list organized by category. Four of those categories map directly onto the graph's shape, described below with real output from the deployed demo: grounded factual recall, cross-source comparison, the scope guardrail, and urgent/emergency detection.
+There's a live demo, embedded below, and the repo's [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md) has a longer list of prompts organized by category. Four of those categories map directly onto the graph's shape, described below with real output from the deployed demo: grounded factual recall, cross-source comparison, the scope guardrail, and urgent/emergency detection.
+
+<div style="margin:1.5rem 0;">
+  <iframe src="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/?embed=true" style="width:100%;height:600px;border:1px solid var(--color-hairline);border-radius:8px;" loading="lazy" title="Clinical Guideline Assistant &mdash; live demo"></iframe>
+</div>
+
+<p style="font-size:13px;color:var(--color-muted);margin-top:-0.75rem;">If the embed doesn't load, open the <a href="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/" target="_blank" rel="noopener">demo</a> directly.</p>
 
 ## The flow, at a glance
 
