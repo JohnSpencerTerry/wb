@@ -7,7 +7,7 @@ draft: true
 mermaid: true
 ---
 
-This project was an opportunity to experiment with LangChain and LangGraph while building a clinical-guidelines grounded Q&A tool. That required guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification, which is a lot more graph than a single retrieval chain. Code is on GitHub:
+This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It needed guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. That's a lot more graph than a single retrieval chain. Code is on GitHub:
 
 <div style="position:relative;display:flex;gap:14px;align-items:flex-start;border:1px solid var(--color-hairline);border-radius:8px;padding:16px 18px;margin:1.25rem 0;">
   <a href="https://github.com/JohnSpencerTerry/clinical-guideline-assistant" target="_blank" rel="noopener" aria-label="View JohnSpencerTerry/clinical-guideline-assistant on GitHub" style="position:absolute;inset:0;z-index:1;"></a>
@@ -21,9 +21,9 @@ This project was an opportunity to experiment with LangChain and LangGraph while
   </div>
 </div>
 
-This project focused on Type 2 diabetes and draws on two public sources: the ADA's Standards of Care and the UK's NICE guideline. The two sources can agree, disagree, or stay silent on a question. That range is what the comparison and classification part of the graph handles.
+This project focused on Type 2 diabetes, drawing on two public sources: the ADA's Standards of Care and the UK's NICE guideline. They can agree, disagree, or stay silent on a question. That range is what the comparison and classification part of the graph handles.
 
-Prompts such as "What is the first-line pharmacologic treatment for type 2 diabetes?" (and others in [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md)) work in the live demo below. Four categories map onto the graph's shape.
+Prompts such as "What is the first-line pharmacologic treatment for type 2 diabetes?" (and others in [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md)) work in the live demo below. 
 
 <div style="margin:1.5rem 0;">
   <iframe src="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/?embed=true" style="width:100%;height:600px;border:1px solid var(--color-hairline);border-radius:8px;" loading="lazy" title="Clinical Guideline Assistant &mdash; live demo"></iframe>
@@ -71,11 +71,11 @@ Grounded factual recall walks the main spine down through `compare_claims`. Cros
 
 ## Setting up the system
 
-Model access goes through [OpenRouter](https://openrouter.ai) rather than directly against a provider API, mostly so the whole thing can run on a free-tier model with the key's own credit limit set to $0 — a request can fail, but it can't bill anything. Embeddings run locally via `sentence-transformers`, so indexing doesn't need an API key either, just CPU time.
+Model access goes through [OpenRouter](https://openrouter.ai) rather than a provider API directly, so the whole thing runs on a free-tier model with the key's credit limit set to $0: a request can fail, but it can't bill. Embeddings run locally via `sentence-transformers`, so indexing needs no API key either, just CPU time.
 
-The source documents are downloaded once as PDFs and read from disk rather than scraped live. Chunking is content-aware rather than one-size-fits-all: NICE's text is already atomic per numbered recommendation, so short documents pass through unchanged, while ADA's long narrative sections get recursively split, with each chunk still carrying its parent section's metadata so a citation can point back to where it came from (code: [`chunking.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/ingestion/chunking.py)).
+Source documents are downloaded once as PDFs and read from disk, not scraped live. Chunking is content-aware: NICE's text is already atomic per numbered recommendation, so short documents pass through unchanged; ADA's long narrative sections get recursively split, each chunk carrying its parent section's metadata so a citation can point back to it (code: [`chunking.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/ingestion/chunking.py)).
 
-The chunks land in two separate vector indices, one per source, instead of a single pooled index. A pooled index would retrieve passages from both sources and hand them to the model together, inviting it to blend them into one confident answer even when the sources disagree. Separate indices let the graph retrieve from ADA and NICE independently and compare what each one actually says.
+The chunks land in two separate vector indices, one per source, instead of one pooled index. A pooled index would hand the model passages from both sources together, inviting it to blend them into one confident answer even when they disagree. Separate indices let the graph retrieve from ADA and NICE independently and compare what each actually says.
 
 A Streamlit chat UI sits on top: `uv run streamlit run app/streamlit_app.py`.
 
@@ -90,7 +90,7 @@ A prompt such as "What is the first-line pharmacologic treatment for type 2 diab
 
 Behind the scenes, the graph retrieves from the ADA index and the NICE index independently, then runs each source's passages through an extraction step that turns them into a structured claim rather than free text: a recommendation, the population it applies to, an evidence grade where the source states one, and a citation identifier (code: [`extraction.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/extraction.py)).
 
-With both claims in hand, a comparison node checks whether they agree, disagree, or one source is silent, and synthesis writes the answer to match. Every claim traces back to a specific citation, rendered under the answer: `[13] [1.45.2]` above, ADA's section number and NICE's recommendation number. Checking a claim against the source text is the whole grounding argument. That makes citations the one piece of the frontend worth getting right.
+A comparison node then checks whether the two claims agree, disagree, or one is silent, and synthesis writes the answer to match. Every claim traces back to a specific citation, rendered under the answer: `[13] [1.45.2]` above, ADA's section and NICE's recommendation number. Checking a claim against the source text is the whole grounding argument. That makes citations the one piece of the frontend worth getting right.
 
 ## Cross-source comparison
 
@@ -101,7 +101,7 @@ A prompt such as "How do ADA and NICE differ on managing chronic kidney disease 
   <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Both positions kept intact, not merged.</figcaption>
 </figure>
 
-The comparison node's job is narrow on purpose: classify the two claims as `same`, `scope_difference`, `conflict`, or `silent`, and nothing else. It's tempting to let the classifier also explain a disagreement while it's looking at both claims, but folding resolution into classification is how a model ends up quietly deciding which guideline is "right" (code: [`compare.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/compare.py)). Synthesis handles that harder judgment call instead, in a separate, explicit branch per classification. The `conflict` branch carries the constraint that matters most in the whole system:
+The comparison node's job is narrow on purpose: classify the two claims as `same`, `scope_difference`, `conflict`, or `silent`, nothing else. Letting the classifier also explain a disagreement is how a model ends up quietly deciding which guideline is "right" (code: [`compare.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/compare.py)). Synthesis handles that harder call instead, in a separate branch per classification. The `conflict` branch carries the constraint that matters most in the whole system:
 
 ```python
 "conflict": (
@@ -112,44 +112,40 @@ The comparison node's job is narrow on purpose: classify the two claims as `same
 ),
 ```
 
-The `stated_rationale` field is set during extraction, only when the source text itself gives a reason. If neither guideline explains why they diverge, the answer says that plainly instead of the model reaching for a plausible-sounding explanation. A fabricated "why" reads as authoritative in this domain, so this is a hard rule in the prompt, not a suggestion (code: [`synthesize.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/synthesize.py)).
+`stated_rationale` is set during extraction, only when the source text itself gives a reason. If neither guideline explains why they diverge, the answer says so plainly instead of the model reaching for a plausible-sounding explanation. A fabricated "why" reads as authoritative in this domain, so it's a hard rule in the prompt, not a suggestion (code: [`synthesize.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/synthesize.py)).
 
-`scope_difference` is a separate bucket for cases that look like disagreement but aren't: different eGFR thresholds framed differently, say, rather than an actual conflict about what to do. Collapsing that into "conflict" would manufacture a disagreement that isn't real. Collapsing it into "same" would flatten a distinction that matters. Either way, the chat UI marks it with a small "guidelines differ here" badge, making the different path visually obvious.
+`scope_difference` is a separate bucket for cases that look like disagreement but aren't: different eGFR thresholds framed differently, say, not an actual conflict about what to do. Collapsing it into "conflict" would manufacture a disagreement; collapsing it into "same" would flatten a real distinction. Either way, the chat UI marks it with a "guidelines differ here" badge.
 
 ## Scope guardrail
 
-A prompt such as "Should I stop taking my metformin? My doctor prescribed it but I feel sick." produces a reframe back to the general question and a pointer toward an actual care team, instead of an answer. It's not urgent and not off-topic, but it's asking for individualized medical advice, not what a guideline says in general.
+A prompt such as "Should I stop taking my metformin? My doctor prescribed it but I feel sick." produces a reframe back to the general question and a pointer toward an actual care team, not an answer. It's not urgent and not off-topic. It's asking for individualized medical advice, not what a guideline says generally.
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/scope-redirect.png" alt="Demo screenshot: question 'Should I stop taking my metformin? My doctor prescribed it but I feel sick.' answered with a redirect: 'I can explain what published Type 2 Diabetes guidelines say in general, but I can't give individualized medical advice for a specific person's situation.'" style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
   <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Rendered as a distinct warning bubble, not a normal answer.</figcaption>
 </figure>
 
-The harder part of this guardrail is holding that boundary without over-triggering. A prompt such as "If I have CKD, does that change treatment recommendations?" is phrased with "I," but it should still get answered as a general question, because it's asking about a population, not requesting advice for a real, specific situation. The scope classifier's prompt spells out that distinction directly, with worked examples on both sides of the line (code: [`scope_classifier.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/scope_classifier.py)).
+The harder part is holding that boundary without over-triggering. "If I have CKD, does that change treatment recommendations?" is phrased with "I," but it's about a population, not a specific situation, so it should still get answered generally. The scope classifier's prompt spells out that distinction with worked examples on both sides (code: [`scope_classifier.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/scope_classifier.py)).
 
-There's a second layer behind the classifier, too. The synthesis prompt restates the system's role on every single call, general or not: "You explain what published clinical guidelines say. You do not provide individualized medical advice." If a borderline message slips past the classifier, generation is still self-limited by that same constraint. Neither layer is trusted alone to hold the line.
+A second layer backs it up: the synthesis prompt restates the system's role on every call, general or not: "You explain what published clinical guidelines say. You do not provide individualized medical advice." A borderline message that slips past the classifier is still self-limited at generation. Neither layer holds the line alone.
 
 ## Urgent/emergency detection
 
-A prompt such as "I'm experiencing pain in my chest that I think is due to low blood sugar. Can I take aspirin alongside my normal diabetes medication?" produces an immediate redirect to emergency care, no retrieval involved, even though the second half of the message is phrased like an ordinary medication question. The guardrail sits at the very front of the graph, before any of the RAG machinery runs, and the answer comes back rendered distinctly in the UI rather than as a normal chat bubble.
+A prompt such as "I'm experiencing pain in my chest that I think is due to low blood sugar. Can I take aspirin alongside my normal diabetes medication?" produces an immediate redirect to emergency care, no retrieval involved, even though the second half reads like an ordinary medication question. The guardrail sits at the very front of the graph, before any RAG machinery runs, and the answer renders distinctly in the UI rather than as a normal chat bubble.
 
 <figure class="diagram-figure">
   <img src="/assets/photos/clinical-guideline-assistant/emergency-redirect.png" alt="Demo screenshot: message 'I'm experiencing pain in my chest that I think is due to low blood sugar. Can I take aspirin alongside my normal diabetes medication?' answered with an emergency redirect telling the user to call 911 or go to the nearest emergency room." style="max-width:100%;height:auto;border-radius:6px;border:1px solid var(--color-hairline);" />
   <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Triggered before the medication question reaches retrieval.</figcaption>
 </figure>
 
-The check runs in two stages: a fast keyword/pattern match first, then an LLM classifier that only runs if the keywords don't hit, specifically to catch phrasing a fixed pattern list wouldn't (code: [`urgent_check.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/urgent_check.py)). This particular message is phrased as "pain in my chest" rather than the literal "chest pain" the keyword pattern looks for, so it's the LLM classifier stage that catches it — and it catches the whole message, guideline question and all, before any of it reaches retrieval. Both stages are deliberately biased toward over-triggering. A false positive costs a mildly annoying redirect. A false negative means an emergency gets a calm, cited RAG answer instead of "call 911." The LLM classifier's own prompt says outright to bias toward "yes" if it's unsure, instead of aiming for the balanced precision and recall a classifier would normally target.
+The check runs in two stages: a fast keyword/pattern match first, then an LLM classifier that only runs if the keywords miss, to catch phrasing a fixed pattern list wouldn't (code: [`urgent_check.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/urgent_check.py)). This message reads "pain in my chest," not the literal "chest pain" the keyword pattern looks for, so it's the LLM classifier stage that catches it: the whole message, guideline question included, before any of it reaches retrieval. Both stages are deliberately biased toward over-triggering: a false positive costs a mildly annoying redirect, a false negative means an emergency gets a calm, cited RAG answer instead of "call 911." The classifier's own prompt says outright to bias toward "yes" if unsure, instead of aiming for the balanced precision and recall a classifier would normally target.
 
 ## Checking that the guardrails hold
 
 A demo only proves a handful of hand-picked examples work. The eval suite checks the same guardrail and disagreement-detection claims against a full question set.
 
-The question set is hand-written, read directly out of the ADA and NICE source text rather than generated. It's split across six categories: grounded factual recall, cross-source comparison, structured extraction, the scope guardrail, urgent-symptom detection, and adversarial edge cases like a hypothetical reframed specifically to try to slip past the scope classifier. The guardrail categories grade pass/fail deterministically, since "did it trigger or not" has a clean right answer. Comparison and recall are run-and-reported for now, since grading those well needs reference answers this project hasn't fully built out yet.
+The question set is hand-written, read directly out of the ADA and NICE source text, not generated. It's split across six categories: grounded factual recall, cross-source comparison, structured extraction, the scope guardrail, urgent-symptom detection, and adversarial edge cases like a hypothetical reframed to try to slip past the scope classifier. Guardrail categories grade pass/fail deterministically, since "did it trigger or not" has a clean right answer. Comparison and recall are run-and-reported for now. Grading those well needs reference answers this project hasn't built out yet.
 
 ## What this was for
 
-The diabetes framing gave the project real stakes to build against. Each category above maps to a distinct LangGraph pattern: short-circuiting guardrail nodes ahead of the main flow, retrieval and extraction run independently per source, a classification node whose output determines routing, and synthesis that branches on that classification instead of writing one generic prompt. Building those five pieces was the goal.
-
-Medical Q&A works here for two reasons. The answer space is limited to two named sources, not the model's general knowledge. A layer of guardrails decides what's answerable at all before anything reaches an LLM. Neither piece works alone. Retrieval without guardrails answers a patient-specific or urgent question as confidently as a general one. Guardrails without narrow retrieval still risk blending or inventing guidance the sources never gave.
-
-This is a learning project, not a clinical tool. The guardrails are a reasonable first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
+The diabetes framing gave the project real stakes to build against, but the LangGraph pieces were the goal. Medical Q&A works here because the answer space is limited to two named sources, not the model's general knowledge, and guardrails decide what's answerable at all before anything reaches an LLM. This is a learning project, not a clinical tool: the guardrails are a first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
