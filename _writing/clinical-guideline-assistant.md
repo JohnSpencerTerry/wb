@@ -7,7 +7,7 @@ draft: true
 mermaid: true
 ---
 
-This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It needed guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. That's a lot more graph than a single retrieval chain. Code is on GitHub:
+This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It needed guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. That's a lot more graph than a single retrieval chain. Source code is  on GitHub:
 
 <div style="position:relative;display:flex;gap:14px;align-items:flex-start;border:1px solid var(--color-hairline);border-radius:8px;padding:16px 18px;margin:1.25rem 0;">
   <a href="https://github.com/JohnSpencerTerry/clinical-guideline-assistant" target="_blank" rel="noopener" aria-label="View JohnSpencerTerry/clinical-guideline-assistant on GitHub" style="position:absolute;inset:0;z-index:1;"></a>
@@ -29,12 +29,11 @@ Prompts such as "What is the first-line pharmacologic treatment for type 2 diabe
   <iframe src="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/?embed=true" style="width:100%;height:600px;border:1px solid var(--color-hairline);border-radius:8px;" loading="lazy" title="Clinical Guideline Assistant &mdash; live demo"></iframe>
 </div>
 
-<p style="font-size:13px;color:var(--color-muted);margin-top:-0.75rem;">If the embed doesn't load, open the <a href="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/" target="_blank" rel="noopener">demo</a> directly.</p>
+<p style="font-size:13px;color:var(--color-muted);margin-top:-0.75rem;text-align:center;">If the embed doesn't load, open the <a href="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/" target="_blank" rel="noopener">demo</a> directly.</p>
 
 ## The flow, at a glance
 
-This is the LangGraph flow this project builds, straight out of the README's [Design section](https://github.com/JohnSpencerTerry/clinical-guideline-assistant#design):
-
+<figure class="diagram-figure">
 <pre class="mermaid">
 flowchart TD
     Start([User Question]) --> KW[urgent_check_keyword]
@@ -66,6 +65,8 @@ flowchart TD
     ER --> End
     SR --> End
 </pre>
+  <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">The LangGraph flow this project builds, straight out of the README's <a href="https://github.com/JohnSpencerTerry/clinical-guideline-assistant#design">Design section</a>.</figcaption>
+</figure>
 
 Grounded factual recall walks the main spine down through `compare_claims`. Cross-source comparison is what the four `synthesize` branches are for. The scope guardrail and urgent/emergency detection each trigger a different redirect, short-circuiting straight to `End`.
 
