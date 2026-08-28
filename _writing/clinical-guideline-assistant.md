@@ -3,7 +3,7 @@ layout: post
 title: "Learning LangGraph by building a clinical guideline assistant."
 date: 2026-08-28
 tags: [Tech, AI, Side Project]
-draft: true
+draft: false
 mermaid: true
 ---
 
