@@ -21,9 +21,9 @@ This project was an opportunity to experiment with LangChain and LangGraph while
   </div>
 </div>
 
-This project focused on Type 2 diabetes and draws on two sources: the ADA's Standards of Care and the UK's NICE guideline (NG28), both public and well-structured. The two sources can agree, disagree, or stay silent on a question. That range is what the comparison and classification part of the graph handles.
+This project focused on Type 2 diabetes and draws on two public sources: the ADA's Standards of Care and the UK's NICE guideline. The two sources can agree, disagree, or stay silent on a question. That range is what the comparison and classification part of the graph handles.
 
-The live demo is embedded below. The repo's [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md) has a longer prompt list by category. Four categories map directly onto the graph's shape: grounded factual recall, cross-source comparison, the scope guardrail, and urgent/emergency detection.
+Prompts such as "What is the first-line pharmacologic treatment for type 2 diabetes?" (and others in [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md)) work in the live demo below. Four categories map onto the graph's shape.
 
 <div style="margin:1.5rem 0;">
   <iframe src="https://john-spencer-terry-clinical-guideline-assistant.streamlit.app/?embed=true" style="width:100%;height:600px;border:1px solid var(--color-hairline);border-radius:8px;" loading="lazy" title="Clinical Guideline Assistant &mdash; live demo"></iframe>
@@ -33,7 +33,7 @@ The live demo is embedded below. The repo's [example-prompts.md](https://github.
 
 ## The flow, at a glance
 
-This is the actual graph, straight out of the project's design doc ([mvp.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/mvp.md)):
+This is the LangGraph flow this project builds, straight out of the README's [Design section](https://github.com/JohnSpencerTerry/clinical-guideline-assistant#design):
 
 <pre class="mermaid">
 flowchart TD
