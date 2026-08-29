@@ -7,7 +7,9 @@ draft: false
 mermaid: true
 ---
 
-This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It needed guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. That's a lot more graph than a single retrieval chain. Source code is  on GitHub:
+This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It uses guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. 
+
+The source code can be viewed on GitHub:
 
 <div style="position:relative;display:flex;gap:14px;align-items:flex-start;border:1px solid var(--color-hairline);border-radius:8px;padding:16px 18px;margin:1.25rem 0;">
   <a href="https://github.com/JohnSpencerTerry/clinical-guideline-assistant" target="_blank" rel="noopener" aria-label="View JohnSpencerTerry/clinical-guideline-assistant on GitHub" style="position:absolute;inset:0;z-index:1;"></a>
@@ -21,7 +23,7 @@ This project was an opportunity to experiment with LangChain and LangGraph by bu
   </div>
 </div>
 
-This project focused on Type 2 diabetes, drawing on two public sources: the ADA's Standards of Care and the UK's NICE guideline. They can agree, disagree, or stay silent on a question. That range is what the comparison and classification part of the graph handles.
+This project focused on Type 2 diabetes, drawing on two public sources: the ADA's Standards of Care and the UK's NICE guideline. They can agree, disagree, or stay silent on a user prompt, dependending on how the comparison and classification part of the graph handles it.
 
 Prompts such as "What is the first-line pharmacologic treatment for type 2 diabetes?" (and others in [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md)) work in the live demo below. 
 
@@ -72,13 +74,13 @@ Grounded factual recall walks the main spine down through `compare_claims`. Cros
 
 ## Setting up the system
 
-Model access goes through [OpenRouter](https://openrouter.ai) rather than a provider API directly, so the whole thing runs on a free-tier model with the key's credit limit set to $0: a request can fail, but it can't bill. Embeddings run locally via `sentence-transformers`, so indexing needs no API key either, just CPU time.
+I chose to go through [OpenRouter](https://openrouter.ai) rather than a provider API directly, as I can change models easily to test different outcomes. For now, it runs on a free-tier model with the key's credit limit set to $0 so we don't bill anything accidently. Embeddings run locally via `sentence-transformers`, so indexing needs no API key either, just CPU time.
 
 Source documents are downloaded once as PDFs and read from disk, not scraped live. Chunking is content-aware: NICE's text is already atomic per numbered recommendation, so short documents pass through unchanged; ADA's long narrative sections get recursively split, each chunk carrying its parent section's metadata so a citation can point back to it (code: [`chunking.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/ingestion/chunking.py)).
 
 The chunks land in two separate vector indices, one per source, instead of one pooled index. A pooled index would hand the model passages from both sources together, inviting it to blend them into one confident answer even when they disagree. Separate indices let the graph retrieve from ADA and NICE independently and compare what each actually says.
 
-A Streamlit chat UI sits on top: `uv run streamlit run app/streamlit_app.py`.
+A Streamlit chat UI sits on top: `uv run streamlit run app/streamlit_app.py`. This is my first time using Streamlit, and I found it very easy to setup.
 
 ## Grounded factual recall
 
@@ -126,7 +128,7 @@ A prompt such as "Should I stop taking my metformin? My doctor prescribed it but
   <figcaption style="font-family:var(--font-sans);font-size:13px;color:var(--color-muted);margin-top:8px;text-align:center;">Rendered as a distinct warning bubble, not a normal answer.</figcaption>
 </figure>
 
-The harder part is holding that boundary without over-triggering. "If I have CKD, does that change treatment recommendations?" is phrased with "I," but it's about a population, not a specific situation, so it should still get answered generally. The scope classifier's prompt spells out that distinction with worked examples on both sides (code: [`scope_classifier.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/scope_classifier.py)).
+It can also be difficult to control over-triggering. "If I have CKD, does that change treatment recommendations?" is phrased with "I," but it's about a population, not a specific situation, so it should still get answered generally. The scope classifier's prompt spells out that distinction with worked examples on both sides (code: [`scope_classifier.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/graph/guardrails/scope_classifier.py)).
 
 A second layer backs it up: the synthesis prompt restates the system's role on every call, general or not: "You explain what published clinical guidelines say. You do not provide individualized medical advice." A borderline message that slips past the classifier is still self-limited at generation. Neither layer holds the line alone.
 
@@ -149,4 +151,4 @@ The question set is hand-written, read directly out of the ADA and NICE source t
 
 ## What this was for
 
-The diabetes framing gave the project real stakes to build against, but the LangGraph pieces were the goal. Medical Q&A works here because the answer space is limited to two named sources, not the model's general knowledge, and guardrails decide what's answerable at all before anything reaches an LLM. This is a learning project, not a clinical tool: the guardrails are a first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
+The diabetes framing gave the project a userful topic to explore LangChain. Medical Q&A works here because the answer space is limited to two named sources, not the model's general knowledge, and guardrails decide what's answerable at all before anything reaches an LLM. This is a learning project, not a clinical tool: the guardrails are a first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
