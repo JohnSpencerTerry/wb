@@ -5,7 +5,7 @@ date: 2026-07-05
 tags: [Tech, Side Project]
 ---
 
-My wife and I built DoggieDo, an app for dog owners to find dog-friendly places nearby and keep a profile for their dog. We shelved it before it had real users because we didn't think we could put together a viable business model.
+Crystal and I built DoggieDo, an app for dog owners to find dog-friendly places nearby and keep a profile for their dog. We shelved it before it had real users because we didn't think we could put together a viable business model.
 
 ## The concept
 

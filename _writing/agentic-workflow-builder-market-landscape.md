@@ -56,13 +56,13 @@ One need shows up across all four regardless of persona: as a workflow gets more
 | **Testing/eval** | Single dry run, no dataset | Dataset-driven evals, built in | Mature, but a separate product (LangSmith) | Named as a pillar, thin public detail |
 | **Pricing shape** | Per task | Per execution (or free, self-hosted) | Free core, paid platform + eval usage | Per credit/run, enterprise custom |
 
-A Zap is a trigger plus one or more actions. AI used to mean a single bolted-on step; Zapier's newer "Agents" take a plain-English goal and decide which tools to call across multiple steps, with an approval gate where a reviewer can edit the payload, not just approve or reject it. Testing stops at a single dry run against sample data.
+A Zap is a trigger plus one or more actions. AI used to mean a single bolted-on step; Zapier's newer "Agents" take a plain-English goal and decide which tools to call across multiple steps, with an approval gate where a reviewer can edit the payload, not just approve or reject it. Zapier MCP exposes that same catalog of app integrations as MCP tools, so an external AI client can call them directly instead of going through the Zaps UI. Testing stops at a single dry run against sample data.
 
 n8n is a visual node graph where any node can be swapped for raw JavaScript or Python. AI Agent nodes, RAG, and MCP support are built into the canvas natively, so a workflow's agentic-ness is opt-in per node rather than the whole point of the tool. It also has the most developed testing story of the no-code options: an Eval Trigger runs a workflow against a dataset and scores outputs against configurable metrics.
 
 LangGraph is a code-first library where nodes and edges operate over a persistent state object — the only one of the four built for cycles, where an agent tries something, evaluates its own output, and loops back with adjusted state. Testing lives in a separate product, LangSmith, which is mature but adds a second tool and a second learning curve. The core library is free; the platform and eval products around it aren't. The learning curve is also the steepest of the four.
 
-SimplAI markets itself as an "Agentic AI Operating System" for regulated enterprises moving past AI pilots into production: an Agent Builder, Workflow Builder, knowledge base, and evaluation/tracing layer, wrapped in a low-code enterprise UI. It's the least independently documented of the four — most of what's available is vendor material rather than real community usage, so its evaluation claims are hard to verify against actual mechanics.
+SimplAI markets itself as an "Agentic AI Operating System" for regulated enterprises moving past AI pilots into production: an Agent Builder, Workflow Builder, knowledge base, evaluation/tracing layer, and an MCP Gateway for connecting agents to enterprise tools, wrapped in a low-code enterprise UI. It's the least independently documented of the four — most of what's available is vendor material rather than real community usage, so its evaluation claims are hard to verify against actual mechanics.
 
 Two patterns hold once you strip the marketing. First, learning curve and agentic power move together, and testing maturity is the widest gap in the market — only n8n and LangGraph, via LangSmith, have real dataset-driven evaluation, and nobody has made evaluating an agentic step as easy as building it. Second, all four have converged on MCP as how an agent calls out to arbitrary tools, Zapier and SimplAI included — a sign the connector problem is being solved once, industry-wide, rather than by each platform maintaining its own catalog.
 
@@ -78,7 +78,7 @@ The canvas itself — step types, drag-and-drop — is already well-solved by n8
 
 ## Further reading
 
-- [Zapier — What is a Zap?](https://help.zapier.com/hc/en-us/articles/8496309697421-What-is-a-Zap) and [Request Approval / human-in-the-loop](https://zapier.com/blog/human-in-the-loop-guide/)
+- [Zapier — What is a Zap?](https://help.zapier.com/hc/en-us/articles/8496309697421-What-is-a-Zap), [Request Approval / human-in-the-loop](https://zapier.com/blog/human-in-the-loop-guide/), and [Zapier MCP](https://docs.zapier.com/mcp/home)
 - [n8n](https://n8n.io/) and its [evaluations for AI workflows](https://docs.n8n.io/advanced-ai/evaluations/overview/)
 - [LangGraph](https://www.langchain.com/langgraph) and its [multi-agent supervisor pattern](https://github.com/langchain-ai/langgraph-supervisor-py)
 - [SimplAI](https://simplai.ai/)

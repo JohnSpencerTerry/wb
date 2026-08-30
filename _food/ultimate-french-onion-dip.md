@@ -3,7 +3,7 @@ layout: post
 title: "Ultimate French Onion Dip"
 date: 2026-07-01
 category: Recipes
-excerpt: "Slow-caramelized onions, crème fraîche, and a lot of patience."
+excerpt: "Slow-caramelized onions, infused-oil mayo, and a lot of patience."
 ---
 
 ## Ingredients

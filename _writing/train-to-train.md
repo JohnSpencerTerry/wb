@@ -5,7 +5,7 @@ date: 2026-05-30
 tags: [Tech, Side Project]
 ---
 
-A subway trivia game I built with my <a href="https://www.crystalterry.com/work/train2train" target="_blank" rel="noopener">wife</a>. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
+A subway trivia game I built with <a href="https://www.crystalterry.com/work/train2train" target="_blank" rel="noopener">Crystal</a>. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
 
 <figure class="media-figure">
   <img src="/assets/photos/train2train/185%C2%B0%2040%C2%B0%2035%C2%B0.png" alt="Train to Train home screen on an iPhone, dark MTA-style UI with the Train 2 Train logo and difficulty buttons." />
