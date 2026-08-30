@@ -23,7 +23,7 @@ The source code can be viewed on GitHub:
   </div>
 </div>
 
-This project focused on Type 2 diabetes, drawing on two public sources: the ADA's Standards of Care and the UK's NICE guideline. They can agree, disagree, or stay silent on a user prompt, dependending on how the comparison and classification part of the graph handles it.
+This project focused on Type 2 diabetes, drawing on two public sources: the ADA's Standards of Care and the UK's NICE guideline. They can agree, disagree, or stay silent on a user prompt, depending on how the comparison and classification part of the graph handles it.
 
 Prompts such as "What is the first-line pharmacologic treatment for type 2 diabetes?" (and others in [example-prompts.md](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/example-prompts.md)) work in the live demo below. 
 
@@ -74,7 +74,7 @@ Grounded factual recall walks the main spine down through `compare_claims`. Cros
 
 ## Setting up the system
 
-I chose to go through [OpenRouter](https://openrouter.ai) rather than a provider API directly, as I can change models easily to test different outcomes. For now, it runs on a free-tier model with the key's credit limit set to $0 so we don't bill anything accidently. Embeddings run locally via `sentence-transformers`, so indexing needs no API key either, just CPU time.
+I chose to go through [OpenRouter](https://openrouter.ai) rather than a provider API directly, as I can change models easily to test different outcomes. For now, it runs on a free-tier model with the key's credit limit set to $0 so we don't bill anything accidentally. Embeddings run locally via `sentence-transformers`, so indexing needs no API key either, just CPU time.
 
 Source documents are downloaded once as PDFs and read from disk, not scraped live. Chunking is content-aware: NICE's text is already atomic per numbered recommendation, so short documents pass through unchanged; ADA's long narrative sections get recursively split, each chunk carrying its parent section's metadata so a citation can point back to it (code: [`chunking.py`](https://github.com/JohnSpencerTerry/clinical-guideline-assistant/blob/main/src/cga/ingestion/chunking.py)).
 
@@ -151,4 +151,4 @@ The question set is hand-written, read directly out of the ADA and NICE source t
 
 ## What this was for
 
-The diabetes framing gave the project a userful topic to explore LangChain. Medical Q&A works here because the answer space is limited to two named sources, not the model's general knowledge, and guardrails decide what's answerable at all before anything reaches an LLM. This is a learning project, not a clinical tool: the guardrails are a first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
+The diabetes framing gave the project a useful topic to explore LangChain. Medical Q&A works here because the answer space is limited to two named sources, not the model's general knowledge, and guardrails decide what's answerable at all before anything reaches an LLM. This is a learning project, not a clinical tool: the guardrails are a first pass, not a substitute for the regulatory, legal, and clinical review a real deployment would need.
