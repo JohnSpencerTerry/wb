@@ -21,7 +21,6 @@ nav: projects
   <div class="project-body">
     <div class="row-date">{{ post.date | date: "%b %Y" }}</div>
     <div class="row-title">{{ post.title }}</div>
-    <div class="row-excerpt">{{ post.excerpt | strip_html | truncatewords: 20 }}</div>
     <div class="row-tags">{% for tag in post.tags %}{% unless tag == "Side Project" %}<span class="row-tag">{{ tag }}</span>{% endunless %}{% endfor %}</div>
   </div>
 </a>

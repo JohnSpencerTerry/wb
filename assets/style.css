@@ -326,11 +326,16 @@ main.container {
 }
 
 .project-body {
-  padding: 18px 20px 22px;
+  padding: 16px 18px 20px;
 }
 
-.project-body .row-excerpt {
-  max-width: none;
+.project-body .row-title {
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+.project-body .row-tags {
+  margin-top: 12px;
 }
 
 /* Listing rows */
@@ -359,7 +364,7 @@ main.container {
   display: none;
 }
 
-.listing-row .row-date {
+.row-date {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
@@ -369,7 +374,7 @@ main.container {
   margin-bottom: 6px;
 }
 
-.listing-row .row-title {
+.row-title {
   display: block;
   font-family: var(--font-serif);
   font-size: 24px;
@@ -382,7 +387,7 @@ main.container {
   color: var(--color-accent);
 }
 
-.listing-row .row-excerpt {
+.row-excerpt {
   font-family: var(--font-sans);
   font-size: 15px;
   color: var(--color-muted);
@@ -390,14 +395,14 @@ main.container {
   max-width: 600px;
 }
 
-.listing-row .row-tags {
+.row-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 10px;
 }
 
-.listing-row .row-tag {
+.row-tag {
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
