@@ -4,6 +4,10 @@ permalink: /
 sitemap: false
 ---
 
+<div class="home-intro">
+<p>I'm John, a software engineer in healthtech, based in Brooklyn. I write about AI, data engineering, plus food, our dog Jupiter, and more.</p>
+</div>
+
 {% assign writing = site.writing | where_exp: "p", "p.draft != true" | sort: 'date' | reverse %}
 {% if writing.size > 0 %}
 <div class="home-section">
