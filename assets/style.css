@@ -276,6 +276,63 @@ main.container {
   display: block;
 }
 
+/* Project grid */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-bg);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.project-card:hover .row-title {
+  color: var(--color-accent);
+}
+
+.project-thumb {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.project-thumb-letter {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.project-body {
+  padding: 18px 20px 22px;
+}
+
+.project-body .row-excerpt {
+  max-width: none;
+}
+
 /* Listing rows */
 
 .listing-group-label {

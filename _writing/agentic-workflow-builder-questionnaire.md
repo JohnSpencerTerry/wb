@@ -3,6 +3,7 @@ layout: post
 title: "Agentic Workflow Builder: Questionnaire"
 date: 2026-08-16
 tags: [Tech, AI, Side Project]
+thumb_color: "#b967ff"
 ---
 
 Before a workflow gets built, someone has to decide it's worth building. This is a look at a short, structured intake for that decision, a specialized version of "what do you want to build?" that turns a rough idea into requirements the [canvas](/writing/agentic-workflow-builder-canvas-prototype/) can start from.

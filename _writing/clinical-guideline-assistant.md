@@ -5,6 +5,7 @@ date: 2026-08-28
 tags: [Tech, AI, Side Project]
 draft: false
 mermaid: true
+thumb_image: "/assets/photos/clinical-guideline-assistant/first-line-treatment.png"
 ---
 
 This project was an opportunity to experiment with LangChain and LangGraph by building a grounded Q&A tool over clinical guidelines. It uses guardrails, retrieval, structured extraction, a classification step, and an answer that changes shape depending on that classification. 

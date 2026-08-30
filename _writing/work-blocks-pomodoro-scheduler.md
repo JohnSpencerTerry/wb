@@ -3,6 +3,7 @@ layout: post
 title: "Work Blocks: A Pomodoro Scheduler"
 date: 2026-06-16
 tags: [Tech, Side Project]
+thumb_color: "#2ecc71"
 ---
 
 Early in covid, a lot of people were suddenly working remote with a workday that had bookends but no structure in between. Crystal and I built Work Blocks, an app that scheduled pomodoro-style focus blocks around whatever was already fixed in your day.

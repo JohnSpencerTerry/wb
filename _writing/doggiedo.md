@@ -3,6 +3,7 @@ layout: post
 title: "DoggieDo: A Dog Owner Discovery App"
 date: 2026-07-05
 tags: [Tech, Side Project]
+thumb_color: "#8a4b11"
 ---
 
 Crystal and I built DoggieDo, an app for dog owners to find dog-friendly places nearby and keep a profile for their dog. We shelved it before it had real users because we didn't think we could put together a viable business model.

@@ -3,6 +3,7 @@ layout: post
 title: "Agentic Workflow Builder: Test Bench"
 date: 2026-08-16
 tags: [Tech, AI, Side Project]
+thumb_color: "#ff9f43"
 ---
 
 An LLM call doesn't always return the same output twice, so you can't assert on specific outputs like in traditional software testing. As a follow up to the [canvas prototype](/writing/agentic-workflow-builder-canvas-prototype/), here are some thoughts on what testing a single step might look like.

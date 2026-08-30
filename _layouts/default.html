@@ -35,6 +35,7 @@
         </label>
       </div>
       <nav>
+        <a href="/projects/" {% if nav_key == "projects" %}class="active"{% endif %}>Projects</a>
         <a href="/writing/" {% if nav_key == "writing" %}class="active"{% endif %}>Write Ups</a>
         <a href="/food/" {% if nav_key == "food" %}class="active"{% endif %}>Food</a>
         <a href="/media/" {% if nav_key == "media" %}class="active"{% endif %}>Reading &amp; Watching</a>

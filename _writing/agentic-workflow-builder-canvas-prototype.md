@@ -3,6 +3,7 @@ layout: post
 title: "Agentic Workflow Builder: Canvas Prototype"
 date: 2026-08-14
 tags: [Tech, AI, Side Project]
+thumb_color: "#4a9eff"
 ---
 
 Agentic workflows are showing up everywhere, but most companies that want one don't have the in-house expertise to build it. This is an early concept for a tool that lets a team assemble an agentic workflow without writing the orchestration code themselves.

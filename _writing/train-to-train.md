@@ -3,6 +3,7 @@ layout: post
 title: "Train to Train"
 date: 2026-05-30
 tags: [Tech, Side Project]
+thumb_image: "/assets/photos/train2train/Start%20Page.png"
 ---
 
 A subway trivia game I built with <a href="https://www.crystalterry.com/work/train2train" target="_blank" rel="noopener">Crystal</a>. She came up with the concept and did the UI; I wrote the data layer and the game loop. We finished a v1 and shelved it, but I think it deserves a write-up here.
