@@ -1,6 +1,12 @@
 title: "John Spencer Terry"
+description: "Writing on AI engineering, data engineering, and product development, plus side projects, food, and life in NYC."
+url: "https://www.johnspencerterry.com"
 google_analytics: G-KCKCJBP62T
 permalink: pretty
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 collections:
   writing:
     output: true
