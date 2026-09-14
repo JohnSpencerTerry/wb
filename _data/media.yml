@@ -84,10 +84,6 @@
   creator: "Nooruddin Abbas Ali"
   genre: nonfiction
   date: 2026-03-31
-- title: "Principles of Web Design"
-  creator: "Brian D. Miller"
-  genre: nonfiction
-  date: 2026-03-31
 - title: "Between Two Moons"
   creator: "Aisha Abdel Gawad"
   genre: fiction
@@ -113,17 +109,10 @@
   creator: "America's Test Kitchen"
   genre: cookbook
   date: 2026-03-08
-- title: "Citizen Kane"
-  genre: movie
-  date: 2026-03-08
 - title: "The God of the Woods"
   creator: "Liz Moore"
   genre: fiction
   date: 2026-03-08
-- title: "Apple in China: The Capture of the World's Greatest Company"
-  creator: "Patrick McGee"
-  genre: nonfiction
-  date: 2026-02-27
 - title: "Ghost Dog: The Way of the Samurai"
   genre: movie
   date: 2026-02-27
@@ -149,9 +138,6 @@
 - title: "Umma: A Korean Mom's Kitchen Wisdom & 100 Family Recipes"
   creator: "Sarah Ahn"
   genre: cookbook
-  date: 2025-12-28
-- title: "The Hunger Games: The Ballad of Songbirds & Snakes"
-  genre: movie
   date: 2025-12-28
 - title: "The Graduate"
   genre: movie
@@ -201,10 +187,6 @@
   date: 2025-12-09
 - title: "Social Media for Small Business"
   creator: "Franziska Iseli"
-  genre: nonfiction
-  date: 2025-12-09
-- title: "Starting a Business 101"
-  creator: "Michele Cagan"
   genre: nonfiction
   date: 2025-12-09
 - title: "You Gotta Eat"
